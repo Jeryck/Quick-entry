@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Quick Entry</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#334960">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Quick Entry">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{
+  --navy:#334960; --orange:#f46524; --orange-d:#d9541a;
+  --bg:#f3f5f8; --card:#ffffff; --text:#1d2733; --muted:#66727f; --line:#e1e6ec;
+  --field:#f7f9fb; --ok:#1f8a4c; --bad:#c0392b; --head:#334960;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#10151b; --card:#1a212a; --text:#edf1f5; --muted:#98a4b1; --line:#2a333e; --field:#222b36; --head:#1a212a; --navy:#9db8d3; }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none !important}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+body{min-height:100vh;min-height:100dvh}
+.app{max-width:560px;margin:0 auto;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:var(--head);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.2px}
+#pending{font-size:12px;background:var(--orange);color:#fff;border-radius:999px;padding:3px 10px;font-weight:600}
+#pending.zero{background:rgba(255,255,255,.18)}
+main{padding:14px 16px}
+.screen{display:none}.screen.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:14px}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 15px/1 inherit;padding:12px 4px;border-radius:9px;min-height:44px}
+.seg button.on{background:var(--navy);color:#fff}
+@media (prefers-color-scheme: dark){.seg button.on{color:#10151b}}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 5px}
+label:first-child{margin-top:0}
+#toWrap label{margin-top:12px}
+input,select,textarea{width:100%;font:16px/1.3 inherit;color:var(--text);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:12px;min-height:46px;appearance:none;-webkit-appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 20px,calc(100% - 14px) 20px;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:36px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--orange);outline-offset:0}
+#amount{font-size:30px;font-weight:700;text-align:left;padding:14px;letter-spacing:.3px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+details summary{font-size:14px;font-weight:600;color:var(--muted);padding:10px 0 0;cursor:pointer;list-style:none}
+details summary::before{content:"+ "}
+details[open] summary::before{content:"– "}
+.btn{display:block;width:100%;border:0;border-radius:12px;font:700 17px/1 inherit;padding:16px;min-height:52px;background:var(--orange);color:#fff;margin-top:16px}
+.btn:active{background:var(--orange-d)}
+.btn.sec{background:var(--card);color:var(--text);border:1px solid var(--line);margin-top:10px;font-weight:600;font-size:16px}
+.btn.danger{background:var(--card);color:var(--bad);border:1px solid var(--line);margin-top:10px;font-weight:600;font-size:16px}
+.btn[disabled]{opacity:.45}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+.warn{font-size:13px;color:#8a5a00;background:#fff4d6;border:1px solid #f0d58a;border-radius:10px;padding:10px;margin:10px 0 0}
+@media (prefers-color-scheme: dark){.warn{color:#ffd98a;background:#3a2f12;border-color:#5a4a1c}}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat small{display:block;color:var(--muted);font-size:12px;font-weight:600}
+.stat b{font-size:18px}
+.editing{background:#e8f1fb;border:1px solid #bcd3ee;color:#1d4f87;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+@media (prefers-color-scheme: dark){.editing{background:#16283a;border-color:#2a4a6b;color:#a9cdf2}}
+.editing button{border:0;background:transparent;color:inherit;font-weight:700;font-size:14px;padding:6px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:4px}
+.chips button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:9px 14px;font:600 14px/1 inherit;min-height:40px}
+.chips button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+@media (prefers-color-scheme: dark){.chips button.on{color:#10151b}}
+.day{font-size:13px;font-weight:700;color:var(--muted);margin:14px 2px 6px}
+.item{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:8px;width:100%;text-align:left;color:var(--text);font:inherit;min-height:56px}
+.dot{flex:0 0 10px;height:10px;border-radius:50%}
+.dot.expense{background:var(--orange)}.dot.income{background:var(--ok)}.dot.move{background:#5b8def}
+.item .m{flex:1;min-width:0}
+.item .t{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .s{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .a{font-weight:700;white-space:nowrap}
+.a.income{color:var(--ok)}
+.new{font-size:10px;background:var(--orange);color:#fff;border-radius:6px;padding:1px 5px;margin-left:6px;vertical-align:2px}
+.empty{text-align:center;color:var(--muted);padding:34px 10px}
+.block h3{margin:0 0 2px;font-size:16px}
+.block .cols{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.steps{font-size:14px;color:var(--muted);padding-left:20px;margin:6px 0 0}
+.steps li{margin:4px 0}
+textarea{min-height:120px;font-size:15px;line-height:1.5}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
+nav .in{display:grid;grid-template-columns:repeat(4,1fr);width:100%;max-width:560px}
+nav button{border:0;background:transparent;color:var(--muted);padding:9px 2px 8px;font:600 11.5px/1.2 inherit;min-height:60px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--orange)}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#1d2733;color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:20;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.ok{color:var(--ok)}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1>Quick Entry</h1><span id="pending" class="zero">0 new</span></header>
+<main>
+
+<!-- ADD -->
+<section id="s-add" class="screen on">
+  <div id="firstRun" class="card" hidden>
+    <b>Welcome. One quick setup first.</b>
+    <p class="hint">The account, card and category names here are generic placeholders. Open Settings and type your own names, exactly as they appear in your budget sheet. They are saved only on this phone.</p>
+    <button class="btn" type="button" id="goSettings" style="margin-top:10px">Open Settings</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><small>Spent today</small><b id="stToday">₱0.00</b></div>
+    <div class="stat"><small>Spent this month</small><b id="stMonth">₱0.00</b></div>
+  </div>
+  <div id="editBanner" class="editing" hidden><span>Editing a saved entry</span><button type="button" id="cancelEdit">Cancel</button></div>
+  <div class="seg" id="seg" role="tablist">
+    <button type="button" data-k="expense" class="on">Expense</button>
+    <button type="button" data-k="income">Income</button>
+    <button type="button" data-k="move">Move money</button>
+  </div>
+  <form id="form" class="card" autocomplete="off" novalidate>
+    <label for="amount">Amount (PHP)</label>
+    <input id="amount" inputmode="decimal" placeholder="0.00" enterkeyhint="done">
+    <label for="cat" id="catL">Category</label>
+    <select id="cat"></select>
+    <label for="acct" id="acctL">Paid with</label>
+    <select id="acct"></select>
+    <div id="toWrap" hidden>
+      <label for="to">To</label>
+      <select id="to"></select>
+      <p class="hint" id="moveHint"></p>
+    </div>
+    <div class="row2">
+      <div><label for="date">Date</label><input id="date" type="date"></div>
+      <div><label for="desc">Note (optional)</label><input id="desc" placeholder="e.g. lunch" maxlength="80"></div>
+    </div>
+    <details id="more">
+      <summary id="moreS">Savings goal (optional)</summary>
+      <label for="goal" id="goalL">Savings goal used</label>
+      <select id="goal"></select>
+    </details>
+    <div id="warnBox" class="warn" hidden></div>
+    <button class="btn" id="save" type="submit">Save expense</button>
+    <button class="btn danger" id="del" type="button" hidden>Delete this entry</button>
+  </form>
+</section>
+
+<!-- LOG -->
+<section id="s-log" class="screen">
+  <div class="chips" id="chips">
+    <button data-f="all" class="on">All</button>
+    <button data-f="new">Not sent</button>
+    <button data-f="expense">Expenses</button>
+    <button data-f="income">Income</button>
+    <button data-f="move">Moves</button>
+  </div>
+  <div id="logList"></div>
+</section>
+
+<!-- EXPORT -->
+<section id="s-export" class="screen">
+  <div class="card">
+    <h3 style="margin:0 0 4px">Send to your budget sheet</h3>
+    <p class="hint" style="margin-top:0">Copy a block, open the Transactions tab in Google Sheets, tap the first empty cell of that block and paste. Then tap “Mark as sent”.</p>
+    <label style="display:flex;align-items:center;gap:10px;margin:12px 0 0;font-size:15px;color:var(--text)"><input type="checkbox" id="inclOld" style="width:22px;height:22px;min-height:0"> Include entries already sent</label>
+  </div>
+  <div class="card block" id="blk-expense"></div>
+  <div class="card block" id="blk-income"></div>
+  <div class="card block" id="blk-move"></div>
+  <div class="card">
+    <h3 style="margin:0 0 4px">Backup</h3>
+    <p class="hint" style="margin-top:0">Your data lives only on this phone. Save a backup file regularly (for example to Files or iCloud Drive).</p>
+    <button class="btn sec" id="bkSave" type="button">Save backup file</button>
+    <button class="btn sec" id="bkLoad" type="button">Restore from backup file</button>
+    <input type="file" id="bkFile" accept="application/json,.json" hidden>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="s-set" class="screen">
+  <div class="card">
+    <p class="hint" style="margin:0 0 4px">One name per line. Names must match your sheet exactly so entries line up after pasting. Tip: you can copy a column of names from Google Sheets and paste it straight into a box. “Installments” is left out on purpose: your sheet counts installments automatically.</p>
+    <label for="lAcc">Accounts (banks, e-wallets, cash)</label><textarea id="lAcc"></textarea>
+    <label for="lCard">Credit cards</label><textarea id="lCard"></textarea>
+    <label for="lExp">Expense categories</label><textarea id="lExp"></textarea>
+    <label for="lInc">Income sources</label><textarea id="lInc"></textarea>
+    <label for="lGoal">Savings goals</label><textarea id="lGoal"></textarea>
+    <button class="btn" id="saveLists" type="button">Save lists</button>
+    <button class="btn sec" id="resetLists" type="button">Reset to the generic lists</button>
+  </div>
+  <div class="card">
+    <h3 style="margin:0 0 6px">Install on iPhone</h3>
+    <ol class="steps">
+      <li>Open this page in <b>Safari</b> while online.</li>
+      <li>Tap <b>Share</b>, then <b>Add to Home Screen</b>.</li>
+      <li>Open it once from the Home Screen. After that it works offline.</li>
+    </ol>
+    <p class="hint" id="storeInfo"></p>
+  </div>
+  <div class="card">
+    <button class="btn danger" id="wipe" type="button" style="margin-top:0">Erase all data on this phone</button>
+  </div>
+</section>
+
+</main>
+</div>
+
+<nav><div class="in" id="nav">
+  <button data-s="add" class="on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Add</button>
+  <button data-s="log"><svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>Log</button>
+  <button data-s="export"><svg viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 13v6h14v-6"/></svg>Send</button>
+  <button data-s="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.5-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.2-.8.2-1.2z"/></svg>Settings</button>
+</div></nav>
+<div id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- starting lists (editable in Settings) ---------- */
+var DEFAULTS = {
+  accounts: ["Cash on Hand","Bank Account 1","Bank Account 2","E-Wallet 1","E-Wallet 2"],
+  cards: ["Credit Card 1","Credit Card 2"],
+  expense: ["Housing / Rent","Utilities & Bills","Subscriptions","Debt Payments","Food & Groceries","Transportation","Personal","Health / Medical","Travel","Interest & Fees","Other"],
+  income: ["Salary","Freelance","Business","Interest","Other income"],
+  goals: ["Emergency Fund","Investments","Travel Fund","Future Upgrades","Savings"]
+};
+var K_E = "qe.entries.v1", K_L = "qe.lists.v1", K_LAST = "qe.last.v1";
+
+/* ---------- storage ---------- */
+function load(k, d){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
+function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ toast("Could not save: storage is full or blocked"); return false; } }
+var entries = load(K_E, []);
+var lists = load(K_L, null) || JSON.parse(JSON.stringify(DEFAULTS));
+var last = load(K_LAST, {});
+var mode = "expense", editingId = null, filter = "all";
+
+/* ---------- helpers ---------- */
+function $(id){ return document.getElementById(id); }
+function pad(n){ return (n<10?"0":"")+n; }
+function todayStr(){ var d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function fmt(n){ try{ return new Intl.NumberFormat("en-PH",{style:"currency",currency:"PHP"}).format(n); }catch(e){ return "₱"+n.toFixed(2); } }
+function parseAmt(s){ var v = parseFloat(String(s).replace(/[^0-9.]/g,"")); return isFinite(v) ? Math.round(v*100)/100 : NaN; }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function clean(s){ return String(s||"").replace(/[\t\r\n]+/g," ").trim(); }
+function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!==undefined) e.textContent=text; return e; }
+var toastT; function toast(m){ var t=$("toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(function(){ t.classList.remove("on"); },2200); }
+function lines(s){ var seen={}, out=[]; String(s).split(/\n/).forEach(function(x){ x=clean(x); if(x && !seen[x.toLowerCase()]){ seen[x.toLowerCase()]=1; out.push(x); } }); return out; }
+
+/* ---------- selects ---------- */
+function fill(sel, items, placeholder, selected){
+  sel.innerHTML = "";
+  if(placeholder!==null){ var o=el("option","",placeholder); o.value=""; sel.appendChild(o); }
+  items.forEach(function(it){
+    if(it && it.group){ var g=document.createElement("optgroup"); g.label=it.group; it.items.forEach(function(x){ var o=el("option","",x); o.value=x; g.appendChild(o); }); sel.appendChild(g); }
+    else { var o=el("option","",it); o.value=it; sel.appendChild(o); }
+  });
+  if(selected && Array.prototype.some.call(sel.options,function(o){return o.value===selected;})) sel.value=selected;
+}
+function acctGroups(withCards){
+  var g=[{group:"Accounts",items:lists.accounts}];
+  if(withCards && lists.cards.length) g.push({group:"Credit cards",items:lists.cards});
+  return g;
+}
+function isCard(n){ return lists.cards.indexOf(n)>=0; }
+
+/* ---------- Add screen ---------- */
+var CFG = {
+  expense:{ btn:"Save expense", catL:"Category", acctL:"Paid with", goalL:"Savings goal used", moreS:"Savings goal used (optional)" },
+  income:{ btn:"Save income", catL:"Income source", acctL:"Deposited to" },
+  move:{ btn:"Save transfer / card payment", catL:null, acctL:"From (account)", goalL:"Savings goal funded", moreS:"Savings goal funded (optional)" }
+};
+function setMode(m, keep){
+  mode = m;
+  Array.prototype.forEach.call($("seg").children,function(b){ b.classList.toggle("on", b.dataset.k===m); });
+  var c = CFG[m];
+  $("save").textContent = editingId ? "Update entry" : c.btn;
+  $("catL").parentNode; // no-op
+  $("cat").style.display = $("catL").style.display = c.catL ? "" : "none";
+  if(c.catL) $("catL").textContent = c.catL;
+  $("acctL").textContent = c.acctL;
+  $("toWrap").hidden = m!=="move";
+  $("more").style.display = m==="income" ? "none" : "";
+  if(c.goalL){ $("goalL").textContent=c.goalL; $("moreS").textContent=c.moreS; }
+  var L = last[m] || {};
+  if(c.catL) fill($("cat"), m==="income"?lists.income:lists.expense, "Choose…", keep?keep.cat:L.cat);
+  fill($("acct"), m==="expense"?acctGroups(true):acctGroups(false), "Choose…", keep?keep.acct:L.acct);
+  if(m==="move") fill($("to"), acctGroups(true), "Choose…", keep?keep.to:L.to);
+  fill($("goal"), lists.goals, "None", keep?keep.goal:"");
+  updateHints();
+}
+function updateHints(){
+  var h="", w=$("warnBox");
+  if(mode==="move"){
+    var t=$("to").value, f=$("acct").value;
+    if(t && isCard(t)) h="Card payment: money paid from "+(f||"an account")+" to "+t+". This is not an expense.";
+    else if(t) h="Transfer between your own accounts. Not income or an expense.";
+  }
+  $("moveHint").textContent=h;
+  var msg="";
+  if(mode==="expense" && /^installments?$/i.test($("cat").value)) msg="Installments are counted automatically from your sheet’s Installments table. Don’t log them here.";
+  w.hidden=!msg; w.textContent=msg;
+}
+function resetForm(){
+  $("amount").value=""; $("desc").value=""; $("goal").value="";
+  $("date").value=todayStr(); editingId=null;
+  $("editBanner").hidden=true; $("del").hidden=true;
+  $("save").textContent=CFG[mode].btn;
+}
+function onSave(ev){
+  ev.preventDefault();
+  var amt = parseAmt($("amount").value);
+  if(!(amt>0)){ toast("Enter an amount above zero"); $("amount").focus(); return; }
+  var date=$("date").value; if(!date){ toast("Pick a date"); return; }
+  var acct=$("acct").value, cat=$("cat").value, to=$("to").value;
+  if(!acct){ toast("Choose "+(mode==="move"?"the From account":(mode==="income"?"where it was deposited":"what you paid with"))); return; }
+  if(mode!=="move" && !cat){ toast("Choose a "+(mode==="income"?"source":"category")); return; }
+  if(mode==="expense" && /^installments?$/i.test(cat)){ toast("Installments are counted automatically. Don’t log them."); return; }
+  if(mode==="move"){ if(!to){ toast("Choose the To account or card"); return; } if(to===acct){ toast("From and To must differ"); return; } }
+  var rec = { kind:mode, date:date, amount:amt, desc:clean($("desc").value), cat: mode==="move"?"":cat, acct:acct, to: mode==="move"?to:"", goal: mode==="income"?"":$("goal").value };
+  if(editingId){
+    entries = entries.map(function(e){ return e.id===editingId ? Object.assign({}, e, rec, {exported:false}) : e; });
+    toast("Entry updated");
+  } else {
+    rec.id=uid(); rec.created=Date.now(); rec.exported=false; entries.push(rec); toast("Saved");
+  }
+  if(!save(K_E, entries)) return;
+  last[mode]={cat:cat, acct:acct, to:to}; save(K_LAST,last);
+  var wasEdit=!!editingId; resetForm(); refresh();
+  if(wasEdit) show("log");
+  if(navigator.vibrate) try{ navigator.vibrate(15); }catch(e){}
+}
+function startEdit(id){
+  var e = entries.filter(function(x){return x.id===id;})[0]; if(!e) return;
+  editingId=id; setMode(e.kind, {cat:e.cat, acct:e.acct, to:e.to, goal:e.goal});
+  $("amount").value=String(e.amount); $("date").value=e.date; $("desc").value=e.desc||"";
+  if(e.goal) $("more").open=true;
+  $("editBanner").hidden=false; $("del").hidden=false; $("save").textContent="Update entry";
+  // keep values even if no longer in lists
+  ensureOpt($("cat"),e.cat); ensureOpt($("acct"),e.acct); ensureOpt($("to"),e.to); ensureOpt($("goal"),e.goal);
+  $("cat").value=e.cat; $("acct").value=e.acct; $("to").value=e.to; $("goal").value=e.goal||"";
+  updateHints(); show("add");
+}
+function ensureOpt(sel, v){ if(!v) return; var has=Array.prototype.some.call(sel.options,function(o){return o.value===v;}); if(!has){ var o=el("option","",v); o.value=v; sel.appendChild(o); } }
+
+/* ---------- Log screen ---------- */
+function describe(e){
+  if(e.kind==="move") return { t:(e.desc||(isCard(e.to)?"Card payment":"Transfer")), s:e.acct+" → "+e.to+(e.goal?" · "+e.goal:"") };
+  return { t:(e.desc||e.cat), s:e.cat+" · "+e.acct+(e.goal?" · "+e.goal:"") };
+}
+function renderLog(){
+  var box=$("logList"); box.innerHTML="";
+  var list = entries.filter(function(e){ return filter==="all" || (filter==="new"?!e.exported:e.kind===filter); });
+  list.sort(function(a,b){ return a.date===b.date ? b.created-a.created : (a.date<b.date?1:-1); });
+  if(!list.length){ box.appendChild(el("div","empty", entries.length?"Nothing matches this filter.":"No entries yet. Add your first one.")); return; }
+  var cur="";
+  list.forEach(function(e){
+    if(e.date!==cur){ cur=e.date; var p=e.date.split("-"); var d=new Date(+p[0],+p[1]-1,+p[2]);
+      box.appendChild(el("div","day", d.toLocaleDateString("en-PH",{weekday:"short",day:"numeric",month:"short",year:"numeric"}) + (e.date===todayStr()?" · Today":""))); }
+    var b=el("button","item"); b.type="button";
+    b.appendChild(el("span","dot "+e.kind));
+    var m=el("span","m"); var d2=describe(e);
+    var t=el("div","t",d2.t); if(!e.exported){ t.appendChild(el("span","new","NEW")); }
+    m.appendChild(t); m.appendChild(el("div","s",d2.s)); b.appendChild(m);
+    b.appendChild(el("span","a "+e.kind,(e.kind==="income"?"+":(e.kind==="expense"?"−":""))+fmt(e.amount)));
+    b.addEventListener("click",function(){ startEdit(e.id); });
+    box.appendChild(b);
+  });
+}
+
+/* ---------- Export ---------- */
+var BLOCKS = {
+  expense:{ title:"Expenses", where:"Column B", cols:["Date","Amount","Description","Category","Paid with","Savings goal"], row:function(e){ return [e.date,e.amount,e.desc,e.cat,e.acct,e.goal]; } },
+  income:{ title:"Income", where:"Column I", cols:["Date","Amount","Description","Category","Deposited to"], row:function(e){ return [e.date,e.amount,e.desc,e.cat,e.acct]; } },
+  move:{ title:"Transfers & card payments", where:"Column O", cols:["Date","Amount","Description","From","To","Savings goal"], row:function(e){ return [e.date,e.amount,e.desc,e.acct,e.to,e.goal]; } }
+};
+function blockEntries(kind){
+  var incl=$("inclOld").checked;
+  return entries.filter(function(e){ return e.kind===kind && (incl || !e.exported); })
+    .sort(function(a,b){ return a.date===b.date ? a.created-b.created : (a.date<b.date?-1:1); });
+}
+function tsv(kind){ return blockEntries(kind).map(function(e){ return BLOCKS[kind].row(e).map(function(v){ return clean(v===undefined?"":v); }).join("\t"); }).join("\n"); }
+function csvCell(v){ v=clean(v===undefined?"":v); return /[",]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
+function csv(kind){ var rows=blockEntries(kind).map(function(e){ return BLOCKS[kind].row(e).map(csvCell).join(","); }); return [BLOCKS[kind].cols.join(",")].concat(rows).join("\n"); }
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){ return navigator.clipboard.writeText(text); }
+  return new Promise(function(res,rej){ var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.focus(); ta.select(); try{ document.execCommand("copy")?res():rej(); }catch(e){ rej(e); } document.body.removeChild(ta); });
+}
+function shareOrDownload(name, text, mime){
+  var file; try{ file=new File([text],name,{type:mime}); }catch(e){}
+  if(file && navigator.canShare && navigator.canShare({files:[file]})){
+    return navigator.share({files:[file],title:name}).catch(function(err){ if(err && err.name==="AbortError") return; download(name,text,mime); });
+  }
+  download(name,text,mime); return Promise.resolve();
+}
+function download(name,text,mime){ var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type:mime})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },500); }
+function renderExport(){
+  ["expense","income","move"].forEach(function(k){
+    var box=$("blk-"+k); box.innerHTML=""; var b=BLOCKS[k], n=blockEntries(k).length;
+    box.appendChild(el("h3","",b.title+" · "+n+(n===1?" row":" rows")));
+    box.appendChild(el("p","cols","Paste at: "+b.where+" · "+b.cols.join(" | ")));
+    var c=el("button","btn","Copy "+n+(n===1?" row":" rows")); c.type="button"; c.disabled=!n; c.style.marginTop="8px";
+    c.addEventListener("click",function(){ copyText(tsv(k)).then(function(){ toast("Copied. Paste into the sheet"); },function(){ toast("Copy failed. Try “Share CSV”"); }); });
+    var s=el("button","btn sec","Share as CSV file"); s.type="button"; s.disabled=!n;
+    s.addEventListener("click",function(){ shareOrDownload("transactions-"+k+"-"+todayStr()+".csv",csv(k),"text/csv"); });
+    var m=el("button","btn sec","Mark as sent"); m.type="button"; m.disabled=!n;
+    m.addEventListener("click",function(){
+      if(!confirm("Mark these "+n+" rows as sent to your sheet? Only do this after pasting.")) return;
+      var ids={}; blockEntries(k).forEach(function(e){ ids[e.id]=1; });
+      entries=entries.map(function(e){ if(ids[e.id]) e.exported=true; return e; }); save(K_E,entries); refresh(); toast("Marked as sent");
+    });
+    box.appendChild(c); box.appendChild(s); box.appendChild(m);
+  });
+}
+
+/* ---------- Backup ---------- */
+function backupSave(){ var data=JSON.stringify({app:"quick-entry",v:1,saved:new Date().toISOString(),lists:lists,entries:entries},null,1); shareOrDownload("quick-entry-backup-"+todayStr()+".json",data,"application/json"); }
+function backupLoad(file){
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      var d=JSON.parse(r.result); if(!d || d.app!=="quick-entry" || !Array.isArray(d.entries)) throw new Error("bad");
+      var have={}; entries.forEach(function(e){ have[e.id]=1; }); var add=0;
+      d.entries.forEach(function(e){
+        if(e && e.id && !have[e.id] && /^(expense|income|move)$/.test(e.kind) && e.amount>0 && /^\d{4}-\d{2}-\d{2}$/.test(e.date)){
+          entries.push({id:String(e.id),kind:e.kind,date:e.date,amount:+e.amount,desc:clean(e.desc),cat:clean(e.cat),acct:clean(e.acct),to:clean(e.to),goal:clean(e.goal),exported:!!e.exported,created:+e.created||Date.now()}); add++;
+        }
+      });
+      if(d.lists && confirm("Also restore the saved lists (accounts, cards, categories)?")){ ["accounts","cards","expense","income","goals"].forEach(function(k){ if(Array.isArray(d.lists[k])) lists[k]=d.lists[k].map(clean).filter(Boolean); }); save(K_L,lists); }
+      save(K_E,entries); refresh(); fillSettings(); toast("Restored "+add+" new entries");
+    }catch(e){ toast("That file isn’t a Quick Entry backup"); }
+  };
+  r.readAsText(file);
+}
+
+/* ---------- Settings ---------- */
+function fillSettings(){ $("lAcc").value=lists.accounts.join("\n"); $("lCard").value=lists.cards.join("\n"); $("lExp").value=lists.expense.join("\n"); $("lInc").value=lists.income.join("\n"); $("lGoal").value=lists.goals.join("\n"); }
+function saveLists(){
+  var n={accounts:lines($("lAcc").value),cards:lines($("lCard").value),expense:lines($("lExp").value).filter(function(x){return !/^installments?$/i.test(x);}),income:lines($("lInc").value),goals:lines($("lGoal").value)};
+  if(!n.accounts.length||!n.expense.length||!n.income.length){ toast("Accounts, expense categories and income sources can’t be empty"); return; }
+  lists=n; if(save(K_L,lists)){ setMode(mode); toast("Lists saved"); }
+}
+
+/* ---------- chrome ---------- */
+function refresh(){
+  $("firstRun").hidden = !!load(K_L, null);
+  var t=todayStr(), mo=t.slice(0,7), td=0, mn=0, nw=0;
+  entries.forEach(function(e){ if(!e.exported) nw++; if(e.kind==="expense"){ if(e.date===t) td+=e.amount; if(e.date.slice(0,7)===mo) mn+=e.amount; } });
+  $("stToday").textContent=fmt(td); $("stMonth").textContent=fmt(mn);
+  var p=$("pending"); p.textContent=nw+" new"; p.classList.toggle("zero",!nw);
+  renderLog(); renderExport();
+}
+function show(s){
+  Array.prototype.forEach.call(document.querySelectorAll(".screen"),function(x){ x.classList.toggle("on", x.id==="s-"+s); });
+  Array.prototype.forEach.call($("nav").querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.s===s); });
+  if(s!=="add" && editingId){ /* keep edit state until saved or cancelled */ }
+  window.scrollTo(0,0);
+}
+function storeInfo(){
+  var msg="Entries are stored on this phone only.";
+  if(navigator.storage && navigator.storage.persist){ navigator.storage.persist().then(function(ok){ $("storeInfo").textContent=msg+(ok?" Storage is protected from automatic clean-up.":" Save a backup file regularly."); }).catch(function(){ $("storeInfo").textContent=msg; }); }
+  else $("storeInfo").textContent=msg;
+}
+
+/* ---------- wire up ---------- */
+$("seg").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(!b || editingId) return; setMode(b.dataset.k); });
+$("form").addEventListener("submit",onSave);
+$("cat").addEventListener("change",updateHints); $("acct").addEventListener("change",updateHints); $("to").addEventListener("change",updateHints);
+$("cancelEdit").addEventListener("click",function(){ resetForm(); setMode(mode); });
+$("del").addEventListener("click",function(){ if(editingId && confirm("Delete this entry?")){ entries=entries.filter(function(e){return e.id!==editingId;}); save(K_E,entries); resetForm(); setMode(mode); refresh(); toast("Deleted"); show("log"); } });
+$("nav").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(b) show(b.dataset.s); });
+$("chips").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(!b) return; filter=b.dataset.f; Array.prototype.forEach.call($("chips").children,function(x){ x.classList.toggle("on",x===b); }); renderLog(); });
+$("inclOld").addEventListener("change",renderExport);
+$("bkSave").addEventListener("click",backupSave);
+$("bkLoad").addEventListener("click",function(){ $("bkFile").click(); });
+$("bkFile").addEventListener("change",function(){ if(this.files[0]) backupLoad(this.files[0]); this.value=""; });
+$("saveLists").addEventListener("click",function(){ saveLists(); refresh(); });
+$("goSettings").addEventListener("click",function(){ show("set"); });
+$("resetLists").addEventListener("click",function(){ if(confirm("Replace the lists with the generic starting lists?")){ lists=JSON.parse(JSON.stringify(DEFAULTS)); save(K_L,lists); fillSettings(); setMode(mode); toast("Lists reset"); } });
+$("wipe").addEventListener("click",function(){ if(confirm("Erase ALL entries and lists on this phone? This can’t be undone.") && confirm("Really erase everything? Save a backup first if unsure.")){ try{ localStorage.removeItem(K_E); localStorage.removeItem(K_L); localStorage.removeItem(K_LAST); }catch(e){} entries=[]; lists=JSON.parse(JSON.stringify(DEFAULTS)); last={}; fillSettings(); resetForm(); setMode("expense"); refresh(); toast("All data erased"); } });
+$("amount").addEventListener("input",function(){ var v=this.value.replace(/[^0-9.,]/g,""); if(v!==this.value) this.value=v; });
+
+resetForm(); setMode("expense"); fillSettings(); refresh(); storeInfo();
+window.__qe = { tsv:tsv, csv:csv, entries:function(){ return entries; }, lists:function(){ return lists; } };
+
+if("serviceWorker" in navigator){ window.addEventListener("load",function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); }); }
+})();
+</script>
+</body>
+</html>
