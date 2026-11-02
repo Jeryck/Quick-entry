@@ -1,5 +1,5 @@
 /* Offline helper: saves the app on the phone so it opens without internet. */
-var CACHE = "quick-entry-v4";
+var CACHE = "quick-entry-v5";
 var FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", function (e) {
