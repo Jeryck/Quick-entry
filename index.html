@@ -85,7 +85,7 @@ details[open] summary::before{content:"– "}
 .steps li{margin:4px 0}
 textarea{min-height:120px;font-size:15px;line-height:1.5}
 nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
-nav .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-width:560px}
+nav .in{display:grid;grid-template-columns:repeat(4,1fr);width:100%;max-width:560px}
 nav button{border:0;background:transparent;color:var(--muted);padding:9px 2px 8px;font:600 11.5px/1.2 inherit;min-height:60px;display:flex;flex-direction:column;align-items:center;gap:3px}
 nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 nav button.on{color:var(--orange)}
@@ -194,6 +194,41 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .themeseg button{border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:10px;font:600 14px/1 inherit;min-height:44px}
 .themeseg button.on{background:var(--orange);color:var(--on);border-color:var(--orange)}
 @media (prefers-reduced-motion:reduce){.gr,.pbar i{animation:none;transition:none}.ibtn.spin svg{animation:none}}
+
+/* ---- transaction sheet ---- */
+body.noscroll{overflow:hidden}
+.fab{position:fixed;right:max(16px,calc(50% - 264px));bottom:calc(76px + env(safe-area-inset-bottom));z-index:7;width:58px;height:58px;border-radius:50%;border:0;background:linear-gradient(135deg,#10b981,#22d3ee);color:#03231a;display:grid;place-items:center;box-shadow:0 10px 26px rgba(16,185,129,.42)}
+.fab svg{width:28px;height:28px;stroke:currentColor;stroke-width:2.6;fill:none;stroke-linecap:round}
+.fab:active{transform:scale(.93)}
+.sbg{position:fixed;inset:0;z-index:20;background:rgba(3,8,18,.62);opacity:0;transition:opacity .25s}
+.sbg.on{opacity:1}
+.sheet{--tc:#fb923c;position:fixed;left:0;right:0;bottom:0;z-index:21;margin:0 auto;max-width:560px;max-height:94vh;max-height:94dvh;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-bottom:0;border-radius:26px 26px 0 0;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:0 -14px 44px rgba(0,0,0,.45);padding-top:8px}
+.sheet.on{transform:none}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 2px}
+.sh-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 16px 4px}
+.sh-head h2{margin:0;font-size:17px;font-weight:800}
+.sh-head .ibtn{width:40px;height:40px;border-radius:12px}
+.sh-body{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 16px 12px}
+.sh-foot{padding:10px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.sh-foot .btn{margin-top:0;background:var(--tc);color:#07121f;box-shadow:0 8px 20px color-mix(in srgb,var(--tc) 35%,transparent)}
+.sh-foot .btn[disabled]{opacity:.5}
+.amtbox{display:flex;justify-content:center;align-items:baseline;gap:6px;padding:8px 0 2px}
+.amtbox .cur{font-size:30px;font-weight:700;color:var(--muted)}
+.amtbox #amount{width:230px;max-width:70%;font-size:46px;font-weight:800;text-align:center;color:var(--tc);background:transparent;border:0;padding:4px 0;min-height:60px;letter-spacing:.3px}
+.amtbox #amount:focus{outline:0}
+.amtbox #amount::placeholder{color:var(--line)}
+.shake{animation:shk .35s}
+@keyframes shk{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.types{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 14px}
+.types button{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 2px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--muted);font:700 11px/1.1 inherit;min-height:60px}
+.types button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.types button.on{background:color-mix(in srgb,var(--tc) 16%,transparent);border-color:var(--tc);color:var(--tc)}
+.cchips{display:flex;flex-wrap:wrap;gap:8px}
+.cchip{border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:999px;padding:9px 13px;font:600 14px/1 inherit;min-height:40px}
+.cchip.on{background:var(--tc);color:#07121f;border-color:var(--tc)}
+#moveHint{margin:8px 0 0}
+.sheet input:focus,.sheet select:focus{outline:2px solid var(--tc)}
+.sheet.sm{max-height:80dvh}
 </style>
 </head>
 <body>
@@ -204,50 +239,6 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 <!-- ADD -->
 <!-- HOME -->
 <section id="s-home" class="screen on"><div id="homeBody"></div></section>
-
-<!-- ADD -->
-<section id="s-add" class="screen">
-  <div id="firstRun" class="card" hidden>
-    <b>Welcome. One quick setup first.</b>
-    <p class="hint">The account, card and category names here are generic placeholders. Open Settings and type your own names, exactly as they appear in your budget sheet. They are saved only on this phone.</p>
-    <button class="btn" type="button" id="goSettings" style="margin-top:10px">Open Settings</button>
-  </div>
-  <div class="stats">
-    <div class="stat"><small>Spent today</small><b id="stToday">₱0.00</b></div>
-    <div class="stat"><small>Spent this month</small><b id="stMonth">₱0.00</b></div>
-  </div>
-  <div id="editBanner" class="editing" hidden><span>Editing a saved entry</span><button type="button" id="cancelEdit">Cancel</button></div>
-  <div class="seg" id="seg" role="tablist">
-    <button type="button" data-k="expense" class="on">Expense</button>
-    <button type="button" data-k="income">Income</button>
-    <button type="button" data-k="move">Move money</button>
-  </div>
-  <form id="form" class="card" autocomplete="off" novalidate>
-    <label for="amount">Amount (PHP)</label>
-    <input id="amount" inputmode="decimal" placeholder="0.00" enterkeyhint="done">
-    <label for="cat" id="catL">Category</label>
-    <select id="cat"></select>
-    <label for="acct" id="acctL">Paid with</label>
-    <select id="acct"></select>
-    <div id="toWrap" hidden>
-      <label for="to">To</label>
-      <select id="to"></select>
-      <p class="hint" id="moveHint"></p>
-    </div>
-    <div class="row2">
-      <div><label for="date">Date</label><input id="date" type="date"></div>
-      <div><label for="desc">Note (optional)</label><input id="desc" placeholder="e.g. lunch" maxlength="80"></div>
-    </div>
-    <details id="more">
-      <summary id="moreS">Savings goal (optional)</summary>
-      <label for="goal" id="goalL">Savings goal used</label>
-      <select id="goal"></select>
-    </details>
-    <div id="warnBox" class="warn" hidden></div>
-    <button class="btn" id="save" type="submit">Save expense</button>
-    <button class="btn danger" id="del" type="button" hidden>Delete this entry</button>
-  </form>
-</section>
 
 <!-- LOG -->
 <section id="s-log" class="screen">
@@ -302,16 +293,7 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
     <h3 style="margin:0 0 4px">Appearance</h3>
     <div class="themeseg" id="themeSeg"><button type="button" data-t="dark">Dark</button><button type="button" data-t="light">Light</button><button type="button" data-t="auto">Auto</button></div>
   </div>
-  <div class="card">
-    <h3 style="margin:0 0 4px">Connect Google Sheet</h3>
-    <p class="hint" style="margin-top:0">Paste the web app address and the key from your sheet’s script. They are saved only on this phone. Don’t share them. When connected, your names come from the sheet.</p>
-    <label for="cUrl">Web app address</label>
-    <input id="cUrl" type="url" placeholder="https://script.google.com/macros/s/…/exec" autocapitalize="off" autocorrect="off" spellcheck="false">
-    <label for="cKey">Key</label>
-    <input id="cKey" type="password" autocomplete="off" placeholder="Your secret key">
-    <button class="btn" id="cSave" type="button">Save and sync</button>
-    <button class="btn sec" id="cOff" type="button">Disconnect</button>
-  </div>
+  <div class="card" id="connBox"></div>
   <div class="card">
     <h3 style="margin:0 0 6px">Install on iPhone</h3>
     <ol class="steps">
@@ -331,12 +313,39 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 
 <nav><div class="in" id="nav">
   <button data-s="home" class="on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/></svg>Home</button>
-  <button data-s="add"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Add</button>
   <button data-s="log"><svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>Log</button>
   <button data-s="export"><svg viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 13v6h14v-6"/></svg>Send</button>
   <button data-s="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.5-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.2-.8.2-1.2z"/></svg>Settings</button>
 </div></nav>
 <div id="toast"></div>
+<button id="fab" class="fab" type="button" aria-label="Add transaction"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+<div id="sheetBg" class="sbg" hidden></div>
+<div id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Transaction" hidden>
+  <div class="grab"></div>
+  <div class="sh-head"><button class="ibtn" id="shClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><h2 id="shTitle">New transaction</h2><button class="ibtn" id="del" type="button" aria-label="Delete entry" hidden style="color:var(--bad)"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button></div>
+  <form id="form" autocomplete="off" novalidate style="display:flex;flex-direction:column;min-height:0;flex:1">
+    <div class="sh-body">
+      <div class="amtbox"><span class="cur">₱</span><input id="amount" inputmode="decimal" placeholder="0.00" enterkeyhint="done" aria-label="Amount in pesos"></div>
+      <div class="types" id="seg" role="tablist"></div>
+      <div id="fCat"><label id="catL" for="cat">Category</label><select id="cat" hidden></select><div id="catChips" class="cchips"></div></div>
+      <label for="acct" id="acctL">Paid with</label><select id="acct"></select>
+      <div id="toWrap" hidden><label for="to" id="toL">To</label><select id="to"></select></div>
+      <div id="goalReq"></div>
+      <div class="row2">
+        <div><label for="date">Date</label><input id="date" type="date"></div>
+        <div><label for="desc">Note (optional)</label><input id="desc" placeholder="e.g. lunch" maxlength="80"></div>
+      </div>
+      <div id="moreWrap"><details id="more"><summary id="moreS">Savings goal used (optional)</summary><div id="goalOpt"></div></details></div>
+      <div id="goalWrap" hidden><label for="goal" id="goalL">Savings goal</label><select id="goal"></select></div>
+      <p class="hint" id="moveHint"></p>
+      <div id="warnBox" class="warn" hidden></div>
+    </div>
+    <div class="sh-foot"><button class="btn" id="save" type="submit">Save expense</button></div>
+  </form>
+</div>
+<div id="modalBg" class="sbg" hidden></div>
+<div id="modal" class="sheet sm" role="dialog" aria-modal="true" hidden style="--tc:#10b981"><div class="grab"></div><div class="sh-head"><span style="width:40px"></span><h2 id="mTitle"></h2><span style="width:40px"></span></div><div class="sh-body" id="mBody"></div></div>
+
 
 <script>
 (function(){
@@ -389,89 +398,9 @@ function acctGroups(withCards){
 }
 function isCard(n){ return lists.cards.indexOf(n)>=0; }
 
-/* ---------- Add screen ---------- */
-var CFG = {
-  expense:{ btn:"Save expense", catL:"Category", acctL:"Paid with", goalL:"Savings goal used", moreS:"Savings goal used (optional)" },
-  income:{ btn:"Save income", catL:"Income source", acctL:"Deposited to" },
-  move:{ btn:"Save transfer / card payment", catL:null, acctL:"From (account)", goalL:"Savings goal funded", moreS:"Savings goal funded (optional)" }
-};
-function setMode(m, keep){
-  mode = m;
-  Array.prototype.forEach.call($("seg").children,function(b){ b.classList.toggle("on", b.dataset.k===m); });
-  var c = CFG[m];
-  $("save").textContent = editingId ? "Update entry" : c.btn;
-  $("catL").parentNode; // no-op
-  $("cat").style.display = $("catL").style.display = c.catL ? "" : "none";
-  if(c.catL) $("catL").textContent = c.catL;
-  $("acctL").textContent = c.acctL;
-  $("toWrap").hidden = m!=="move";
-  $("more").style.display = m==="income" ? "none" : "";
-  if(c.goalL){ $("goalL").textContent=c.goalL; $("moreS").textContent=c.moreS; }
-  var L = last[m] || {};
-  if(c.catL) fill($("cat"), m==="income"?lists.income:lists.expense, "Choose…", keep?keep.cat:L.cat);
-  fill($("acct"), m==="expense"?acctGroups(true):acctGroups(false), "Choose…", keep?keep.acct:L.acct);
-  if(m==="move") fill($("to"), acctGroups(true), "Choose…", keep?keep.to:L.to);
-  fill($("goal"), lists.goals, "None", keep?keep.goal:"");
-  updateHints();
-}
-function updateHints(){
-  var h="", w=$("warnBox");
-  if(mode==="move"){
-    var t=$("to").value, f=$("acct").value;
-    if(t && isCard(t)) h="Card payment: money paid from "+(f||"an account")+" to "+t+". This is not an expense.";
-    else if(t) h="Transfer between your own accounts. Not income or an expense.";
-  }
-  $("moveHint").textContent=h;
-  var msg="";
-  if(mode==="expense" && /^installments?$/i.test($("cat").value)) msg="Installments are counted automatically from your sheet’s Installments table. Don’t log them here.";
-  w.hidden=!msg; w.textContent=msg;
-}
-function resetForm(){
-  $("amount").value=""; $("desc").value=""; $("goal").value="";
-  $("date").value=todayStr(); editingId=null;
-  $("editBanner").hidden=true; $("del").hidden=true;
-  $("save").textContent=CFG[mode].btn;
-}
-function onSave(ev){
-  ev.preventDefault();
-  var amt = parseAmt($("amount").value);
-  if(!(amt>0)){ toast("Enter an amount above zero"); $("amount").focus(); return; }
-  var date=$("date").value; if(!date){ toast("Pick a date"); return; }
-  var acct=$("acct").value, cat=$("cat").value, to=$("to").value;
-  if(!acct){ toast("Choose "+(mode==="move"?"the From account":(mode==="income"?"where it was deposited":"what you paid with"))); return; }
-  if(mode!=="move" && !cat){ toast("Choose a "+(mode==="income"?"source":"category")); return; }
-  if(mode==="expense" && /^installments?$/i.test(cat)){ toast("Installments are counted automatically. Don’t log them."); return; }
-  if(mode==="move"){ if(!to){ toast("Choose the To account or card"); return; } if(to===acct){ toast("From and To must differ"); return; } }
-  var rec = { kind:mode, date:date, amount:amt, desc:clean($("desc").value), cat: mode==="move"?"":cat, acct:acct, to: mode==="move"?to:"", goal: mode==="income"?"":$("goal").value };
-  if(editingId){
-    entries = entries.map(function(e){ return e.id===editingId ? Object.assign({}, e, rec, {exported:false, err:""}) : e; });
-    toast("Entry updated");
-  } else {
-    rec.id=uid(); rec.created=Date.now(); rec.exported=false; entries.push(rec); toast("Saved");
-  }
-  if(!save(K_E, entries)) return;
-  last[mode]={cat:cat, acct:acct, to:to}; save(K_LAST,last); scheduleSync();
-  var wasEdit=!!editingId; resetForm(); refresh();
-  if(wasEdit) show("log");
-  if(navigator.vibrate) try{ navigator.vibrate(15); }catch(e){}
-}
-function startEdit(id){
-  var e = entries.filter(function(x){return x.id===id;})[0]; if(!e) return;
-  if(e.exported){ toast("Already sent to your sheet. Fix it in the Transactions tab."); return; }
-  editingId=id; setMode(e.kind, {cat:e.cat, acct:e.acct, to:e.to, goal:e.goal});
-  $("amount").value=String(e.amount); $("date").value=e.date; $("desc").value=e.desc||"";
-  if(e.goal) $("more").open=true;
-  $("editBanner").hidden=false; $("del").hidden=false; $("save").textContent="Update entry";
-  // keep values even if no longer in lists
-  ensureOpt($("cat"),e.cat); ensureOpt($("acct"),e.acct); ensureOpt($("to"),e.to); ensureOpt($("goal"),e.goal);
-  $("cat").value=e.cat; $("acct").value=e.acct; $("to").value=e.to; $("goal").value=e.goal||"";
-  updateHints(); show("add");
-}
-function ensureOpt(sel, v){ if(!v) return; var has=Array.prototype.some.call(sel.options,function(o){return o.value===v;}); if(!has){ var o=el("option","",v); o.value=v; sel.appendChild(o); } }
-
 /* ---------- Log screen ---------- */
 function describe(e){
-  if(e.kind==="move") return { t:(e.desc||(isCard(e.to)?"Card payment":"Transfer")), s:e.acct+" → "+e.to+(e.goal?" · "+e.goal:"") };
+  if(e.kind==="move") return { t:(e.desc||TYPES[typeOf(e)].label), s:e.acct+" → "+e.to+(e.goal?" · "+e.goal:"") };
   return { t:(e.desc||e.cat), s:e.cat+" · "+e.acct+(e.goal?" · "+e.goal:"") };
 }
 function renderLog(){
@@ -564,22 +493,18 @@ function fillSettings(){ $("lAcc").value=lists.accounts.join("\n"); $("lCard").v
 function saveLists(){
   var n={accounts:lines($("lAcc").value),cards:lines($("lCard").value),expense:lines($("lExp").value).filter(function(x){return !/^installments?$/i.test(x);}),income:lines($("lInc").value),goals:lines($("lGoal").value)};
   if(!n.accounts.length||!n.expense.length||!n.income.length){ toast("Accounts, expense categories and income sources can’t be empty"); return; }
-  lists=n; if(save(K_L,lists)){ setMode(mode); toast("Lists saved"); }
+  lists=n; if(save(K_L,lists)){ refillSheet(); toast("Lists saved"); }
 }
 
 /* ---------- chrome ---------- */
 function refresh(){
-  $("firstRun").hidden = !!load(K_L, null);
-  var t=todayStr(), mo=t.slice(0,7), td=0, mn=0, nw=0;
-  entries.forEach(function(e){ if(!e.exported) nw++; if(e.kind==="expense"){ if(e.date===t) td+=e.amount; if(e.date.slice(0,7)===mo) mn+=e.amount; } });
-  $("stToday").textContent=fmt(td); $("stMonth").textContent=fmt(mn);
+  var nw=0; entries.forEach(function(e){ if(!e.exported) nw++; });
   var p=$("pending"); p.textContent=nw+" new"; p.classList.toggle("zero",!nw);
   renderLog(); renderExport(); renderHome(); showSyncMsg();
 }
 function show(s){
   Array.prototype.forEach.call(document.querySelectorAll(".screen"),function(x){ x.classList.toggle("on", x.id==="s-"+s); });
   Array.prototype.forEach.call($("nav").querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.s===s); });
-  if(s!=="add" && editingId){ /* keep edit state until saved or cancelled */ }
   if(s==="home"){ if(curScreen!=="home"){ prevV={}; chartAnim=true; } renderHome(true); }
   curScreen=s;
   window.scrollTo(0,0);
@@ -592,22 +517,33 @@ function storeInfo(){
 
 
 /* ---------- Google Sheet sync ---------- */
-var conn = load(K_SYNC, {url:"",key:""}), snap = load(K_SUM, null), syncing = false, syncT = null, syncMsg = "", lastSyncAt = 0;
+var snap = load(K_SUM, null), syncing = false, syncT = null, syncMsg = "", lastSyncAt = 0;
+var conn = load(K_SEC, null) ? {url:"",key:""} : load(K_SYNC, {url:"",key:""});
 function connected(){ return !!(conn && conn.url && conn.key); }
 function pendingCount(){ return entries.filter(function(e){ return !e.exported && !e.err; }).length; }
 function pub(e){ return {id:e.id,kind:e.kind,date:e.date,amount:e.amount,desc:e.desc,cat:e.cat,acct:e.acct,to:e.to,goal:e.goal}; }
 function timeStr(){ return new Date().toLocaleTimeString("en-PH",{hour:"numeric",minute:"2-digit"}); }
 function showSyncMsg(){
-  var m = connected() ? (syncMsg || "Connected. Not synced yet.") : "Not connected. Add your sheet link in Settings.";
+  var m = connected() ? (syncMsg || "Connected. Not synced yet.") : (sec && sec.hasConn ? "Locked. Unlock to sync." : "Not connected. Add your sheet link in Settings.");
   ["syncMsg","syncMsg2"].forEach(function(id){ var x=$(id); if(x) x.textContent=m; });
 }
 function setSyncMsg(m){ syncMsg=m; showSyncMsg(); }
-function api(body){
-  var ctl = new AbortController(), t = setTimeout(function(){ ctl.abort(); }, 25000);
-  return fetch(conn.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(Object.assign({key:conn.key},body)),redirect:"follow",credentials:"omit",signal:ctl.signal})
-    .then(function(r){ clearTimeout(t); return r.json(); })
-    .catch(function(e){ clearTimeout(t); throw e; });
+function hex(buf){ var a=new Uint8Array(buf), o=""; for(var i=0;i<a.length;i++) o+=(a[i]<16?"0":"")+a[i].toString(16); return o; }
+function signMsg(key, msg){
+  return crypto.subtle.importKey("raw",TE.encode(key),{name:"HMAC",hash:"SHA-256"},false,["sign"])
+    .then(function(k){ return crypto.subtle.sign("HMAC",k,TE.encode(msg)); }).then(hex);
 }
+/* Requests are signed (HMAC-SHA256 over time + one-time code + body). The key itself is never sent. */
+function api(body){
+  var payload=JSON.stringify(body), ts=Date.now(), nonce=hex(crypto.getRandomValues(new Uint8Array(12)));
+  return signMsg(conn.key, ts+"\n"+nonce+"\n"+payload).then(function(sig){
+    var ctl = new AbortController(), t = setTimeout(function(){ ctl.abort(); }, 25000);
+    return fetch(conn.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({v:2,ts:ts,nonce:nonce,payload:payload,sig:sig}),redirect:"follow",credentials:"omit",signal:ctl.signal})
+      .then(function(r){ clearTimeout(t); return r.json(); })
+      .catch(function(e){ clearTimeout(t); throw e; });
+  });
+}
+function refused(r){ var e=new Error(r.error || "Sheet refused"); e.code=r.code; return e; }
 function applyBootstrap(r){
   var L = r.lists || {}, changed = false;
   ["accounts","cards","expense","income","goals"].forEach(function(k){
@@ -617,11 +553,15 @@ function applyBootstrap(r){
       if(v.length){ lists[k]=v; changed=true; }
     }
   });
-  if(changed){ save(K_L,lists); fillSettings(); if(!editingId) setMode(mode); }
+  if(changed){ save(K_L,lists); fillSettings(); refillSheet(); }
   snap = {at:Date.now(), s:r.summary || null}; save(K_SUM,snap);
 }
 function sync(manual){
-  if(!connected()){ if(manual===true) toast("Connect your sheet in Settings first"); return Promise.resolve(); }
+  if(!connected()){
+    if(sec && sec.hasConn){ if(manual===true) openUnlock(); else setSyncMsg("Locked. Unlock to sync."); }
+    else if(manual===true) toast("Connect your sheet in Settings first");
+    return Promise.resolve();
+  }
   if(syncing) return Promise.resolve();
   if(manual!==true && Date.now()-lastSyncAt < 20000) return Promise.resolve();
   if(!navigator.onLine){ setSyncMsg("Offline. "+pendingCount()+" waiting to send."); return Promise.resolve(); }
@@ -631,7 +571,7 @@ function sync(manual){
     var pend = entries.filter(function(e){ return !e.exported && !e.err; }).slice(0,40);
     if(!pend.length) return Promise.resolve();
     return api({action:"add",entries:pend.map(pub)}).then(function(r){
-      if(!r.ok) throw new Error(r.error || "Sheet refused");
+      if(!r.ok) throw refused(r);
       var okm = {}, bad = {};
       (r.added||[]).forEach(function(i){ okm[i]=1; });
       (r.failed||[]).forEach(function(f){ bad[f.id]=f.error; });
@@ -646,13 +586,15 @@ function sync(manual){
     });
   }
   return sendBatch().then(function(){ return api({action:"bootstrap"}); }).then(function(r){
-    if(!r.ok) throw new Error(r.error || "Sheet refused");
+    if(!r.ok) throw refused(r);
     applyBootstrap(r); lastSyncAt = Date.now();
     setSyncMsg("Synced "+timeStr()+(sent?" · "+sent+" sent":"")+(failed?" · "+failed+" need a fix (see Log)":""));
   }).catch(function(e){
     var m = e && e.name==="AbortError" ? "The sheet took too long. Will retry." :
             e && e.name==="SyntaxError" ? "Unexpected reply. Check the script is deployed for “Anyone”." :
-            e && e.message==="Wrong key" ? "The key doesn’t match. Check Settings." :
+            e && e.code==="auth" ? "The key doesn’t match the script. Check Settings." :
+            e && e.code==="clock" ? "Your phone’s clock looks wrong. Turn on automatic Date & Time." :
+            e && e.message==="Wrong key" ? "Your sheet script is the old version. Paste the new Code.gs and redeploy it." :
             e && e.message && e.message!=="Failed to fetch" ? e.message : "Couldn’t reach the sheet. Will retry when online.";
     setSyncMsg(m);
   }).then(function(){ syncing = false; refresh(); });
@@ -660,17 +602,6 @@ function sync(manual){
 function scheduleSync(){ clearTimeout(syncT); syncT = setTimeout(function(){ sync(true); }, 800); }
 function niceDate(s){ var p=String(s).split("-"); if(p.length!==3) return s; return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString("en-PH",{month:"short",day:"numeric"}); }
 function pillCls(st){ st=String(st).toUpperCase(); return st==="OVERDUE"?"bad":(st==="DUE SOON"?"soon":(st==="PAID"?"good":"")); }
-function saveConn(){
-  var url = $("cUrl").value.trim(), key = $("cKey").value.trim();
-  if(!/^https:\/\/script\.google\.com\/(a\/macros\/[^\/]+\/|macros\/)s\/[A-Za-z0-9_\-]+\/exec$/.test(url)){ toast("That doesn’t look like a web app address ending in /exec"); return; }
-  if(key.length < 20){ toast("The key should be at least 20 characters"); return; }
-  conn = {url:url, key:key}; save(K_SYNC,conn); syncMsg=""; refresh(); sync(true);
-}
-function dropConn(){
-  if(!confirm("Disconnect from the sheet? Entries stay on this phone.")) return;
-  conn = {url:"",key:""}; save(K_SYNC,conn); snap=null; try{ localStorage.removeItem(K_SUM); }catch(e){} $("cUrl").value=""; $("cKey").value=""; syncMsg=""; refresh(); toast("Disconnected");
-}
-
 /* ---------- Home dashboard ---------- */
 var K_THEME = "qe.theme.v1";
 var REDUCE = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -728,14 +659,6 @@ function localMonth(){
     else if(e.kind==="move" && e.goal && !isCard(e.to)){ r.sav+=e.amount; w.sav+=e.amount; if(pend) r.pSav+=e.amount; }
   });
   return r;
-}
-function openAdd(kind, preset, amt){
-  editingId=null; resetForm();
-  var keep=null; if(preset){ var lm=last.move||{}; keep={cat:"",acct:lm.acct||"",to:preset.to||"",goal:""}; }
-  setMode(kind, keep);
-  if(amt>0) $("amount").value=String(Math.round(amt*100)/100);
-  if(preset && preset.to) $("desc").value="Card payment";
-  show("add");
 }
 function nextCard(S){
   var cs=((S&&S.cards)||[]).filter(function(k){ return typeof k.remaining==="number" && k.remaining>0; });
@@ -829,8 +752,9 @@ function renderHome(force){
   if(!force && curScreen!=="home") return;
   var anim=chartAnim; chartAnim=false;
   var f=document.createDocumentFragment();
-  var S=(snap&&snap.s)||null, on=connected(), L=localMonth();
+  var S=(snap&&snap.s)||null, on=linked(), L=localMonth();
 
+  if(!load(K_L,null)){ var fr=el("div","card"); fr.appendChild(el("b","","Welcome. One quick setup first.")); fr.appendChild(el("p","hint","The account, card and category names are generic placeholders. Open Settings and type your own names, exactly as in your budget sheet. They stay on this phone.")); var fb=el("button","btn","Open Settings"); fb.type="button"; fb.addEventListener("click",function(){ show("set"); }); fr.appendChild(fb); f.appendChild(fr); }
   /* greeting + refresh */
   var hello=el("div","hello"), hl=el("div");
   hl.appendChild(el("h2","",greeting()));
@@ -851,6 +775,7 @@ function renderHome(force){
     if(typeof S.investments==="number" && S.investments>0) chip("Investments",fmt(S.investments));
   } else if(!on){ var cb=el("button","chp","Connect your sheet in Settings →"); cb.type="button"; cb.style.cssText="color:#fff;font:inherit;font-weight:700"; cb.addEventListener("click",function(){ show("set"); }); cr.appendChild(cb); }
   else chip("Waiting for first sync","");
+  if(isLocked() && sec.hasConn){ var lb=el("button","chp warnc","🔒 Locked · tap to unlock"); lb.type="button"; lb.style.cssText="color:#fff;font:inherit;font-weight:700"; lb.addEventListener("click",openUnlock); cr.appendChild(lb); }
   var pc=pendingCount(); if(pc) chip(pc+(pc===1?" entry":" entries"),"waiting to sync","warnc");
   var fx=entries.filter(function(e){ return e.err; }).length; if(fx) chip(fx+" need a fix","see Log","warnc");
   hero.appendChild(cr); f.appendChild(hero);
@@ -860,8 +785,8 @@ function renderHome(force){
   function qbtn(cls,icon,label,fn){ var b=el("button",cls); b.type="button"; var i=el("i"); i.innerHTML=icon; b.appendChild(i); b.appendChild(el("span","",label)); b.addEventListener("click",fn); qa.appendChild(b); }
   qbtn("e",ICON.exp,"Expense",function(){ openAdd("expense"); });
   qbtn("i",ICON.inc,"Income",function(){ openAdd("income"); });
-  qbtn("m",ICON.mov,"Move money",function(){ openAdd("move"); });
-  qbtn("c",ICON.card,"Pay card",function(){ var nc=nextCard(S); if(!nc){ toast("Add a credit card in Settings first"); return; } openAdd("move",{to:nc.to},nc.amt); });
+  qbtn("m",ICON.mov,"Transfer",function(){ openAdd("transfer"); });
+  qbtn("c",ICON.card,"Pay card",function(){ var nc=nextCard(S); if(!nc){ toast("Add a credit card in Settings first"); return; } openAdd("cardpay",{to:nc.to},nc.amt); });
   f.appendChild(qa);
 
   /* month tiles */
@@ -928,7 +853,7 @@ function renderHome(force){
       meta.appendChild(el("span","",left.join(" · ")));
       var rt=el("span"); rt.style.cssText="display:flex;gap:8px;align-items:center";
       if(k.status) rt.appendChild(el("span","pill "+pillCls(k.status),k.status));
-      if(typeof k.remaining==="number" && k.remaining>0){ var pb=linkBtn("Pay "+fmt(k.remaining),function(){ openAdd("move",{to:k.name},k.remaining); }); pb.style.cssText="color:var(--ok);font-size:12.5px;font-weight:800;background:none;border:0;padding:6px 0"; rt.appendChild(pb); }
+      if(typeof k.remaining==="number" && k.remaining>0){ var pb=linkBtn("Pay "+fmt(k.remaining),function(){ openAdd("cardpay",{to:k.name},k.remaining); }); pb.style.cssText="color:var(--ok);font-size:12.5px;font-weight:800;background:none;border:0;padding:6px 0"; rt.appendChild(pb); }
       meta.appendChild(rt); r.appendChild(meta); kc.appendChild(r);
     });
     var ins=S&&S.inst; if(ins&&typeof ins.due==="number"&&ins.due>0) kc.appendChild(el("div","note","Installments due this month: "+fmt(ins.due)+" (already counted in expenses)."));
@@ -971,12 +896,303 @@ function renderHome(force){
   box.replaceChildren(f);
 }
 
+/* ---------- Transaction sheet ---------- */
+var TYPES = {
+  expense:   {label:"Expense", kind:"expense", color:"#fb923c", btn:"Save expense", catL:"Category", acctL:"Paid with", acctSrc:"accounts", goal:"opt", hint:"Counted as an expense."},
+  income:    {label:"Income", kind:"income", color:"#34d399", btn:"Save income", catL:"Income source", acctL:"Deposit to", acctSrc:"accounts", goal:"none", hint:""},
+  transfer:  {label:"Transfer", kind:"move", color:"#60a5fa", btn:"Save transfer", acctL:"From", toL:"To", acctSrc:"accounts", toSrc:"accounts", goal:"none", hint:"Moves money between your own accounts. Not income or an expense."},
+  savings:   {label:"Savings", kind:"move", color:"#22d3ee", btn:"Save to savings", acctL:"From", toL:"Save to", acctSrc:"accounts", toSrc:"accounts", goal:"req", goalL:"Savings goal", hint:"Moves money into a savings goal. Not an expense."},
+  investment:{label:"Investment", kind:"move", color:"#a78bfa", btn:"Save investment", acctL:"From", toL:"Invest in", acctSrc:"accounts", toSrc:"accounts", goal:"req", goalL:"Goal", hint:"Moves money into an investment account. Not an expense."},
+  cardbuy:   {label:"Card purchase", short:"Card buy", kind:"expense", color:"#f472b6", btn:"Save card purchase", catL:"Category", acctL:"Credit card", acctSrc:"cards", goal:"opt", hint:"Counted as an expense now. Paying the card later is not another expense."},
+  cardpay:   {label:"Card payment", short:"Card pay", kind:"move", color:"#fbbf24", btn:"Save card payment", acctL:"Pay from", toL:"Credit card", acctSrc:"accounts", toSrc:"cards", goal:"none", hint:"Settles what you owe. Not a new expense; the purchases were already counted."}
+};
+var TORDER = ["expense","income","transfer","savings","investment","cardbuy","cardpay"];
+var TICON = {
+  expense:ICON.exp, income:ICON.inc, transfer:ICON.mov, cardbuy:ICON.card,
+  savings:'<svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>',
+  investment:'<svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 4 7-8"/><path d="M15 8h5v5"/></svg>',
+  cardpay:'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M8 13l3 3 5-5"/></svg>'
+};
+var ttype = "expense", sheetOpen = false, saving = false;
+function typeOf(e){
+  if(e.kind==="income") return "income";
+  if(e.kind==="expense") return isCard(e.acct) ? "cardbuy" : "expense";
+  if(isCard(e.to)) return "cardpay";
+  if(e.goal) return /invest/i.test(e.goal) ? "investment" : "savings";
+  return "transfer";
+}
+function cardInfo(n){ var S=snap&&snap.s; return S&&S.cards ? S.cards.filter(function(k){ return k.name===n; })[0] : null; }
+function acctInfo(n){ var S=snap&&snap.s; return S&&S.accounts ? S.accounts.filter(function(a){ return a.name===n; })[0] : null; }
+function buildSeg(){
+  var seg=$("seg"); seg.innerHTML="";
+  TORDER.forEach(function(k){ var b=el("button"); b.type="button"; b.dataset.k=k; b.setAttribute("role","tab"); var i=el("span"); i.innerHTML=TICON[k]; b.appendChild(i); b.appendChild(el("span","",TYPES[k].short||TYPES[k].label)); seg.appendChild(b); });
+}
+function renderCats(){
+  var box=$("catChips"); box.innerHTML=""; var cur=$("cat").value;
+  Array.prototype.forEach.call($("cat").options,function(o){
+    if(!o.value) return; var b=el("button","cchip"+(o.value===cur?" on":""),o.value); b.type="button";
+    b.addEventListener("click",function(){ $("cat").value=o.value; renderCats(); updateHints(); }); box.appendChild(b);
+  });
+}
+function acctOpts(src, t){
+  var arr = src==="cards" ? lists.cards : lists.accounts;
+  if(t==="investment" && src==="accounts"){
+    var S=snap&&snap.s, inv=[], oth=[];
+    arr.forEach(function(n){ var a=acctInfo(n); (a && (/invest/i.test(a.assigned||"") || /invest/i.test(a.type||"")) ? inv : oth).push(n); });
+    if(inv.length) return [{group:"Investment accounts",items:inv}].concat(oth.length?[{group:"Other accounts",items:oth}]:[]);
+  }
+  return arr;
+}
+function setMode(t, keep){
+  if(t==="move") t="transfer"; if(!TYPES[t]) t="expense";
+  ttype=t; mode=TYPES[t].kind; var c=TYPES[t], L=last[t]||{};
+  $("sheet").style.setProperty("--tc",c.color);
+  Array.prototype.forEach.call($("seg").children,function(b){ b.classList.toggle("on", b.dataset.k===t); b.setAttribute("aria-selected", b.dataset.k===t?"true":"false"); });
+  $("fCat").hidden=!c.catL;
+  if(c.catL){ $("catL").textContent=c.catL; fill($("cat"), t==="income"?lists.income:lists.expense, "Choose…", keep?keep.cat:L.cat); renderCats(); }
+  $("acctL").textContent=c.acctL;
+  var src=c.acctSrc==="cards"?lists.cards:lists.accounts;
+  fill($("acct"), acctOpts(c.acctSrc,t), "Choose…", keep?keep.acct:(L.acct || (src.length===1?src[0]:"")));
+  $("toWrap").hidden=!c.toSrc;
+  if(c.toSrc){ $("toL").textContent=c.toL; var ts=c.toSrc==="cards"?lists.cards:lists.accounts; fill($("to"), acctOpts(c.toSrc,t), "Choose…", keep?keep.to:(L.to || (ts.length===1?ts[0]:""))); }
+  var gm=c.goal;
+  $("goalWrap").hidden = gm==="none";
+  var slot = gm==="req" ? $("goalReq") : $("goalOpt"); if($("goalWrap").parentNode!==slot) slot.appendChild($("goalWrap"));
+  $("moreWrap").hidden = gm!=="opt";
+  if(gm!=="none"){
+    $("goalL").textContent = gm==="req" ? c.goalL : "Savings goal used (optional)";
+    var def = keep ? keep.goal : "";
+    if(gm==="req" && !def && t==="investment"){ var m=lists.goals.filter(function(g){ return /invest/i.test(g); })[0]; if(m) def=m; }
+    fill($("goal"), lists.goals, gm==="req"?"Choose…":"None", def);
+  } else $("goal").innerHTML="";
+  $("save").textContent = editingId ? "Update "+c.label.toLowerCase() : c.btn;
+  updateHints();
+}
+function refillSheet(){ setMode(ttype, sheetOpen?{cat:$("cat").value,acct:$("acct").value,to:$("to").value,goal:$("goal").value}:null); }
+function updateHints(){
+  var c=TYPES[ttype], h=c.hint, w=[], amt=parseAmt($("amount").value), from=$("acct").value, to=$("to").value;
+  if(ttype==="cardpay" && to){ var k=cardInfo(to); if(k) h="Owes "+fmt(k.outstanding||0)+(k.remaining>0?" · statement "+fmt(k.remaining)+" (pay in full)":"")+(k.due?" · due "+niceDate(k.due):"")+". "+c.hint; }
+  if(c.catL && /^installments?$/i.test($("cat").value)) w.push("Installments are counted automatically from your sheet. Don’t log them here.");
+  if(amt>0){
+    if(c.acctSrc==="accounts" && from){ var a=acctInfo(from); if(a && typeof a.balance==="number" && amt>a.balance+0.004) w.push(from+" shows "+fmt(a.balance)+" at your last sync. This would take it below zero. You can still save.");
+    }
+    if(ttype==="cardpay" && to){ var k2=cardInfo(to); if(k2 && typeof k2.outstanding==="number" && amt>k2.outstanding+0.004) w.push("That is more than the "+fmt(k2.outstanding)+" owed on this card."); }
+  }
+  var d=$("date").value; if(/^\d{4}-\d{2}-\d{2}$/.test(d)){ var dd=new Date(d+"T00:00:00"), diff=(dd-new Date(todayStr()+"T00:00:00"))/864e5; if(diff>7) w.push("This date is more than a week ahead."); }
+  $("moveHint").textContent=h; $("moveHint").hidden=!h;
+  var wb=$("warnBox"); wb.hidden=!w.length; wb.textContent=w.join(" ");
+}
+function resetForm(){
+  $("amount").value=""; $("desc").value=""; $("date").value=todayStr(); editingId=null; saving=false;
+  $("shTitle").textContent="New transaction"; $("del").hidden=true; $("save").disabled=false;
+}
+function openSheetUI(){
+  sheetOpen=true; $("shTitle").textContent = editingId ? "Edit transaction" : "New transaction";
+  $("sheetBg").hidden=false; $("sheet").hidden=false; $("fab").hidden=true; document.body.classList.add("noscroll");
+  requestAnimationFrame(function(){ $("sheetBg").classList.add("on"); $("sheet").classList.add("on"); });
+  try{ $("amount").focus({preventScroll:true}); }catch(e){ $("amount").focus(); }
+  updateHints();
+}
+function closeSheet(){
+  if(!sheetOpen) return; sheetOpen=false;
+  $("sheetBg").classList.remove("on"); $("sheet").classList.remove("on"); document.body.classList.remove("noscroll");
+  if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  setTimeout(function(){ if(!sheetOpen){ $("sheetBg").hidden=true; $("sheet").hidden=true; $("fab").hidden=false; } },280);
+  resetForm();
+}
+function openAdd(t, preset, amt){
+  editingId=null; resetForm();
+  var keep=null; if(preset){ var L=last[t]||{}; keep={cat:"",acct:preset.acct||L.acct||"",to:preset.to||"",goal:preset.goal||""}; }
+  setMode(t, keep);
+  if(amt>0) $("amount").value=String(Math.round(amt*100)/100);
+  if(preset && preset.desc) $("desc").value=preset.desc;
+  openSheetUI();
+}
+function shake(id){ var n=$(id); n.classList.remove("shake"); void n.offsetWidth; n.classList.add("shake"); }
+function onSave(ev){
+  ev.preventDefault(); if(saving) return;
+  var c=TYPES[ttype], raw=$("amount").value, amt=parseAmt(raw);
+  if(!(amt>0)){ toast("Enter an amount above zero"); shake("amount"); $("amount").focus(); return; }
+  if(amt>1e9){ toast("That amount is too large"); shake("amount"); return; }
+  if(/[.,]\d{3,}/.test(raw.replace(/,/g,"."))){ toast("Use at most 2 decimal places"); shake("amount"); return; }
+  var date=$("date").value;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(new Date(date+"T00:00:00"))){ toast("Pick a valid date"); return; }
+  if(Math.abs((new Date(date+"T00:00:00")-new Date(todayStr()+"T00:00:00"))/864e5)>400){ toast("That date is more than a year away"); return; }
+  var acct=$("acct").value, cat=c.catL?$("cat").value:"", to=c.toSrc?$("to").value:"", goal=c.goal==="none"?"":$("goal").value;
+  if(c.catL && !cat){ toast("Choose a "+(ttype==="income"?"source":"category")); return; }
+  if(!acct){ toast("Choose "+c.acctL.toLowerCase()); return; }
+  if(c.acctSrc==="cards" && !isCard(acct)){ toast("Choose one of your credit cards"); return; }
+  if(c.acctSrc==="accounts" && isCard(acct)){ toast("Use a bank, wallet or cash account here"); return; }
+  if(c.toSrc){
+    if(!to){ toast("Choose "+c.toL.toLowerCase()); return; }
+    if(c.toSrc==="cards" && !isCard(to)){ toast("Choose one of your credit cards"); return; }
+    if(c.toSrc==="accounts" && isCard(to)){ toast("Pick an account, not a card"); return; }
+    if(to===acct){ toast("From and To must differ"); return; }
+  }
+  if(c.goal==="req" && !goal){ toast("Choose a savings goal"); return; }
+  if(c.catL && /^installments?$/i.test(cat)){ toast("Installments are counted automatically. Don’t log them."); return; }
+  var rec={kind:c.kind,date:date,amount:amt,desc:clean($("desc").value),cat:cat,acct:acct,to:to,goal:goal};
+  var dup=entries.filter(function(e){ return e.id!==editingId && e.kind===rec.kind && e.date===rec.date && e.amount===rec.amount && e.acct===rec.acct && e.to===rec.to && e.cat===rec.cat && (e.desc||"").toLowerCase()===rec.desc.toLowerCase(); })[0];
+  if(dup && !confirm("You already saved the same entry ("+new Date(dup.created).toLocaleTimeString("en-PH",{hour:"numeric",minute:"2-digit"})+"). Save it again?")) return;
+  saving=true; $("save").disabled=true;
+  if(editingId){
+    entries=entries.map(function(e){ return e.id===editingId ? Object.assign({}, e, rec, {exported:false, err:""}) : e; });
+    toast("Entry updated");
+  } else { rec.id=uid(); rec.created=Date.now(); rec.exported=false; entries.push(rec); toast("Saved"); }
+  if(!save(K_E, entries)){ saving=false; $("save").disabled=false; return; }
+  last[ttype]={cat:cat, acct:acct, to:to}; save(K_LAST,last); scheduleSync();
+  closeSheet(); refresh();
+  if(navigator.vibrate) try{ navigator.vibrate(15); }catch(e){}
+}
+function startEdit(id){
+  var e = entries.filter(function(x){return x.id===id;})[0]; if(!e) return;
+  if(e.exported){ toast("Already sent to your sheet. Fix it in the Transactions tab."); return; }
+  editingId=id; var t=typeOf(e);
+  setMode(t, {cat:e.cat, acct:e.acct, to:e.to, goal:e.goal});
+  ensureOpt($("cat"),e.cat); ensureOpt($("acct"),e.acct); ensureOpt($("to"),e.to); ensureOpt($("goal"),e.goal);
+  $("cat").value=e.cat; $("acct").value=e.acct; $("to").value=e.to; $("goal").value=e.goal||"";
+  $("amount").value=String(e.amount); $("date").value=e.date; $("desc").value=e.desc||"";
+  if(e.goal) $("more").open=true;
+  renderCats(); $("del").hidden=false; $("save").textContent="Update "+TYPES[t].label.toLowerCase();
+  openSheetUI();
+}
+function ensureOpt(sel, v){ if(!v) return; var has=Array.prototype.some.call(sel.options,function(o){return o.value===v;}); if(!has){ var o=el("option","",v); o.value=v; sel.appendChild(o); } }
+
+/* ---------- Connection security (password lock) ---------- */
+var K_SEC = "qe.sec.v1", K_SECSET = "qe.secset.v1", K_FAIL = "qe.fail.v1";
+var sec = load(K_SEC, null), sessKey = null, hiddenAt = 0, secSet = load(K_SECSET, {autoMin:30});
+var TE = new TextEncoder(), TD = new TextDecoder();
+function b64(buf){ var a=new Uint8Array(buf), s=""; for(var i=0;i<a.length;i++) s+=String.fromCharCode(a[i]); return btoa(s); }
+function unb64(s){ var b=atob(s), a=new Uint8Array(b.length); for(var i=0;i<b.length;i++) a[i]=b.charCodeAt(i); return a; }
+function cryptoOK(){ return !!(window.crypto && crypto.subtle && window.TextEncoder); }
+function deriveKey(pw, salt, iter){
+  return crypto.subtle.importKey("raw",TE.encode(pw),"PBKDF2",false,["deriveKey"]).then(function(m){
+    return crypto.subtle.deriveKey({name:"PBKDF2",salt:salt,iterations:iter,hash:"SHA-256"},m,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]);
+  });
+}
+function encryptConn(key){
+  var iv=crypto.getRandomValues(new Uint8Array(12));
+  return crypto.subtle.encrypt({name:"AES-GCM",iv:iv},key,TE.encode(JSON.stringify(conn))).then(function(ct){ return {iv:b64(iv),ct:b64(ct)}; });
+}
+function sealNew(pw){
+  var salt=crypto.getRandomValues(new Uint8Array(16)), iter=310000;
+  return deriveKey(pw,salt,iter).then(function(key){
+    return encryptConn(key).then(function(e){ sec={v:1,iter:iter,salt:b64(salt),iv:e.iv,ct:e.ct,hasConn:connected()}; sessKey=key; save(K_SEC,sec); });
+  });
+}
+function persistConn(){ return encryptConn(sessKey).then(function(e){ sec.iv=e.iv; sec.ct=e.ct; sec.hasConn=connected(); save(K_SEC,sec); }); }
+function tryOpen(pw){
+  var key; return deriveKey(pw,unb64(sec.salt),sec.iter).then(function(k){ key=k; return crypto.subtle.decrypt({name:"AES-GCM",iv:unb64(sec.iv)},k,unb64(sec.ct)); })
+    .then(function(buf){ return {key:key, conn:JSON.parse(TD.decode(buf))}; });
+}
+function lockoutLeft(){ var f=load(K_FAIL,{n:0,until:0}); return Math.max(0,Math.ceil((f.until-Date.now())/1000)); }
+function unlockWith(pw){
+  var left=lockoutLeft(); if(left>0) return Promise.reject(new Error("Too many wrong attempts. Try again in "+left+" s."));
+  return tryOpen(pw).then(function(r){ sessKey=r.key; conn={url:r.conn.url||"",key:r.conn.key||""}; save(K_FAIL,{n:0,until:0}); setTimeout(function(){ refresh(); },0); },
+    function(){ var f=load(K_FAIL,{n:0,until:0}); f.n++; f.until=f.n>=5?Date.now()+Math.min(900000,30000*Math.pow(2,f.n-5)):0; save(K_FAIL,f); throw new Error("Wrong password."+(f.n>=5?" Locked for a moment.":"")); });
+}
+function isLocked(){ return !!sec && !sessKey; }
+function lockNow(){ if(!sec) return; sessKey=null; conn={url:"",key:""}; syncMsg=""; refresh(); renderConn(); }
+function pwOk(a,b){ if(a.length<8) return "Use at least 8 characters."; if(a!==b) return "The two passwords don’t match."; if(conn.key && a.indexOf(conn.key)>=0) return "Pick a different password."; return ""; }
+function urlOk(u){ return /^https:\/\/script\.google\.com\/(a\/macros\/[^\/]+\/|macros\/)s\/[A-Za-z0-9_\-]+\/exec$/.test(u); }
+function linked(){ return connected() || !!(sec && sec.hasConn); }
+
+function openModal(title, build){
+  $("mTitle").textContent=title; var b=$("mBody"); b.innerHTML=""; build(b);
+  $("modalBg").hidden=false; $("modal").hidden=false; document.body.classList.add("noscroll");
+  requestAnimationFrame(function(){ $("modalBg").classList.add("on"); $("modal").classList.add("on"); });
+}
+function closeModal(){
+  $("modalBg").classList.remove("on"); $("modal").classList.remove("on"); if(!sheetOpen) document.body.classList.remove("noscroll");
+  setTimeout(function(){ $("modalBg").hidden=true; $("modal").hidden=true; },280);
+}
+function pwField(id, label, auto){
+  var w=el("div"); var l=el("label","",label); l.setAttribute("for",id); w.appendChild(l);
+  var i=el("input"); i.id=id; i.type="password"; i.setAttribute("autocomplete",auto||"off"); i.setAttribute("autocapitalize","off"); i.setAttribute("autocorrect","off"); i.spellcheck=false; w.appendChild(i); return w;
+}
+function openUnlock(){
+  if(!sec || !isLocked()) return;
+  openModal("Unlock sync",function(b){
+    b.appendChild(el("p","hint","Enter your password to sync with your sheet. Your entries are always saved on this phone, locked or not."));
+    b.appendChild(pwField("uPw","Password","current-password"));
+    var msg=el("p","hint"); msg.id="uMsg"; msg.style.color="var(--bad)"; b.appendChild(msg);
+    var go=el("button","btn","Unlock"); go.type="button"; go.id="uGo"; b.appendChild(go);
+    var no=el("button","btn sec","Not now"); no.type="button"; no.addEventListener("click",closeModal); b.appendChild(no);
+    function run(){ go.disabled=true; msg.textContent=""; unlockWith($("uPw").value).then(function(){ closeModal(); toast("Unlocked"); renderConn(); sync(true); }).catch(function(e){ msg.textContent=e.message; go.disabled=false; $("uPw").select(); }); }
+    go.addEventListener("click",run); $("uPw").addEventListener("keydown",function(ev){ if(ev.key==="Enter"){ ev.preventDefault(); run(); } });
+    setTimeout(function(){ $("uPw").focus(); },320);
+  });
+}
+
+function renderConn(){
+  var box=$("connBox"); if(!box) return; box.innerHTML="";
+  box.appendChild(el("h3","","Google Sheet connection")).style.margin="0 0 4px";
+  function note(t,cls){ var p=el("p","hint",t); p.style.marginTop="0"; if(cls) p.className+=" "+cls; return p; }
+  function msgEl(){ var p=el("p","hint",""); p.style.color="var(--bad)"; return p; }
+  if(!cryptoOK()){ box.appendChild(note("This browser can’t do secure password storage (it needs https). Open the app from your https address.")); return; }
+
+  if(!sec){ /* state A: create password first */
+    box.appendChild(note("Protect this connection with a password before you view or change it. Your sheet address and key are then stored encrypted on this phone and only unlocked in memory when you enter the password."+(connected()?" Your current connection will be moved into the encrypted store.":"")));
+    box.appendChild(pwField("nPw","Create password (8+ characters)","new-password")); box.appendChild(pwField("nPw2","Repeat password","new-password"));
+    var m=msgEl(); box.appendChild(m);
+    var b=el("button","btn","Create password"); b.type="button";
+    b.addEventListener("click",function(){ var e=pwOk($("nPw").value,$("nPw2").value); if(e){ m.textContent=e; return; } b.disabled=true;
+      var legacy=connected(); sealNew($("nPw").value).then(function(){ try{ localStorage.removeItem(K_SYNC); }catch(x){} toast(legacy?"Connection is now encrypted":"Password created"); renderConn(); }).catch(function(){ m.textContent="Couldn’t create the password on this browser."; b.disabled=false; }); });
+    box.appendChild(b);
+    box.appendChild(note("There is no password reset. If you forget it, you erase the saved connection and enter your sheet address and key again. Your entries are not affected."));
+    return;
+  }
+  if(isLocked()){ /* state B */
+    box.appendChild(note("Locked. Enter your password to view or change the connection."));
+    box.appendChild(pwField("lPw","Password","current-password")); var m2=msgEl(); box.appendChild(m2);
+    var u=el("button","btn","Unlock"); u.type="button";
+    function run(){ u.disabled=true; m2.textContent=""; unlockWith($("lPw").value).then(function(){ toast("Unlocked"); renderConn(); sync(true); }).catch(function(e){ m2.textContent=e.message; u.disabled=false; }); }
+    u.addEventListener("click",run); box.appendChild(u); $("lPw").addEventListener("keydown",function(ev){ if(ev.key==="Enter"){ ev.preventDefault(); run(); } });
+    var f=el("button","btn danger","Forgot password: erase saved connection"); f.type="button";
+    f.addEventListener("click",function(){ if(!confirm("Erase the saved connection and password? Your entries stay on this phone. You will enter your sheet address and key again.")) return;
+      try{ localStorage.removeItem(K_SEC); localStorage.removeItem(K_SYNC); localStorage.removeItem(K_SUM); localStorage.removeItem(K_FAIL); }catch(x){} sec=null; sessKey=null; conn={url:"",key:""}; snap=null; syncMsg=""; refresh(); renderConn(); toast("Connection erased"); });
+    box.appendChild(f); return;
+  }
+  /* state C: unlocked */
+  box.appendChild(note("Unlocked. Your key is never shown again after saving."));
+  var l1=el("label","","Web app address"); l1.setAttribute("for","cUrl"); box.appendChild(l1);
+  var iu=el("input"); iu.id="cUrl"; iu.type="url"; iu.placeholder="https://script.google.com/macros/s/…/exec"; iu.value=conn.url||""; iu.setAttribute("autocapitalize","off"); iu.setAttribute("autocorrect","off"); iu.spellcheck=false; box.appendChild(iu);
+  var l2=el("label","","Key"); l2.setAttribute("for","cKey"); box.appendChild(l2);
+  var ik=el("input"); ik.id="cKey"; ik.type="password"; ik.autocomplete="off"; ik.placeholder=conn.key?"Saved (hidden). Paste a new key to replace.":"Your secret key"; ik.spellcheck=false; box.appendChild(ik);
+  var m3=msgEl(); box.appendChild(m3);
+  var sv1=el("button","btn","Save and sync"); sv1.type="button";
+  sv1.addEventListener("click",function(){
+    var url=iu.value.trim(), key=ik.value.trim()||conn.key;
+    if(!urlOk(url)){ m3.textContent="That doesn’t look like a web app address ending in /exec."; return; }
+    if(!key||key.length<20){ m3.textContent="The key should be at least 20 characters."; return; }
+    var prev=conn; conn={url:url,key:key}; sv1.disabled=true;
+    persistConn().then(function(){ ik.value=""; syncMsg=""; refresh(); renderConn(); sync(true); }).catch(function(){ conn=prev; m3.textContent="Couldn’t save securely."; sv1.disabled=false; });
+  });
+  box.appendChild(sv1);
+  var off=el("button","btn sec","Disconnect"); off.type="button";
+  off.addEventListener("click",function(){ if(!confirm("Disconnect from the sheet? Entries stay on this phone.")) return; conn={url:"",key:""}; persistConn().then(function(){ snap=null; try{ localStorage.removeItem(K_SUM); }catch(e){} syncMsg=""; refresh(); renderConn(); toast("Disconnected"); }); });
+  box.appendChild(off);
+  var lk=el("button","btn sec","Lock now"); lk.type="button"; lk.addEventListener("click",function(){ lockNow(); toast("Locked"); }); box.appendChild(lk);
+  var la=el("label","","Auto-lock after leaving the app"); la.setAttribute("for","autoLock"); box.appendChild(la);
+  var sel=el("select"); sel.id="autoLock"; [[5,"5 minutes"],[30,"30 minutes"],[240,"4 hours"],[0,"Only when the app is closed"]].forEach(function(o){ var op=el("option","",o[1]); op.value=o[0]; sel.appendChild(op); });
+  sel.value=String(secSet.autoMin); sel.addEventListener("change",function(){ secSet.autoMin=+sel.value; save(K_SECSET,secSet); }); box.appendChild(sel);
+  var d=document.createElement("details"); d.appendChild(el("summary","","Change password"));
+  d.appendChild(pwField("cpOld","Current password","current-password")); d.appendChild(pwField("cpNew","New password (8+ characters)","new-password")); d.appendChild(pwField("cpNew2","Repeat new password","new-password"));
+  var m4=msgEl(); d.appendChild(m4); var cb=el("button","btn sec","Change password"); cb.type="button";
+  cb.addEventListener("click",function(){ var e=pwOk($("cpNew").value,$("cpNew2").value); if(e){ m4.textContent=e; return; }
+    cb.disabled=true; tryOpen($("cpOld").value).then(function(){ return sealNew($("cpNew").value); }).then(function(){ toast("Password changed"); renderConn(); },function(){ m4.textContent="Current password is wrong."; cb.disabled=false; }); });
+  d.appendChild(cb); box.appendChild(d);
+}
+
 /* ---------- wire up ---------- */
-$("seg").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(!b || editingId) return; setMode(b.dataset.k); });
+$("seg").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(b) setMode(b.dataset.k,{cat:$("cat").value,acct:$("acct").value,to:$("to").value,goal:$("goal").value}); });
 $("form").addEventListener("submit",onSave);
-$("cat").addEventListener("change",updateHints); $("acct").addEventListener("change",updateHints); $("to").addEventListener("change",updateHints);
-$("cancelEdit").addEventListener("click",function(){ resetForm(); setMode(mode); });
-$("del").addEventListener("click",function(){ if(editingId && confirm("Delete this entry?")){ entries=entries.filter(function(e){return e.id!==editingId;}); save(K_E,entries); resetForm(); setMode(mode); refresh(); toast("Deleted"); show("log"); } });
+["cat","acct","to","goal","date"].forEach(function(id){ $(id).addEventListener("change",updateHints); });
+$("amount").addEventListener("input",updateHints);
+$("fab").addEventListener("click",function(){ openAdd("expense"); });
+$("shClose").addEventListener("click",closeSheet); $("sheetBg").addEventListener("click",closeSheet); $("modalBg").addEventListener("click",closeModal);
+document.addEventListener("keydown",function(ev){ if(ev.key==="Escape"){ if(!$("modal").hidden) closeModal(); else if(sheetOpen) closeSheet(); } });
+$("del").addEventListener("click",function(){ if(editingId && confirm("Delete this entry?")){ entries=entries.filter(function(e){return e.id!==editingId;}); save(K_E,entries); closeSheet(); refresh(); toast("Deleted"); } });
 $("nav").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(b) show(b.dataset.s); });
 $("chips").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(!b) return; filter=b.dataset.f; Array.prototype.forEach.call($("chips").children,function(x){ x.classList.toggle("on",x===b); }); renderLog(); });
 $("inclOld").addEventListener("change",renderExport);
@@ -984,21 +1200,22 @@ $("bkSave").addEventListener("click",backupSave);
 $("bkLoad").addEventListener("click",function(){ $("bkFile").click(); });
 $("bkFile").addEventListener("change",function(){ if(this.files[0]) backupLoad(this.files[0]); this.value=""; });
 $("saveLists").addEventListener("click",function(){ saveLists(); refresh(); });
-$("goSettings").addEventListener("click",function(){ show("set"); });
-$("resetLists").addEventListener("click",function(){ if(confirm("Replace the lists with the generic starting lists?")){ lists=JSON.parse(JSON.stringify(DEFAULTS)); save(K_L,lists); fillSettings(); setMode(mode); toast("Lists reset"); } });
-$("wipe").addEventListener("click",function(){ if(confirm("Erase ALL entries and lists on this phone? This can’t be undone.") && confirm("Really erase everything? Save a backup first if unsure.")){ try{ localStorage.removeItem(K_E); localStorage.removeItem(K_L); localStorage.removeItem(K_LAST); localStorage.removeItem(K_SYNC); localStorage.removeItem(K_SUM); }catch(e){} conn={url:"",key:""}; snap=null; entries=[]; lists=JSON.parse(JSON.stringify(DEFAULTS)); last={}; fillSettings(); resetForm(); setMode("expense"); refresh(); toast("All data erased"); } });
+$("resetLists").addEventListener("click",function(){ if(confirm("Replace the lists with the generic starting lists?")){ lists=JSON.parse(JSON.stringify(DEFAULTS)); save(K_L,lists); fillSettings(); refillSheet(); toast("Lists reset"); } });
+$("wipe").addEventListener("click",function(){ if(confirm("Erase ALL entries and lists on this phone? This can’t be undone.") && confirm("Really erase everything? Save a backup first if unsure.")){ try{ localStorage.removeItem(K_E); localStorage.removeItem(K_L); localStorage.removeItem(K_LAST); localStorage.removeItem(K_SYNC); localStorage.removeItem(K_SUM); localStorage.removeItem(K_SEC); localStorage.removeItem(K_SECSET); localStorage.removeItem(K_FAIL); }catch(e){} sec=null; sessKey=null; conn={url:"",key:""}; snap=null; entries=[]; lists=JSON.parse(JSON.stringify(DEFAULTS)); last={}; fillSettings(); resetForm(); setMode("expense"); refresh(); toast("All data erased"); } });
 $("amount").addEventListener("input",function(){ var v=this.value.replace(/[^0-9.,]/g,""); if(v!==this.value) this.value=v; });
 
 $("syncNow").addEventListener("click",function(){ sync(true); });
 document.querySelectorAll("#themeSeg button").forEach(function(b){ b.addEventListener("click",function(){ save(K_THEME,b.dataset.t); applyTheme(); }); });
 applyTheme();
-$("cSave").addEventListener("click",saveConn);
-$("cOff").addEventListener("click",dropConn);
-$("cUrl").value = conn.url || ""; $("cKey").value = conn.key || "";
 window.addEventListener("online",function(){ sync(true); });
 window.addEventListener("offline",function(){ showSyncMsg(); setSyncMsg("Offline. "+pendingCount()+" waiting to send."); });
-document.addEventListener("visibilitychange",function(){ if(!document.hidden) sync(); });
-resetForm(); setMode("expense"); fillSettings(); refresh(); storeInfo();
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden){ hiddenAt=Date.now(); return; }
+  if(sec && sessKey && secSet.autoMin>0 && hiddenAt && Date.now()-hiddenAt>secSet.autoMin*60000) lockNow();
+  sync();
+});
+buildSeg(); resetForm(); setMode("expense"); fillSettings(); renderConn(); refresh(); storeInfo();
+if(sec && sec.hasConn) setTimeout(openUnlock,700);
 setTimeout(function(){ sync(); },1200);
 window.__qe = { sync:sync, tsv:tsv, csv:csv, entries:function(){ return entries; }, lists:function(){ return lists; } };
 
