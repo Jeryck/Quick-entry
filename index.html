@@ -337,6 +337,7 @@ body.noscroll{overflow:hidden}
       </div>
       <div id="moreWrap"><details id="more"><summary id="moreS">Savings goal used (optional)</summary><div id="goalOpt"></div></details></div>
       <div id="goalWrap" hidden><label for="goal" id="goalL">Savings goal</label><select id="goal"></select></div>
+      <p class="hint" id="editNote" hidden>This entry is already in your sheet. Saving or deleting here changes it there at the next sync.</p>
       <p class="hint" id="moveHint"></p>
       <div id="warnBox" class="warn" hidden></div>
     </div>
@@ -365,6 +366,7 @@ var K_E = "qe.entries.v1", K_L = "qe.lists.v1", K_LAST = "qe.last.v1", K_SYNC = 
 function load(k, d){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
 function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ toast("Could not save: storage is full or blocked"); return false; } }
 var entries = load(K_E, []);
+function live(){ return entries.filter(function(e){ return !e.del; }); }
 var lists = load(K_L, null) || JSON.parse(JSON.stringify(DEFAULTS));
 var last = load(K_LAST, {});
 var mode = "expense", editingId = null, filter = "all", curScreen = "home", prevV = {}, chartTab = "flow", showAllAcc = false;
@@ -405,9 +407,10 @@ function describe(e){
 }
 function renderLog(){
   var box=$("logList"); box.innerHTML="";
-  var list = entries.filter(function(e){ return filter==="all" || (filter==="new"?!e.exported:e.kind===filter); });
+  var list = live().filter(function(e){ return filter==="all" || (filter==="new"?!e.exported:e.kind===filter); });
   list.sort(function(a,b){ return a.date===b.date ? b.created-a.created : (a.date<b.date?1:-1); });
-  if(!list.length){ box.appendChild(el("div","empty", entries.length?"Nothing matches this filter.":"No entries yet. Add your first one.")); return; }
+  if(!list.length){ box.appendChild(el("div","empty", live().length?"Nothing matches this filter.":"No entries yet. Add your first one.")); return; }
+  if(connected() && snap && (snap.v||2)<3) box.insertBefore(el("p","note","Editing entries that are already in your sheet needs the newer sheet script (Code.gs)."),box.firstChild);
   var cur="";
   list.forEach(function(e){
     if(e.date!==cur){ cur=e.date; var p=e.date.split("-"); var d=new Date(+p[0],+p[1]-1,+p[2]);
@@ -415,7 +418,7 @@ function renderLog(){
     var b=el("button","item"); b.type="button";
     b.appendChild(el("span","dot "+e.kind));
     var m=el("span","m"); var d2=describe(e);
-    var t=el("div","t",d2.t); if(e.err){ t.appendChild(el("span","fix","FIX")); } else if(!e.exported){ t.appendChild(el("span","new","NEW")); }
+    var t=el("div","t",d2.t); if(e.err){ t.appendChild(el("span","fix","FIX")); } else if(!e.exported){ t.appendChild(el("span","new",e.tracked?"EDIT":"NEW")); }
     m.appendChild(t); m.appendChild(el("div","s",e.err?("⚠ "+e.err):d2.s)); b.appendChild(m);
     b.appendChild(el("span","a "+e.kind,(e.kind==="income"?"+":(e.kind==="expense"?"−":""))+fmt(e.amount)));
     b.addEventListener("click",function(){ startEdit(e.id); });
@@ -431,7 +434,7 @@ var BLOCKS = {
 };
 function blockEntries(kind){
   var incl=$("inclOld").checked;
-  return entries.filter(function(e){ return e.kind===kind && (incl || !e.exported); })
+  return entries.filter(function(e){ return !e.del && e.kind===kind && (incl || (!e.exported && !e.tracked)); })
     .sort(function(a,b){ return a.date===b.date ? a.created-b.created : (a.date<b.date?-1:1); });
 }
 function tsv(kind){ return blockEntries(kind).map(function(e){ return BLOCKS[kind].row(e).map(function(v){ return clean(v===undefined?"":v); }).join("\t"); }).join("\n"); }
@@ -478,7 +481,7 @@ function backupLoad(file){
       var have={}; entries.forEach(function(e){ have[e.id]=1; }); var add=0;
       d.entries.forEach(function(e){
         if(e && e.id && !have[e.id] && /^(expense|income|move)$/.test(e.kind) && e.amount>0 && /^\d{4}-\d{2}-\d{2}$/.test(e.date)){
-          entries.push({id:String(e.id),kind:e.kind,date:e.date,amount:+e.amount,desc:clean(e.desc),cat:clean(e.cat),acct:clean(e.acct),to:clean(e.to),goal:clean(e.goal),exported:!!e.exported,created:+e.created||Date.now()}); add++;
+          entries.push({id:String(e.id),kind:e.kind,date:e.date,amount:+e.amount,desc:clean(e.desc),cat:clean(e.cat),acct:clean(e.acct),to:clean(e.to),goal:clean(e.goal),exported:!!e.exported,tracked:!!e.tracked,created:+e.created||Date.now()}); add++;
         }
       });
       if(d.lists && confirm("Also restore the saved lists (accounts, cards, categories)?")){ ["accounts","cards","expense","income","goals"].forEach(function(k){ if(Array.isArray(d.lists[k])) lists[k]=d.lists[k].map(clean).filter(Boolean); }); save(K_L,lists); }
@@ -498,7 +501,7 @@ function saveLists(){
 
 /* ---------- chrome ---------- */
 function refresh(){
-  var nw=0; entries.forEach(function(e){ if(!e.exported) nw++; });
+  var nw=0; entries.forEach(function(e){ if(!e.exported && !e.del) nw++; });
   var p=$("pending"); p.textContent=nw+" new"; p.classList.toggle("zero",!nw);
   renderLog(); renderExport(); renderHome(); showSyncMsg();
 }
@@ -520,7 +523,7 @@ function storeInfo(){
 var snap = load(K_SUM, null), syncing = false, syncT = null, syncMsg = "", lastSyncAt = 0;
 var conn = load(K_SEC, null) ? {url:"",key:""} : load(K_SYNC, {url:"",key:""});
 function connected(){ return !!(conn && conn.url && conn.key); }
-function pendingCount(){ return entries.filter(function(e){ return !e.exported && !e.err; }).length; }
+function pendingCount(){ return entries.filter(function(e){ return !e.err && (e.del || !e.exported); }).length; }
 function pub(e){ return {id:e.id,kind:e.kind,date:e.date,amount:e.amount,desc:e.desc,cat:e.cat,acct:e.acct,to:e.to,goal:e.goal}; }
 function timeStr(){ return new Date().toLocaleTimeString("en-PH",{hour:"numeric",minute:"2-digit"}); }
 function showSyncMsg(){
@@ -554,7 +557,7 @@ function applyBootstrap(r){
     }
   });
   if(changed){ save(K_L,lists); fillSettings(); refillSheet(); }
-  snap = {at:Date.now(), s:r.summary || null}; save(K_SUM,snap);
+  snap = {at:Date.now(), s:r.summary || null, v:r.version || 2}; save(K_SUM,snap);
 }
 function sync(manual){
   if(!connected()){
@@ -567,25 +570,37 @@ function sync(manual){
   if(!navigator.onLine){ setSyncMsg("Offline. "+pendingCount()+" waiting to send."); return Promise.resolve(); }
   syncing = true; setSyncMsg("Syncing…");
   var sent = 0, failed = 0;
-  function sendBatch(){
-    var pend = entries.filter(function(e){ return !e.exported && !e.err; }).slice(0,40);
-    if(!pend.length) return Promise.resolve();
-    return api({action:"add",entries:pend.map(pub)}).then(function(r){
-      if(!r.ok) throw refused(r);
-      var okm = {}, bad = {};
-      (r.added||[]).forEach(function(i){ okm[i]=1; });
-      (r.failed||[]).forEach(function(f){ bad[f.id]=f.error; });
-      var handled = 0;
-      entries.forEach(function(e){
-        if(okm[e.id]){ e.exported=true; e.err=""; sent++; handled++; }
-        else if(bad[e.id]){ e.err=bad[e.id]; failed++; handled++; }
-      });
-      save(K_E,entries);
-      if(!handled) throw new Error("No reply for entries");
-      return sendBatch();
+  function applyResult(done, bad, onOk){
+    var okm={}, no={}, handled=0;
+    (done||[]).forEach(function(i){ okm[i]=1; }); (bad||[]).forEach(function(f){ no[f.id]=f.error; });
+    entries.forEach(function(e){
+      if(okm[e.id]){ onOk(e); handled++; }
+      else if(no[e.id]){ e.err=no[e.id]; if(e.del) e.del=false; failed++; handled++; }
     });
+    save(K_E,entries);
+    if(!handled) throw new Error("No reply for entries");
   }
-  return sendBatch().then(function(){ return api({action:"bootstrap"}); }).then(function(r){
+  function pushAll(){
+    var adds=entries.filter(function(e){ return !e.exported && !e.err && !e.del && !e.tracked; }).slice(0,40);
+    if(adds.length) return api({action:"add",entries:adds.map(pub)}).then(function(r){
+      if(!r.ok) throw refused(r);
+      applyResult(r.added,r.failed,function(e){ e.exported=true; e.err=""; if(r.tracked) e.tracked=true; sent++; }); return pushAll();
+    });
+    var ups=entries.filter(function(e){ return !e.exported && !e.err && !e.del && e.tracked; }).slice(0,40);
+    if(ups.length) return api({action:"update",entries:ups.map(pub)}).then(function(r){
+      if(!r.ok) throw refused(r);
+      applyResult(r.updated,r.failed,function(e){ e.exported=true; e.err=""; e.tracked=true; sent++; }); return pushAll();
+    });
+    var dels=entries.filter(function(e){ return e.del && !e.err; }).slice(0,40);
+    if(dels.length) return api({action:"delete",ids:dels.map(function(e){ return e.id; })}).then(function(r){
+      if(!r.ok) throw refused(r);
+      var gone={}; (r.deleted||[]).forEach(function(i){ gone[i]=1; });
+      applyResult(r.deleted,r.failed,function(){});
+      entries=entries.filter(function(e){ return !gone[e.id]; }); save(K_E,entries); sent+=Object.keys(gone).length; return pushAll();
+    });
+    return Promise.resolve();
+  }
+  return pushAll().then(function(){ return api({action:"bootstrap"}); }).then(function(r){
     if(!r.ok) throw refused(r);
     applyBootstrap(r); lastSyncAt = Date.now();
     setSyncMsg("Synced "+timeStr()+(sent?" · "+sent+" sent":"")+(failed?" · "+failed+" need a fix (see Log)":""));
@@ -594,6 +609,7 @@ function sync(manual){
             e && e.name==="SyntaxError" ? "Unexpected reply. Check the script is deployed for “Anyone”." :
             e && e.code==="auth" ? "The key doesn’t match the script. Check Settings." :
             e && e.code==="clock" ? "Your phone’s clock looks wrong. Turn on automatic Date & Time." :
+            e && e.message==="Unknown action" ? "Your sheet script is out of date. Paste the new Code.gs and redeploy it." :
             e && e.message==="Wrong key" ? "Your sheet script is the old version. Paste the new Code.gs and redeploy it." :
             e && e.message && e.message!=="Failed to fetch" ? e.message : "Couldn’t reach the sheet. Will retry when online.";
     setSyncMsg(m);
@@ -651,9 +667,9 @@ function localMonth(){
   var mo=monthKey(), r={inc:0,exp:0,sav:0,pInc:0,pExp:0,pSav:0,byCat:{},weeks:[]}, i;
   for(i=0;i<5;i++) r.weeks.push({inc:0,exp:0,sav:0});
   entries.forEach(function(e){
-    if(e.date.slice(0,7)!==mo) return;
+    if(e.del || e.date.slice(0,7)!==mo) return;
     var w=r.weeks[Math.min(4,Math.floor((+e.date.slice(8,10)-1)/7))];
-    var pend=!e.exported && !e.err;
+    var pend=!e.exported && !e.err && !e.tracked;
     if(e.kind==="income"){ r.inc+=e.amount; w.inc+=e.amount; if(pend) r.pInc+=e.amount; }
     else if(e.kind==="expense"){ r.exp+=e.amount; w.exp+=e.amount; r.byCat[e.cat]=(r.byCat[e.cat]||0)+e.amount; if(pend) r.pExp+=e.amount; }
     else if(e.kind==="move" && e.goal && !isCard(e.to)){ r.sav+=e.amount; w.sav+=e.amount; if(pend) r.pSav+=e.amount; }
@@ -879,12 +895,12 @@ function renderHome(force){
 
   /* recent transactions */
   f.appendChild(secHead("Recent transactions", linkBtn("View all",function(){ show("log"); })));
-  var rc=el("div","card"), rec=entries.slice().sort(function(a,b){ return a.date===b.date ? b.created-a.created : (a.date<b.date?1:-1); }).slice(0,5);
+  var rc=el("div","card"), rec=live().sort(function(a,b){ return a.date===b.date ? b.created-a.created : (a.date<b.date?1:-1); }).slice(0,5);
   if(!rec.length) rc.appendChild(el("div","empty","Nothing logged yet. Tap Expense or Income above."));
   rec.forEach(function(e){
     var d2=describe(e), r=el("div","row"); r.style.cursor="pointer";
     var l=el("div","l"), n=el("div","n",d2.t);
-    if(e.err) n.appendChild(el("span","fix","FIX")); else if(!e.exported) n.appendChild(el("span","new","NEW"));
+    if(e.err) n.appendChild(el("span","fix","FIX")); else if(!e.exported) n.appendChild(el("span","new",e.tracked?"EDIT":"NEW"));
     l.appendChild(n); var p=e.date.split("-"); l.appendChild(el("div","d",new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString("en-PH",{month:"short",day:"numeric"})+" · "+d2.s));
     var rr=el("div","r"), a=el("b","a "+e.kind,(e.kind==="income"?"+":(e.kind==="expense"?"−":""))+fmt(e.amount)); rr.appendChild(a);
     r.appendChild(l); r.appendChild(rr); r.addEventListener("click",function(){ if(e.exported) show("log"); else startEdit(e.id); }); rc.appendChild(r);
@@ -984,7 +1000,7 @@ function updateHints(){
 }
 function resetForm(){
   $("amount").value=""; $("desc").value=""; $("date").value=todayStr(); editingId=null; saving=false;
-  $("shTitle").textContent="New transaction"; $("del").hidden=true; $("save").disabled=false;
+  $("shTitle").textContent="New transaction"; $("del").hidden=true; $("editNote").hidden=true; $("save").disabled=false;
 }
 function openSheetUI(){
   sheetOpen=true; $("shTitle").textContent = editingId ? "Edit transaction" : "New transaction";
@@ -1032,7 +1048,7 @@ function onSave(ev){
   if(c.goal==="req" && !goal){ toast("Choose a savings goal"); return; }
   if(c.catL && /^installments?$/i.test(cat)){ toast("Installments are counted automatically. Don’t log them."); return; }
   var rec={kind:c.kind,date:date,amount:amt,desc:clean($("desc").value),cat:cat,acct:acct,to:to,goal:goal};
-  var dup=entries.filter(function(e){ return e.id!==editingId && e.kind===rec.kind && e.date===rec.date && e.amount===rec.amount && e.acct===rec.acct && e.to===rec.to && e.cat===rec.cat && (e.desc||"").toLowerCase()===rec.desc.toLowerCase(); })[0];
+  var dup=entries.filter(function(e){ return !e.del && e.id!==editingId && e.kind===rec.kind && e.date===rec.date && e.amount===rec.amount && e.acct===rec.acct && e.to===rec.to && e.cat===rec.cat && (e.desc||"").toLowerCase()===rec.desc.toLowerCase(); })[0];
   if(dup && !confirm("You already saved the same entry ("+new Date(dup.created).toLocaleTimeString("en-PH",{hour:"numeric",minute:"2-digit"})+"). Save it again?")) return;
   saving=true; $("save").disabled=true;
   if(editingId){
@@ -1046,14 +1062,14 @@ function onSave(ev){
 }
 function startEdit(id){
   var e = entries.filter(function(x){return x.id===id;})[0]; if(!e) return;
-  if(e.exported){ toast("Already sent to your sheet. Fix it in the Transactions tab."); return; }
+  if(e.exported && !e.tracked){ toast("Sent before editing was available. Fix it in the Transactions tab."); return; }
   editingId=id; var t=typeOf(e);
   setMode(t, {cat:e.cat, acct:e.acct, to:e.to, goal:e.goal});
   ensureOpt($("cat"),e.cat); ensureOpt($("acct"),e.acct); ensureOpt($("to"),e.to); ensureOpt($("goal"),e.goal);
   $("cat").value=e.cat; $("acct").value=e.acct; $("to").value=e.to; $("goal").value=e.goal||"";
   $("amount").value=String(e.amount); $("date").value=e.date; $("desc").value=e.desc||"";
   if(e.goal) $("more").open=true;
-  renderCats(); $("del").hidden=false; $("save").textContent="Update "+TYPES[t].label.toLowerCase();
+  $("editNote").hidden=!e.tracked; renderCats(); $("del").hidden=false; $("save").textContent="Update "+TYPES[t].label.toLowerCase();
   openSheetUI();
 }
 function ensureOpt(sel, v){ if(!v) return; var has=Array.prototype.some.call(sel.options,function(o){return o.value===v;}); if(!has){ var o=el("option","",v); o.value=v; sel.appendChild(o); } }
@@ -1192,7 +1208,12 @@ $("amount").addEventListener("input",updateHints);
 $("fab").addEventListener("click",function(){ openAdd("expense"); });
 $("shClose").addEventListener("click",closeSheet); $("sheetBg").addEventListener("click",closeSheet); $("modalBg").addEventListener("click",closeModal);
 document.addEventListener("keydown",function(ev){ if(ev.key==="Escape"){ if(!$("modal").hidden) closeModal(); else if(sheetOpen) closeSheet(); } });
-$("del").addEventListener("click",function(){ if(editingId && confirm("Delete this entry?")){ entries=entries.filter(function(e){return e.id!==editingId;}); save(K_E,entries); closeSheet(); refresh(); toast("Deleted"); } });
+$("del").addEventListener("click",function(){
+  var id=editingId, e=entries.filter(function(x){ return x.id===id; })[0]; if(!e) return;
+  if(!confirm(e.tracked ? "Delete this entry here and from your sheet at the next sync?" : "Delete this entry?")) return;
+  if(e.tracked){ e.del=true; e.exported=false; e.err=""; } else entries=entries.filter(function(x){ return x.id!==id; });
+  save(K_E,entries); closeSheet(); refresh(); toast(e.tracked?"Deleted. Removing from your sheet…":"Deleted"); if(e.tracked) scheduleSync();
+});
 $("nav").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(b) show(b.dataset.s); });
 $("chips").addEventListener("click",function(ev){ var b=ev.target.closest("button"); if(!b) return; filter=b.dataset.f; Array.prototype.forEach.call($("chips").children,function(x){ x.classList.toggle("on",x===b); }); renderLog(); });
 $("inclOld").addEventListener("change",renderExport);
