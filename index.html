@@ -39,12 +39,12 @@ main{padding:14px 16px}
 .screen{display:none}.screen.on{display:block}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:14px}
-.seg button{border:0;background:transparent;color:var(--muted);font:600 15px/1 inherit;padding:12px 4px;border-radius:9px;min-height:44px}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 15px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:12px 4px;border-radius:9px;min-height:44px}
 .seg button.on{background:var(--navy);color:#fff}
 label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 5px}
 label:first-child{margin-top:0}
 #toWrap label{margin-top:12px}
-input,select,textarea{width:100%;font:16px/1.3 inherit;color:var(--text);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:12px;min-height:46px;appearance:none;-webkit-appearance:none}
+input,select,textarea{width:100%;font:16px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:12px;min-height:46px;appearance:none;-webkit-appearance:none}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 20px,calc(100% - 14px) 20px;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:36px}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--orange);outline-offset:0}
 #amount{font-size:30px;font-weight:700;text-align:left;padding:14px;letter-spacing:.3px}
@@ -52,7 +52,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--orange);outline-
 details summary{font-size:14px;font-weight:600;color:var(--muted);padding:10px 0 0;cursor:pointer;list-style:none}
 details summary::before{content:"+ "}
 details[open] summary::before{content:"– "}
-.btn{display:block;width:100%;border:0;border-radius:12px;font:700 17px/1 inherit;padding:16px;min-height:52px;background:var(--orange);color:#fff;margin-top:16px}
+.btn{display:block;width:100%;border:0;border-radius:12px;font:700 17px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:16px;min-height:52px;background:var(--orange);color:#fff;margin-top:16px}
 .btn:active{background:var(--orange-d)}
 .btn.sec{background:var(--card);color:var(--text);border:1px solid var(--line);margin-top:10px;font-weight:600;font-size:16px}
 .btn.danger{background:var(--card);color:var(--bad);border:1px solid var(--line);margin-top:10px;font-weight:600;font-size:16px}
@@ -66,7 +66,7 @@ details[open] summary::before{content:"– "}
 .editing{background:#e8f1fb;border:1px solid #bcd3ee;color:#1d4f87;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .editing button{border:0;background:transparent;color:inherit;font-weight:700;font-size:14px;padding:6px}
 .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:4px}
-.chips button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:9px 14px;font:600 14px/1 inherit;min-height:40px}
+.chips button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:9px 14px;font:600 14px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:40px}
 .chips button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .day{font-size:13px;font-weight:700;color:var(--muted);margin:14px 2px 6px}
 .item{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:8px;width:100%;text-align:left;color:var(--text);font:inherit;min-height:56px}
@@ -85,8 +85,8 @@ details[open] summary::before{content:"– "}
 .steps li{margin:4px 0}
 textarea{min-height:120px;font-size:15px;line-height:1.5}
 nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
-nav .in{display:grid;grid-template-columns:repeat(4,1fr);width:100%;max-width:560px}
-nav button{border:0;background:transparent;color:var(--muted);padding:9px 2px 8px;font:600 11.5px/1.2 inherit;min-height:60px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-width:560px}
+nav button{border:0;background:transparent;color:var(--muted);padding:9px 2px 8px;font:600 11.5px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:60px;display:flex;flex-direction:column;align-items:center;gap:3px}
 nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 nav button.on{color:var(--orange)}
 #toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#1d2733;color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:20;max-width:90vw;text-align:center}
@@ -144,7 +144,7 @@ nav{background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:bl
 .chp b{font-weight:800}
 .chp.warnc{background:rgba(251,191,36,.22);border-color:rgba(251,191,36,.4)}
 .qa{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.qa button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:18px;padding:12px 4px 10px;font:600 12px/1.2 inherit;display:flex;flex-direction:column;align-items:center;gap:7px;min-height:78px;box-shadow:var(--shadow)}
+.qa button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:18px;padding:12px 4px 10px;font:600 12px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;display:flex;flex-direction:column;align-items:center;gap:7px;min-height:78px;box-shadow:var(--shadow)}
 .qa button:active{transform:scale(.97)}
 .qa i{width:38px;height:38px;border-radius:13px;display:grid;place-items:center}
 .qa svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
@@ -159,7 +159,7 @@ nav{background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:bl
 .sec h3{margin:0;font-size:16px;font-weight:800}
 .sec a,.sec button.lnk{color:var(--ok);font-size:13px;font-weight:700;background:none;border:0;padding:6px 0}
 .tabs{display:inline-grid;grid-auto-flow:column;gap:4px;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:3px}
-.tabs button{border:0;background:transparent;color:var(--muted);font:700 13px/1 inherit;padding:9px 14px;border-radius:9px;min-height:36px}
+.tabs button{border:0;background:transparent;color:var(--muted);font:700 13px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:9px 14px;border-radius:9px;min-height:36px}
 .tabs button.on{background:var(--orange);color:var(--on)}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);margin:8px 0 2px}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px}
@@ -186,12 +186,12 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .cardrow{padding:11px 0;border-bottom:1px solid var(--line)}.cardrow:last-child{border-bottom:0}
 .cardrow .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
 .cardrow .meta{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:6px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
-.more{width:100%;border:0;background:none;color:var(--ok);font:700 13px/1 inherit;padding:12px 0 2px}
+.more{width:100%;border:0;background:none;color:var(--ok);font:700 13px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:12px 0 2px}
 .note{font-size:12px;color:var(--muted);margin:6px 2px 0}
 .cta{background:var(--card2);border:1px dashed var(--line);border-radius:16px;padding:14px;text-align:center;color:var(--muted);font-size:14px}
 .cta .btn{margin-top:10px}
 .themeseg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
-.themeseg button{border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:10px;font:600 14px/1 inherit;min-height:44px}
+.themeseg button{border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:10px;font:600 14px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:44px}
 .themeseg button.on{background:var(--orange);color:var(--on);border-color:var(--orange)}
 @media (prefers-reduced-motion:reduce){.gr,.pbar i{animation:none;transition:none}.ibtn.spin svg{animation:none}}
 
@@ -220,15 +220,78 @@ body.noscroll{overflow:hidden}
 .shake{animation:shk .35s}
 @keyframes shk{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 .types{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 14px}
-.types button{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 2px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--muted);font:700 11px/1.1 inherit;min-height:60px}
+.types button{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 2px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--muted);font:700 11px/1.1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:60px}
 .types button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .types button.on{background:color-mix(in srgb,var(--tc) 16%,transparent);border-color:var(--tc);color:var(--tc)}
 .cchips{display:flex;flex-wrap:wrap;gap:8px}
-.cchip{border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:999px;padding:9px 13px;font:600 14px/1 inherit;min-height:40px}
+.cchip{border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:999px;padding:9px 13px;font:600 14px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:40px}
 .cchip.on{background:var(--tc);color:#07121f;border-color:var(--tc)}
 #moveHint{margin:8px 0 0}
 .sheet input:focus,.sheet select:focus{outline:2px solid var(--tc)}
 .sheet.sm{max-height:80dvh}
+
+/* ---- iOS zoom, keyboard and layout fixes ---- */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation}
+input,select,textarea{font-family:inherit;font-size:16px;line-height:1.3}
+textarea{font-size:16px}
+.amtbox #amount{font-size:46px}
+input[type=date],input[type=month]{display:block;min-width:0;max-width:100%;-webkit-appearance:none;appearance:none}
+.row2>div,.sh-body>*{min-width:0}
+.sheet{bottom:var(--kb,0px);max-height:calc(var(--vvh,100dvh)*.94);overscroll-behavior:contain}
+.sheet.sm{max-height:calc(var(--vvh,100dvh)*.8)}
+.sh-body{scroll-padding-bottom:24px}
+img,svg,canvas{max-width:100%}
+
+/* ---- v6: near-black + electric blue, period selector, plan screen ---- */
+:root{--bg:#04070d;--card:#0b111c;--card2:#101826;--line:#16223a;--field:#080d17;--head:#04070d;--text:#eef3fb;--muted:#8393ad;--orange:#3b82f6;--orange-d:#2563eb;--on:#ffffff;--navy:#3b82f6;--sav:#60a5fa}
+:root[data-theme=light]{--orange:#2563eb;--orange-d:#1d4ed8;--on:#ffffff;--navy:#2563eb;--sav:#2563eb}
+.hero{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 52%,#0ea5e9 100%);box-shadow:0 14px 34px rgba(37,99,235,.28)}
+.hero::after{background:radial-gradient(circle,rgba(34,211,238,.5),transparent 68%)}
+.fab{background:linear-gradient(135deg,#3b82f6,#22d3ee);color:#04111f;box-shadow:0 10px 26px rgba(59,130,246,.45)}
+.ibtn:disabled{opacity:.35}
+.pbar2{display:flex;flex-direction:column;gap:10px;margin:2px 0 6px}
+.seg3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--field);border:1px solid var(--line);border-radius:14px;padding:4px}
+.seg3 button{border:0;background:transparent;color:var(--muted);font:700 14px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:11px 0;border-radius:10px;min-height:44px}
+.seg3 button.on{background:var(--orange);color:var(--on);box-shadow:0 6px 16px rgba(59,130,246,.35)}
+.prange{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:8px;align-items:center}
+.prange .ibtn{width:44px;height:44px;border-radius:12px}
+.prange .ibtn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.mpick,.plabel{height:44px;min-height:44px;text-align:center;text-align-last:center;font-weight:800;border-radius:12px;padding:0 28px 0 12px}
+.plabel{background:var(--field);border:1px solid var(--line);color:var(--text);font:800 15px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:0 10px;width:100%}
+.prsub{font-size:12px;color:var(--muted);text-align:center;margin:0 0 12px}
+.brow{padding:10px 0;border-bottom:1px solid var(--line)}
+.bh{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.bn{font-weight:700;min-width:0;overflow-wrap:anywhere}.bv{font-size:13px;font-weight:700;white-space:nowrap}.bv.over{color:var(--bad)}
+.bs{font-size:12px;color:var(--muted);margin-top:5px}
+.insc{padding:6px 14px}
+.ins{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.4}
+.ins:last-child{border-bottom:0}
+.ins i{flex:0 0 26px;height:26px;border-radius:9px;display:grid;place-items:center;font-style:normal;font-weight:800;background:rgba(59,130,246,.16);color:var(--sav)}
+.ins.bad i{background:rgba(251,113,133,.16);color:var(--bad)}
+.safe .sbig{font-size:34px;font-weight:800;margin-bottom:10px}.sbig.neg{color:var(--bad)}
+.safe .gs{margin-top:8px}
+.gap{font-size:12.5px;margin-top:6px;color:var(--sav);font-weight:600}.gap.neg{color:#fbbf24}.gap.okc{color:var(--ok)}
+.calsum{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.calrow{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.calrow:first-child,.calsum+.calrow{border-top:0}
+.cdate{width:52px;height:56px;border-radius:14px;background:var(--field);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cdate b{font-size:19px;line-height:1.1}.cdate small{font-size:10.5px;color:var(--muted);text-transform:uppercase;font-weight:700}
+.cdate.soon{border-color:#fbbf24;background:rgba(251,191,36,.12)}.cdate.bad{border-color:var(--bad);background:rgba(251,113,133,.14)}
+.cmid{min-width:0}.cn{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cs{font-size:12.5px;color:var(--muted);margin:1px 0 5px}
+.cr{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.paybtn{color:var(--ok);font-size:12.5px;font-weight:800;background:none;border:0;padding:6px 0;min-height:32px}
+.donutw{flex-direction:column;align-items:stretch}.donutw svg{align-self:center}.dl{width:100%}
+.dr em{font-style:normal;color:var(--muted);font-size:12px;min-width:34px;text-align:right}
+.prow{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:12px 0;color:var(--text);min-height:56px;font-family:inherit;font-size:15px}
+.pl{flex:1;min-width:0}.pt{font-weight:700;overflow-wrap:anywhere}.ps{font-size:12.5px;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+.pr{font-weight:800;text-align:right;white-space:nowrap}.pr small{display:block;font-size:10.5px;font-weight:700;color:#fbbf24}
+.pe{flex:0 0 24px;height:24px;border-radius:8px;border:1px solid var(--orange);display:grid;place-items:center;color:var(--orange);font-style:normal;font-size:13px}
+.pe::after{content:"✎"}
+.padd{width:100%;margin-top:6px;min-height:46px;border:1px dashed var(--orange);background:transparent;color:var(--orange);border-radius:12px;font-weight:700;font-family:inherit;font-size:14px}
+.btn{text-align:center}.btn.sec,.btn.danger{display:block;width:100%;text-align:center}
+.padd:disabled{border-color:var(--line);color:var(--muted)}
+.plan .pn{margin:0 0 6px}.plan h3{margin:0}
+.fxrow{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--muted);margin:8px 0 0;font-weight:500}
 </style>
 </head>
 <body>
@@ -239,6 +302,9 @@ body.noscroll{overflow:hidden}
 <!-- ADD -->
 <!-- HOME -->
 <section id="s-home" class="screen on"><div id="homeBody"></div></section>
+
+<!-- PLAN -->
+<section id="s-plan" class="screen"><div id="planBody"></div></section>
 
 <!-- LOG -->
 <section id="s-log" class="screen">
@@ -313,6 +379,7 @@ body.noscroll{overflow:hidden}
 
 <nav><div class="in" id="nav">
   <button data-s="home" class="on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/></svg>Home</button>
+  <button data-s="plan"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Plan</button>
   <button data-s="log"><svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>Log</button>
   <button data-s="export"><svg viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 13v6h14v-6"/></svg>Send</button>
   <button data-s="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.5-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.2-.8.2-1.2z"/></svg>Settings</button>
@@ -352,6 +419,20 @@ body.noscroll{overflow:hidden}
 (function(){
 "use strict";
 
+/* keep sheets above the keyboard without zooming or shifting the page */
+(function(){
+  var vv=window.visualViewport, root=document.documentElement;
+  function upd(){
+    var h=vv?vv.height:window.innerHeight, off=vv?vv.offsetTop:0, kb=Math.max(0,window.innerHeight-h-off);
+    root.style.setProperty("--vvh",h+"px"); root.style.setProperty("--kb",kb+"px");
+  }
+  if(vv){ vv.addEventListener("resize",upd); vv.addEventListener("scroll",upd); }
+  window.addEventListener("orientationchange",function(){ setTimeout(upd,250); });
+  document.addEventListener("focusout",function(){ setTimeout(function(){ var a=document.activeElement; if(!a||!/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)){ window.scrollTo(0,0); upd(); } },120); });
+  document.addEventListener("focusin",function(e){ var t=e.target; if(t&&t.scrollIntoView&&t.closest&&t.closest(".sh-body")) setTimeout(function(){ try{ t.scrollIntoView({block:"center",behavior:"smooth"}); }catch(x){} },300); });
+  upd();
+})();
+
 /* ---------- starting lists (editable in Settings) ---------- */
 var DEFAULTS = {
   accounts: ["Cash on Hand","Bank Account 1","Bank Account 2","E-Wallet 1","E-Wallet 2"],
@@ -360,7 +441,7 @@ var DEFAULTS = {
   income: ["Salary","Freelance","Business","Interest","Other income"],
   goals: ["Emergency Fund","Investments","Travel Fund","Future Upgrades","Savings"]
 };
-var K_E = "qe.entries.v1", K_L = "qe.lists.v1", K_LAST = "qe.last.v1", K_SYNC = "qe.sync.v1", K_SUM = "qe.sum.v1";
+var K_E = "qe.entries.v1", K_L = "qe.lists.v1", K_LAST = "qe.last.v1", K_SYNC = "qe.sync.v1", K_SUM = "qe.sum.v1", K_PLAN = "qe.plan.v1", K_HIST = "qe.hist.v1", K_PER = "qe.per.v1";
 
 /* ---------- storage ---------- */
 function load(k, d){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
@@ -503,12 +584,13 @@ function saveLists(){
 function refresh(){
   var nw=0; entries.forEach(function(e){ if(!e.exported && !e.del) nw++; });
   var p=$("pending"); p.textContent=nw+" new"; p.classList.toggle("zero",!nw);
-  renderLog(); renderExport(); renderHome(); showSyncMsg();
+  renderLog(); renderExport(); renderHome(); if(curScreen==="plan") renderPlan(); showSyncMsg();
 }
 function show(s){
   Array.prototype.forEach.call(document.querySelectorAll(".screen"),function(x){ x.classList.toggle("on", x.id==="s-"+s); });
   Array.prototype.forEach.call($("nav").querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.s===s); });
   if(s==="home"){ if(curScreen!=="home"){ prevV={}; chartAnim=true; } renderHome(true); }
+  if(s==="plan") renderPlan();
   curScreen=s;
   window.scrollTo(0,0);
 }
@@ -520,6 +602,8 @@ function storeInfo(){
 
 
 /* ---------- Google Sheet sync ---------- */
+var planData = load(K_PLAN, null), hist = load(K_HIST, null), per = {m:load(K_PER,"month"), a:todayStr()}, showAllBud = false;
+if(["week","month","year"].indexOf(per.m)<0) per.m="month";
 var snap = load(K_SUM, null), syncing = false, syncT = null, syncMsg = "", lastSyncAt = 0;
 var conn = load(K_SEC, null) ? {url:"",key:""} : load(K_SYNC, {url:"",key:""});
 function connected(){ return !!(conn && conn.url && conn.key); }
@@ -558,6 +642,16 @@ function applyBootstrap(r){
   });
   if(changed){ save(K_L,lists); fillSettings(); refillSheet(); }
   snap = {at:Date.now(), s:r.summary || null, v:r.version || 2}; save(K_SUM,snap);
+}
+/* plan (the Summary tab's inputs) and transaction history come after the main sync; a failure here never blocks entries */
+function loadExtras(){
+  var y=new Date().getFullYear();
+  return api({action:"plan_get"}).then(function(r){
+    if(r&&r.ok&&r.plan){ planData={at:Date.now(),v:r.version||4,plan:r.plan}; save(K_PLAN,planData); }
+    return api({action:"tx_get",from:(y-1)+"-01-01",to:y+"-12-31"});
+  }).then(function(r){
+    if(r&&r.ok&&r.tx){ hist={at:Date.now(),tx:r.tx}; save(K_HIST,hist); }
+  }).catch(function(e){ if(e&&(e.code==="auth"||e.code==="clock"||e.code==="locked"||e.code==="replay")) throw e; });
 }
 function sync(manual){
   if(!connected()){
@@ -603,7 +697,7 @@ function sync(manual){
   return pushAll().then(function(){ return api({action:"bootstrap"}); }).then(function(r){
     if(!r.ok) throw refused(r);
     applyBootstrap(r); lastSyncAt = Date.now();
-    setSyncMsg("Synced "+timeStr()+(sent?" · "+sent+" sent":"")+(failed?" · "+failed+" need a fix (see Log)":""));
+    return loadExtras().then(function(){ setSyncMsg("Synced "+timeStr()+(sent?" · "+sent+" sent":"")+(failed?" · "+failed+" need a fix (see Log)":"")); });
   }).catch(function(e){
     var m = e && e.name==="AbortError" ? "The sheet took too long. Will retry." :
             e && e.name==="SyntaxError" ? "Unexpected reply. Check the script is deployed for “Anyone”." :
@@ -726,7 +820,7 @@ function drawFlow(card, L, anim){
 
 function drawSpend(card, items, srcLabel, anim){
   var total=items.reduce(function(a,x){ return a+x.v; },0);
-  if(!(total>0)){ card.appendChild(el("div","empty","No spending recorded yet this month.")); return; }
+  if(!(total>0)){ card.appendChild(el("div","empty","No spending recorded in this period.")); return; }
   items.sort(function(a,b){ return b.v-a.v; });
   if(items.length>6){ var rest=items.slice(5).reduce(function(a,x){ return a+x.v; },0); items=items.slice(0,5); items.push({name:"Other",v:rest}); }
   var w=el("div","donutw"), svg=sv("svg",{viewBox:"0 0 140 140",role:"img","aria-label":"Spending by category"}), R=50, C=2*Math.PI*R;
@@ -755,7 +849,7 @@ function drawSpend(card, items, srcLabel, anim){
   var dl=el("div","dl");
   items.forEach(function(it,i){
     var r=el("button","dr"); r.type="button";
-    var d=el("i"); d.style.background=PAL[i%PAL.length]; r.appendChild(d); r.appendChild(el("span","",it.name)); r.appendChild(el("b","",fmt(it.v)));
+    var d=el("i"); d.style.background=PAL[i%PAL.length]; r.appendChild(d); r.appendChild(el("span","",it.name)); r.appendChild(el("b","",fmt(it.v))); r.appendChild(el("em","",Math.round(it.v/total*100)+"%"));
     r.addEventListener("click",function(){ show1(sel===i?-1:i); }); rows.push(r); dl.appendChild(r);
     segs[i].addEventListener("click",function(){ show1(sel===i?-1:i); });
   });
@@ -763,35 +857,202 @@ function drawSpend(card, items, srcLabel, anim){
   card.appendChild(el("div","note",srcLabel+" Total "+fmt(total)+"."));
 }
 
+/* ---------- history, periods and figures ---------- */
+function pd(s){ var p=String(s).split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+function isoD(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function addDays(s,n){ var d=pd(s); d.setDate(d.getDate()+n); return isoD(d); }
+function perRange(){
+  var a=pd(per.a);
+  if(per.m==="week"){ var s=addDays(per.a,-((a.getDay()+6)%7)); return {from:s,to:addDays(s,6)}; }
+  if(per.m==="year") return {from:a.getFullYear()+"-01-01",to:a.getFullYear()+"-12-31"};
+  return {from:isoD(new Date(a.getFullYear(),a.getMonth(),1)),to:isoD(new Date(a.getFullYear(),a.getMonth()+1,0))};
+}
+function shiftPer(dir){
+  var a=pd(per.a);
+  if(per.m==="week") a.setDate(a.getDate()+7*dir); else if(per.m==="year") a.setFullYear(a.getFullYear()+dir); else { a.setDate(1); a.setMonth(a.getMonth()+dir); }
+  per.a=isoD(a);
+}
+function rangeLabel(r){
+  var f=pd(r.from), t=pd(r.to);
+  if(per.m==="year") return String(f.getFullYear());
+  if(per.m==="month") return f.toLocaleDateString("en-PH",{month:"long",year:"numeric"});
+  return f.toLocaleDateString("en-PH",{month:"short",day:"numeric"})+" – "+t.toLocaleDateString("en-PH",{month:"short",day:"numeric",year:"numeric"});
+}
+function prevRange(){ var keep=per.a; shiftPer(-1); var r=perRange(); per.a=keep; return r; }
+function isCurrentPeriod(r){ var t=todayStr(); return t>=r.from && t<=r.to; }
+
+/* every transaction we know about: the sheet's records, plus this app's entries that the sheet doesn't have yet */
+function txAll(){
+  var out=[], ids={}, h=hist&&hist.tx;
+  function add(o){ o.type=typeOf(o); if(o.id) ids[o.id]=out.length; out.push(o); }
+  if(h){
+    (h.expense||[]).forEach(function(r){ add({id:r[0],kind:"expense",date:r[1],amt:r[2],cat:r[3],acct:r[4],goal:r[5],to:""}); });
+    (h.income||[]).forEach(function(r){ add({id:r[0],kind:"income",date:r[1],amt:r[2],cat:r[3],acct:r[4],goal:"",to:""}); });
+    (h.move||[]).forEach(function(r){ add({id:r[0],kind:"move",date:r[1],amt:r[2],cat:"",acct:r[3],to:r[4],goal:r[5]}); });
+  }
+  live().forEach(function(e){
+    var o={id:e.id,kind:e.kind,date:e.date,amt:e.amount,cat:e.cat||"",acct:e.acct||"",to:e.to||"",goal:e.goal||"",desc:e.desc||"",local:1,pend:!e.exported};
+    if(ids[e.id]!==undefined){ if(!e.exported){ o.type=typeOf(o); out[ids[e.id]]=o; } else { out[ids[e.id]].local=1; out[ids[e.id]].desc=o.desc; } return; }
+    if(!h || !e.exported || (e.tracked && e.created>hist.at)){ o.type=typeOf(o); out.push(o); }
+  });
+  return out;
+}
+function instPlans(){
+  var p=planData&&planData.plan&&planData.plan.sections&&planData.plan.sections.inst; if(!p) return [];
+  return p.rows.map(function(r){ var c=r.c; return {name:c.name.v, monthly:+c.monthly.v||0, terms:+c.terms.v||0, first:String(c.first.v||"")}; }).filter(function(x){ return x.monthly>0 && x.terms>0 && /^\d{4}-\d{2}/.test(x.first); });
+}
+function instForMonth(ym){
+  var t=+ym.slice(0,4)*12+ +ym.slice(5,7), s=0;
+  instPlans().forEach(function(x){ var f=+x.first.slice(0,4)*12+ +x.first.slice(5,7); if(t>=f && t<f+x.terms) s+=x.monthly; });
+  return Math.round(s*100)/100;
+}
+function monthsIn(r){ var out=[], d=pd(r.from), end=pd(r.to), cur=monthKey(); while(d<=end){ var k=isoD(d).slice(0,7); if(k<=cur) out.push(k); d.setMonth(d.getMonth()+1); d.setDate(1); } return out; }
+function calc(txs, r){
+  var m={inc:0,exp:0,sav:0,cats:{},cnt:{},inst:0};
+  txs.forEach(function(t){
+    if(t.date<r.from||t.date>r.to) return;
+    if(t.type==="income") m.inc+=t.amt;
+    else if(t.type==="expense"||t.type==="cardbuy"){ m.exp+=t.amt; var k=t.cat||"Other"; m.cats[k]=(m.cats[k]||0)+t.amt; m.cnt[k]=(m.cnt[k]||0)+1; }
+    else if(t.type==="savings"||t.type==="investment") m.sav+=t.amt;
+  });
+  if(per.m!=="week"){ monthsIn(r).forEach(function(k){ var v=instForMonth(k); if(v>0){ m.inst+=v; m.exp+=v; m.cats["Installments"]=(m.cats["Installments"]||0)+v; } }); }
+  m.net=m.inc-m.exp; return m;
+}
+/* the reporting month of the sheet uses the sheet's own totals (plus what hasn't synced yet) so the two always agree */
+function figures(txs, r){
+  var m=calc(txs,r), S=snap&&snap.s;
+  if(per.m==="month" && S && S.month===r.from.slice(0,7)){
+    var pend=txs.filter(function(t){ return t.local && t.pend && t.date>=r.from && t.date<=r.to; }), p=calc(pend,r);
+    var hasI=S.inc&&typeof S.inc.actual==="number", hasE=S.exp&&typeof S.exp.actual==="number";
+    if(hasI) m.inc=S.inc.actual+p.inc;
+    if(hasE){
+      m.exp=S.exp.actual+p.exp-p.inst; m.cats={};
+      (S.budget||[]).forEach(function(b){ if(b.actual>0) m.cats[b.name]=b.actual; });
+      Object.keys(p.cats).forEach(function(k){ if(k!=="Installments") m.cats[k]=(m.cats[k]||0)+p.cats[k]; });
+    }
+    if(S.goals&&S.goals.length) m.sav=S.goals.reduce(function(a,g){ return a+(g.funded||0); },0)+p.sav;
+    m.net=m.inc-m.exp; m.fromSheet=true;
+  }
+  return m;
+}
+function buckets(txs, r){
+  var B=[], i, key;
+  if(per.m==="week"){ var dn=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]; for(i=0;i<7;i++) B.push({l:dn[i],f:addDays(r.from,i),t:addDays(r.from,i),inc:0,exp:0}); }
+  else if(per.m==="year"){ var mn="JFMAMJJASOND", y=r.from.slice(0,4); for(i=0;i<12;i++) B.push({l:mn[i],full:new Date(+y,i,1).toLocaleDateString("en-PH",{month:"long"}),f:y+"-"+pad(i+1)+"-01",t:y+"-"+pad(i+1)+"-31",inc:0,exp:0}); }
+  else { var last=+r.to.slice(8,10), n=Math.ceil(last/7); for(i=0;i<n;i++){ var a=i*7+1, b=Math.min(last,a+6); B.push({l:a+"–"+b,f:r.from.slice(0,8)+pad(a),t:r.from.slice(0,8)+pad(b),inc:0,exp:0}); } }
+  txs.forEach(function(t){
+    var isE=t.type==="expense"||t.type==="cardbuy", isI=t.type==="income"; if(!isE&&!isI) return;
+    for(i=0;i<B.length;i++) if(t.date>=B[i].f && t.date<=B[i].t){ if(isE) B[i].exp+=t.amt; else B[i].inc+=t.amt; break; }
+  });
+  if(per.m==="year"){ var cur=monthKey(); B.forEach(function(b){ var k=b.f.slice(0,7); if(k<=cur) b.exp+=instForMonth(k); }); }
+  else if(per.m==="month"){ /* installments are billed monthly, not on a day, so they are not drawn in the weekly bars */ }
+  return B;
+}
+
+function drawCash(card, B, anim){
+  if(!B.some(function(b){ return b.inc||b.exp; })){ card.appendChild(el("div","empty","No income or spending recorded in this period.")); return; }
+  var n=B.length, gw=290/n, bw=Math.min(14,gw/2-2), maxV=1;
+  B.forEach(function(b){ maxV=Math.max(maxV,b.inc,b.exp); });
+  var svg=sv("svg",{viewBox:"0 0 300 160","class":"chart",role:"img","aria-label":"Income versus expenses"});
+  [26,80,134].forEach(function(y){ sv("line",{x1:0,x2:300,y1:y,y2:y,style:"stroke:var(--line);stroke-width:1"},svg); });
+  var mx=sv("text",{x:0,y:15,style:"fill:var(--muted);font-size:9px"},svg); mx.textContent=compact(maxV);
+  var tip=el("div","tip"), sel=null, hl=[];
+  B.forEach(function(b,g){
+    var gx=5+g*gw, cx=gx+gw/2;
+    hl.push(sv("rect",{x:gx,y:18,width:gw,height:120,rx:6,style:"fill:var(--sav);opacity:0"},svg));
+    [["inc","var(--ok)",-bw-1],["exp","var(--exp)",1]].forEach(function(s,i){
+      var v=b[s[0]]; if(!v) return;
+      var h=Math.max(3,v/maxV*108), r=sv("rect",{x:cx+s[2],y:134-h,width:bw,height:h,rx:3,style:"fill:"+s[1]+(anim&&!REDUCE?";animation-delay:"+(g*40+i*30)+"ms":"")},svg);
+      r.setAttribute("class",anim&&!REDUCE?"gr":"");
+    });
+    var t=sv("text",{x:cx,y:150,"text-anchor":"middle",style:"fill:var(--muted);font-size:"+(n>8?8:9)+"px"},svg); t.textContent=b.l;
+    var hit=sv("rect",{x:gx,y:10,width:gw,height:142,style:"fill:transparent;cursor:pointer",tabindex:"0",role:"button","aria-label":b.full||b.l},svg);
+    function pick(){
+      hl.forEach(function(x,j){ x.style.opacity = j===g && sel!==g ? ".12" : "0"; });
+      sel = sel===g ? null : g;
+      tip.textContent = sel===null ? "" : (b.full||b.l)+" · Income "+fmt(b.inc)+" · Expenses "+fmt(b.exp)+" · Net "+(b.inc-b.exp<0?"−":"")+fmt(Math.abs(b.inc-b.exp));
+    }
+    hit.addEventListener("click",pick);
+    hit.addEventListener("keydown",function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); pick(); } });
+  });
+  card.appendChild(svg);
+  var lg=el("div","legend");
+  [["Income","var(--ok)"],["Expenses","var(--exp)"]].forEach(function(x){ var s=el("span"), i=el("i"); i.style.background=x[1]; s.appendChild(i); s.appendChild(document.createTextNode(x[0])); lg.appendChild(s); });
+  card.appendChild(lg); card.appendChild(tip);
+}
+
+function drawBudget(card, rows, note){
+  if(!rows.length){ card.appendChild(el("div","empty","No budget set. Add planned amounts in the Plan tab.")); return; }
+  rows.forEach(function(x,i){
+    var pct=x.planned>0?x.actual/x.planned*100:(x.actual>0?100:0), over=x.planned>0 && x.actual>x.planned, r=el("div","brow"), h=el("div","bh");
+    h.appendChild(el("span","bn",x.name)); var v=el("span","bv"+(over?" over":""),fmt(x.actual)+(x.planned>0?" / "+fmt(x.planned):"")); h.appendChild(v); r.appendChild(h);
+    r.appendChild(bar("bb"+per.m+i, pct, over?"var(--bad)":(pct>=85?"#fbbf24":"linear-gradient(90deg,#2563eb,#22d3ee)")));
+    var s=el("div","bs"); s.textContent = x.planned>0 ? (over?"Over by "+fmt(x.actual-x.planned):fmt(x.planned-x.actual)+" left")+" · "+Math.round(pct)+"%" : "No budget set";
+    r.appendChild(s); card.appendChild(r);
+  });
+  if(note) card.appendChild(el("div","note",note));
+}
+function budgetRows(m, r){
+  var S=snap&&snap.s, P=planData&&planData.plan&&planData.plan.sections&&planData.plan.sections.expense, rows=[];
+  if(per.m==="month" && S && S.month===r.from.slice(0,7) && S.budget && S.budget.length){
+    S.budget.forEach(function(b){ if((b.planned||0)>0||(b.actual||0)>0) rows.push({name:b.name,planned:b.planned||0,actual:b.actual||0}); });
+    return {rows:rows,note:"Planned and actual come from your sheet's Summary tab."};
+  }
+  if(!P) return {rows:[],note:""};
+  var f=1, note="Plan per month × 1.";
+  if(per.m==="year"){ f=monthsIn(r).length||1; note="Plan per month × "+f+" month"+(f===1?"":"s")+"."; }
+  if(per.m==="week"){ var dim=new Date(+r.from.slice(0,4),+r.from.slice(5,7),0).getDate(); f=7/dim; note="Monthly plan prorated to 7 days. Installments aren't shown for a single week."; }
+  P.rows.forEach(function(x){
+    var nm=x.c.name.v; if(/^installments?$/i.test(nm) && per.m==="week") return;
+    var pl=(+x.c.planned.v||0)*f, ac=m.cats[nm]||0;
+    if(pl>0||ac>0) rows.push({name:nm,planned:Math.round(pl*100)/100,actual:ac});
+  });
+  Object.keys(m.cats).forEach(function(k){ if(!rows.some(function(x){ return x.name===k; })) rows.push({name:k,planned:0,actual:m.cats[k]}); });
+  return {rows:rows,note:note};
+}
+function budgetSort(rows){ return rows.slice().sort(function(a,b){ var oa=a.planned>0?a.actual/a.planned:(a.actual>0?9:0), ob=b.planned>0?b.actual/b.planned:(b.actual>0?9:0); return ob-oa; }); }
+
+function insights(m, pm, r, S){
+  var out=[], keys=Object.keys(m.cats);
+  if(keys.length){ keys.sort(function(a,b){ return m.cats[b]-m.cats[a]; }); var k=keys[0]; out.push({ic:"◔",t:k+" is your biggest spend: "+fmt(m.cats[k])+" ("+Math.round(m.cats[k]/m.exp*100)+"% of expenses)."}); }
+  if(pm && pm.exp>0 && m.exp>0){ var d=(m.exp-pm.exp)/pm.exp*100; out.push({ic:d>0?"↑":"↓",t:"Spending is "+Math.abs(Math.round(d))+"% "+(d>0?"higher":"lower")+" than the previous "+per.m+" ("+fmt(pm.exp)+")."}); }
+  if(m.inc>0) out.push({ic:"%",t:"Savings rate: "+Math.round(m.sav/m.inc*100)+"% of income went to goals and investments."});
+  if(m.net<0) out.push({ic:"!",t:"Expenses exceeded income by "+fmt(-m.net)+" in this period.",bad:1});
+  var br=budgetRows(m,r).rows.filter(function(x){ return x.planned>0 && x.actual>x.planned; });
+  if(br.length) out.push({ic:"!",t:br.length+(br.length===1?" category is":" categories are")+" over budget: "+br.slice(0,3).map(function(x){ return x.name; }).join(", ")+(br.length>3?"…":"")+".",bad:1});
+  var due=((S&&S.cards)||[]).filter(function(c){ return typeof c.remaining==="number" && c.remaining>0 && typeof c.days==="number" && c.days<=7; }).sort(function(a,b){ return a.days-b.days; })[0];
+  if(due) out.push({ic:"▣",t:due.name+": "+fmt(due.remaining)+(due.days<0?" is overdue.":(due.days===0?" is due today.":" is due in "+due.days+" day"+(due.days===1?"":"s")+".")),bad:due.days<=0});
+  return out.slice(0,4);
+}
+
 function renderHome(force){
   var box=$("homeBody"); if(!box) return;
   if(!force && curScreen!=="home") return;
   var anim=chartAnim; chartAnim=false;
   var f=document.createDocumentFragment();
-  var S=(snap&&snap.s)||null, on=linked(), L=localMonth();
+  var S=(snap&&snap.s)||null, on=linked();
+  var R=perRange(), txs=txAll(), M=figures(txs,R), PM=calc(txs,prevRange());
 
   if(!load(K_L,null)){ var fr=el("div","card"); fr.appendChild(el("b","","Welcome. One quick setup first.")); fr.appendChild(el("p","hint","The account, card and category names are generic placeholders. Open Settings and type your own names, exactly as in your budget sheet. They stay on this phone.")); var fb=el("button","btn","Open Settings"); fb.type="button"; fb.addEventListener("click",function(){ show("set"); }); fr.appendChild(fb); f.appendChild(fr); }
-  /* greeting + refresh */
   var hello=el("div","hello"), hl=el("div");
   hl.appendChild(el("h2","",greeting()));
-  hl.appendChild(el("small","",new Date().toLocaleDateString("en-PH",{month:"long",year:"numeric"})+(on&&snap?" · Synced "+ago(snap.at):"")));
+  hl.appendChild(el("small","",new Date().toLocaleDateString("en-PH",{month:"long",day:"numeric",year:"numeric"})+(on&&snap?" · Synced "+ago(snap.at):"")));
   hello.appendChild(hl);
   var rb=el("button","ibtn"+(syncing?" spin":"")); rb.type="button"; rb.innerHTML=ICON.refresh; rb.setAttribute("aria-label","Refresh from sheet"); rb.disabled=!on;
   rb.addEventListener("click",function(){ sync(true); }); hello.appendChild(rb); f.appendChild(hello);
   if(on && navigator.onLine===false) f.appendChild(el("p","note","Offline. Showing figures from your last sync."));
 
-  /* hero: available cash */
+  /* hero */
   var hero=el("div","hero"); hero.appendChild(el("div","lb","Total available cash"));
   var amt=el("div","amt"); if(S && typeof S.cash==="number") amt.appendChild(numEl("cash",S.cash)); else amt.textContent="—"; hero.appendChild(amt);
   var cr=el("div","chipsrow");
   function chip(label,val,cls){ var c=el("span","chp"+(cls?" "+cls:"")); c.appendChild(document.createTextNode(label+" ")); c.appendChild(el("b","",val)); cr.appendChild(c); }
   if(S){
     if(typeof S.safe==="number") chip("Safe to spend",(S.safe<0?"−":"")+fmt(Math.abs(S.safe)), S.safe<0?"warnc":"");
-    if(typeof S.daily==="number" && S.daily>0) chip("Daily",fmt(S.daily)+(S.daysLeft?" · "+S.daysLeft+"d left":""));
     if(typeof S.investments==="number" && S.investments>0) chip("Investments",fmt(S.investments));
-  } else if(!on){ var cb=el("button","chp","Connect your sheet in Settings →"); cb.type="button"; cb.style.cssText="color:#fff;font:inherit;font-weight:700"; cb.addEventListener("click",function(){ show("set"); }); cr.appendChild(cb); }
+  } else if(!on){ var cb=el("button","chp","Connect your sheet in Settings →"); cb.type="button"; cb.addEventListener("click",function(){ show("set"); }); cr.appendChild(cb); }
   else chip("Waiting for first sync","");
-  if(isLocked() && sec.hasConn){ var lb=el("button","chp warnc","🔒 Locked · tap to unlock"); lb.type="button"; lb.style.cssText="color:#fff;font:inherit;font-weight:700"; lb.addEventListener("click",openUnlock); cr.appendChild(lb); }
+  if(isLocked() && sec.hasConn){ var lb=el("button","chp warnc","🔒 Locked · tap to unlock"); lb.type="button"; lb.addEventListener("click",openUnlock); cr.appendChild(lb); }
   var pc=pendingCount(); if(pc) chip(pc+(pc===1?" entry":" entries"),"waiting to sync","warnc");
   var fx=entries.filter(function(e){ return e.err; }).length; if(fx) chip(fx+" need a fix","see Log","warnc");
   hero.appendChild(cr); f.appendChild(hero);
@@ -805,74 +1066,115 @@ function renderHome(force){
   qbtn("c",ICON.card,"Pay card",function(){ var nc=nextCard(S); if(!nc){ toast("Add a credit card in Settings first"); return; } openAdd("cardpay",{to:nc.to},nc.amt); });
   f.appendChild(qa);
 
-  /* month tiles */
-  var hasInc=!!(S&&S.inc&&typeof S.inc.actual==="number"), hasExp=!!(S&&S.exp&&typeof S.exp.actual==="number");
-  var inc=hasInc?S.inc.actual+L.pInc:L.inc, exp=hasExp?S.exp.actual+L.pExp:L.exp;
-  var haveGoals=!!(S&&S.goals&&S.goals.length);
-  var sav=haveGoals?S.goals.reduce(function(a,g){ return a+(g.funded||0); },0)+L.pSav:L.sav;
-  var disp=inc-exp-sav;
-  f.appendChild(secHead("This month", mutedSpan(hasInc||hasExp?"From your sheet":"From this app")));
-  var g2=el("div","g2");
-  function tile(key,label,val,sub,color){ var t=el("div","tile"); t.style.setProperty("--c",color); t.appendChild(el("div","tl",label)); var v=el("div","tv"); v.appendChild(numEl(key,val)); t.appendChild(v); t.appendChild(el("div","ts",sub)); g2.appendChild(t); }
-  tile("inc","Income",inc,(L.pInc?"incl. unsynced · ":"")+(hasInc&&S.inc.planned>0?"of "+fmt(S.inc.planned)+" planned":"received"),"var(--ok)");
-  tile("exp","Expenses",exp,(L.pExp?"incl. unsynced · ":"")+(hasExp&&S.exp.planned>0?"of "+fmt(S.exp.planned)+" budget":"spent"),"var(--exp)");
-  tile("sav","Savings",sav,"funded to goals","var(--sav)");
-  tile("disp","Disposable",disp,"income − expenses − savings",disp<0?"var(--bad)":"var(--cy)");
-  f.appendChild(g2);
+  /* period selector */
+  var pb=el("div","pbar2"), seg=el("div","seg3");
+  [["week","Week"],["month","Month"],["year","Year"]].forEach(function(x){
+    var b=el("button",per.m===x[0]?"on":"",x[1]); b.type="button";
+    b.addEventListener("click",function(){ if(per.m===x[0]) return; per.m=x[0]; save(K_PER,per.m); chartAnim=true; renderHome(true); });
+    seg.appendChild(b);
+  });
+  pb.appendChild(seg);
+  var nav=el("div","prange"), pv=el("button","ibtn"); pv.type="button"; pv.setAttribute("aria-label","Previous "+per.m); pv.innerHTML='<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>';
+  pv.addEventListener("click",function(){ shiftPer(-1); chartAnim=true; renderHome(true); });
+  var nx=el("button","ibtn"); nx.type="button"; nx.setAttribute("aria-label","Next "+per.m); nx.innerHTML='<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>'; nx.disabled=isCurrentPeriod(R)||R.from>todayStr();
+  nx.addEventListener("click",function(){ shiftPer(1); chartAnim=true; renderHome(true); });
+  nav.appendChild(pv);
+  if(per.m==="month"){
+    var sl=el("select","mpick"); sl.setAttribute("aria-label","Choose month");
+    var y0=new Date().getFullYear()-1, cm=monthKey();
+    for(var yy=y0;yy<=y0+1;yy++) for(var mm=1;mm<=12;mm++){ var k=yy+"-"+pad(mm); if(k>cm) break; var o=el("option","",new Date(yy,mm-1,1).toLocaleDateString("en-PH",{month:"long",year:"numeric"})); o.value=k; sl.appendChild(o); }
+    ensureOpt(sl,R.from.slice(0,7)); sl.value=R.from.slice(0,7);
+    sl.addEventListener("change",function(){ per.a=sl.value+"-01"; chartAnim=true; renderHome(true); });
+    nav.appendChild(sl);
+  } else { var lbl=el("button","plabel",rangeLabel(R)); lbl.type="button"; lbl.addEventListener("click",function(){ per.a=todayStr(); chartAnim=true; renderHome(true); }); lbl.setAttribute("aria-label",rangeLabel(R)+" · tap for today"); nav.appendChild(lbl); }
+  nav.appendChild(nx); pb.appendChild(nav); f.appendChild(pb);
+  f.appendChild(el("div","prsub",per.m==="month"?rangeLabel({from:R.from,to:R.to}).replace(/^/,"")+" · "+niceDate(R.from)+" – "+niceDate(R.to):niceDate(R.from)+" – "+niceDate(R.to)+(per.m==="year"?" · to date":"")));
 
-  /* cash flow / spending */
-  var cc=el("div","card"), tabs=el("div","tabs");
-  [["flow","Cash flow"],["spend","Spending"]].forEach(function(x){ var b=el("button",chartTab===x[0]?"on":"",x[1]); b.type="button"; b.addEventListener("click",function(){ if(chartTab===x[0]) return; chartTab=x[0]; chartAnim=true; renderHome(true); }); tabs.appendChild(b); });
-  var th=el("div"); th.style.marginBottom="10px"; th.appendChild(tabs); cc.appendChild(th);
-  if(chartTab==="flow") drawFlow(cc,L,anim);
-  else {
-    var items=[], src="From entries logged in this app.";
-    if(S&&S.budget){ var sb=S.budget.filter(function(b){ return b.actual>0; }); if(sb.length){ items=sb.map(function(b){ return {name:b.name,v:b.actual}; }); src="From your sheet (includes installments)."; } }
-    if(!items.length) items=Object.keys(L.byCat).map(function(k){ return {name:k,v:L.byCat[k]}; });
-    drawSpend(cc,items,src,anim);
-  }
+  /* four figures */
+  var g2=el("div","g2");
+  function tile(key,label,val,sub,color){ var t=el("div","tile"); t.style.setProperty("--c",color); t.appendChild(el("div","tl",label)); var v=el("div","tv"); v.appendChild(numEl(key+per.m,val)); t.appendChild(v); t.appendChild(el("div","ts",sub)); g2.appendChild(t); }
+  tile("inc","Total income",M.inc,M.fromSheet&&S.inc&&S.inc.planned>0?"of "+fmt(S.inc.planned)+" planned":"received","var(--ok)");
+  tile("exp","Total expenses",M.exp,M.fromSheet&&S.exp&&S.exp.planned>0?"of "+fmt(S.exp.planned)+" budget":"incl. card purchases","var(--exp)");
+  tile("net","Net cash flow",M.net,"income − expenses",M.net<0?"var(--bad)":"var(--cy)");
+  tile("sav","Savings",M.sav,M.inc>0?Math.round(M.sav/M.inc*100)+"% of income":"moved to goals","var(--sav)");
+  f.appendChild(g2);
+  if(!hist && on) f.appendChild(el("p","note","History loads on the next sync. Until then only this app's entries are counted."));
+  if(per.m!=="week" && !instPlans().length && !M.fromSheet && on) f.appendChild(el("p","note","Installments appear here after the Plan tab has loaded from your sheet."));
+
+  /* insights */
+  var ins=insights(M,PM,R,S);
+  if(ins.length){ var ic=el("div","card insc"); ins.forEach(function(x){ var r=el("div","ins"+(x.bad?" bad":"")); r.appendChild(el("i","",x.ic)); r.appendChild(el("span","",x.t)); ic.appendChild(r); }); f.appendChild(secHead("Insights")); f.appendChild(ic); }
+
+  /* cash flow */
+  f.appendChild(secHead("Cash flow", mutedSpan(per.m==="week"?"Daily":(per.m==="month"?"Weekly":"Monthly"))));
+  var cc=el("div","card"); drawCash(cc,buckets(txs,R),anim);
+  if(per.m==="month") cc.appendChild(el("div","note","Weekly bars show logged transactions. Installments are billed monthly and are included in the totals above."));
   f.appendChild(cc);
 
-  /* savings goals */
-  var tot=haveGoals?S.goals.reduce(function(a,g){ return a+(g.balance||0); },0):null;
-  f.appendChild(secHead("Savings goals", tot!==null?mutedSpan("Total "+fmt(tot)):null));
+  /* spending */
+  f.appendChild(secHead("Spending by category", mutedSpan(Object.keys(M.cats).length+" categories")));
+  var sc=el("div","card"), items=Object.keys(M.cats).map(function(k){ return {name:k,v:M.cats[k],n:M.cnt[k]||0}; });
+  drawSpend(sc,items,M.fromSheet?"From your sheet (includes installments).":"From recorded transactions.",anim); f.appendChild(sc);
+
+  /* budget vs actual */
+  var BR=budgetRows(M,R);
+  f.appendChild(secHead("Budget vs actual", BR.rows.length>8?linkBtn(showAllBud?"Show less":"Show all",function(){ showAllBud=!showAllBud; renderHome(true); }):null));
+  var bc=el("div","card"), sr=budgetSort(BR.rows); drawBudget(bc,showAllBud?sr:sr.slice(0,8),BR.note); f.appendChild(bc);
+
+  /* safe to spend */
+  if(S && typeof S.safe==="number"){
+    f.appendChild(secHead("Safe to spend", mutedSpan(S.month?"Sheet month "+S.month:"")));
+    var sf=el("div","card safe"), big=el("div","sbig"+(S.safe<0?" neg":"")); if(S.safe<0) big.appendChild(document.createTextNode("−")); big.appendChild(numEl("safe",Math.abs(S.safe))); sf.appendChild(big);
+    var cash=typeof S.cash==="number"?S.cash:0; sf.appendChild(bar("safebar",cash>0&&S.safe>0?S.safe/cash*100:0,S.safe<0?"var(--bad)":"linear-gradient(90deg,#2563eb,#22d3ee)"));
+    var sub=[]; if(typeof S.daily==="number"&&S.daily>0) sub.push(fmt(S.daily)+" per day"); if(S.daysLeft) sub.push(S.daysLeft+" days left");
+    sf.appendChild(el("div","gs",S.safe<0?"Obligations exceed spendable cash. Avoid discretionary spending.":(sub.join(" · ")||"After cards, bills and savings still to move.")));
+    sf.appendChild(el("div","note","From your sheet: spendable cash minus card balances, unpaid fixed bills and savings still to be transferred."));
+    f.appendChild(sf);
+  }
+
+  /* savings goals: planned vs actual */
+  var haveGoals=!!(S&&S.goals&&S.goals.length), tot=haveGoals?S.goals.reduce(function(a,g){ return a+(g.balance||0); },0):null;
+  f.appendChild(secHead("Savings goals", tot!==null?mutedSpan("Planned "+fmt(tot)):null));
   var gc=el("div","card");
-  if(!haveGoals){ gc.appendChild(on?el("div","empty","Goals appear after the next sync. If they don’t, redeploy the updated sheet script."):cta("Connect your sheet to see goal progress.","Open Settings",function(){ show("set"); })); }
+  if(!haveGoals){ gc.appendChild(on?el("div","empty","Goals appear after the next sync."):cta("Connect your sheet to see goal progress.","Open Settings",function(){ show("set"); })); }
   else {
     var order=function(n){ var k=[/emergency/i,/invest/i,/travel/i,/future|upgrade/i]; for(var i=0;i<k.length;i++) if(k[i].test(n)) return i; return 9; };
-    var gl=S.goals.slice().sort(function(a,b){ return order(a.name)-order(b.name); });
-    gl.forEach(function(g,i){
+    S.goals.slice().sort(function(a,b){ return order(a.name)-order(b.name); }).forEach(function(g,i){
       var row=el("div","goal"), h=el("div","gh"), has=g.target>0, pct=has?Math.round((g.balance||0)/g.target*100):null;
       h.appendChild(el("span","gn",g.name));
       var gp=el("span","gp"); if(has) gp.appendChild(numEl("gp"+i,pct,function(v){ return Math.round(v)+"%"; })); h.appendChild(gp); row.appendChild(h);
       row.appendChild(el("div","gs",has?fmt(g.balance||0)+" of "+fmt(g.target)+(g.target-(g.balance||0)>0?" · "+fmt(g.target-(g.balance||0))+" to go":" · target reached"):fmt(g.balance||0)+" · no target set"));
       if(has) row.appendChild(bar("gb"+i,pct,i===0?"linear-gradient(90deg,#10b981,#34d399)":(i===1?"linear-gradient(90deg,#6366f1,#60a5fa)":(i===2?"linear-gradient(90deg,#0ea5e9,#22d3ee)":"linear-gradient(90deg,#f59e0b,#fb923c)"))));
+      if(typeof g.cash==="number"){ var gap=g.cash-(g.balance||0), gl=el("div","gap"+(Math.abs(gap)<0.005?" okc":(gap<0?" neg":""))); gl.textContent="Actual "+fmt(g.cash)+" · "+(Math.abs(gap)<0.005?"matches plan":(gap<0?"short by "+fmt(-gap):"ahead by "+fmt(gap))); row.appendChild(gl); }
       gc.appendChild(row);
     });
-    gc.appendChild(el("div","note","Goal balances are planned. Your actual cash is in the accounts list below."));
+    gc.appendChild(el("div","note","Planned = what your allocations say you should have. Actual = cash in the accounts assigned to that goal."));
   }
   f.appendChild(gc);
 
-  /* credit cards */
-  var cards=(S&&S.cards)||[], tc=cards.reduce(function(a,k){ return a+(k.outstanding||0); },0);
-  f.appendChild(secHead("Credit cards", cards.length?mutedSpan("Owed "+fmt(tc)):null));
+  /* credit card calendar */
+  var cards=(S&&S.cards)||[], owed=cards.reduce(function(a,k){ return a+(k.outstanding||0); },0);
+  f.appendChild(secHead("Card payments", cards.length?mutedSpan("Owed "+fmt(owed)):null));
   var kc=el("div","card");
   if(!cards.length) kc.appendChild(on?el("div","empty","No cards found yet. Sync to load them."):cta("Connect your sheet to see card balances and due dates.","Open Settings",function(){ show("set"); }));
   else {
+    var soon=0, over=0; cards.forEach(function(k){ if(typeof k.remaining==="number"&&k.remaining>0&&typeof k.days==="number"){ if(k.days<0) over+=k.remaining; else if(k.days<=7) soon+=k.remaining; } });
+    if(soon||over){ var sm=el("div","calsum"); if(over) sm.appendChild(el("span","pill bad","Overdue "+fmt(over))); if(soon) sm.appendChild(el("span","pill soon","Due within 7 days "+fmt(soon))); kc.appendChild(sm); }
     cards.slice().sort(function(a,b){ return (a.days===null||a.days===undefined?999:a.days)-(b.days===null||b.days===undefined?999:b.days); }).forEach(function(k,i){
-      var r=el("div","cardrow"), top=el("div","top");
-      top.appendChild(el("b","",k.name)); var o=el("b"); o.appendChild(numEl("co"+i,k.outstanding)); top.appendChild(o); r.appendChild(top);
-      if(typeof k.util==="number"){ var u=k.util*100; r.appendChild(bar("cu"+i,u,u>=50?"var(--bad)":(u>=30?"#fbbf24":"linear-gradient(90deg,#10b981,#22d3ee)"))); }
-      var meta=el("div","meta"), left=[];
-      if(k.due){ left.push("Due "+niceDate(k.due)+(typeof k.days==="number"?(k.days<0?" · "+Math.abs(k.days)+" d overdue":(k.days===0?" · today":" · in "+k.days+" d")):"")); }
-      if(typeof k.util==="number") left.push(Math.round(k.util*100)+"% used");
-      meta.appendChild(el("span","",left.join(" · ")));
-      var rt=el("span"); rt.style.cssText="display:flex;gap:8px;align-items:center";
-      if(k.status) rt.appendChild(el("span","pill "+pillCls(k.status),k.status));
-      if(typeof k.remaining==="number" && k.remaining>0){ var pb=linkBtn("Pay "+fmt(k.remaining),function(){ openAdd("cardpay",{to:k.name},k.remaining); }); pb.style.cssText="color:var(--ok);font-size:12.5px;font-weight:800;background:none;border:0;padding:6px 0"; rt.appendChild(pb); }
-      meta.appendChild(rt); r.appendChild(meta); kc.appendChild(r);
+      var r=el("div","calrow"), dt=k.due?pd(k.due):null, bd=el("div","cdate"+(typeof k.days==="number"?(k.days<0?" bad":(k.days<=7?" soon":"")):""));
+      if(dt){ bd.appendChild(el("b","",String(dt.getDate()))); bd.appendChild(el("small","",dt.toLocaleDateString("en-PH",{month:"short"}))); } else bd.appendChild(el("b","","–"));
+      r.appendChild(bd);
+      var mid=el("div","cmid"); mid.appendChild(el("div","cn",k.name));
+      var dd=typeof k.days==="number"?(k.days<0?Math.abs(k.days)+" d overdue":(k.days===0?"Due today":"Due in "+k.days+" d")):"No due date";
+      mid.appendChild(el("div","cs",dd+(typeof k.util==="number"?" · "+Math.round(k.util*100)+"% used":"")));
+      if(typeof k.util==="number"){ var u=k.util*100; mid.appendChild(bar("cu"+i,u,u>=50?"var(--bad)":(u>=30?"#fbbf24":"linear-gradient(90deg,#2563eb,#22d3ee)"))); }
+      r.appendChild(mid);
+      var rt=el("div","cr"), ob=el("b"); ob.appendChild(numEl("co"+i,k.outstanding)); rt.appendChild(ob);
+      if(typeof k.remaining==="number" && k.remaining>0){ var pbn=linkBtn("Pay "+fmt(k.remaining),function(){ openAdd("cardpay",{to:k.name},k.remaining); }); pbn.className="lnk paybtn"; rt.appendChild(pbn); }
+      else if(k.status) rt.appendChild(el("span","pill "+pillCls(k.status),k.status));
+      r.appendChild(rt); kc.appendChild(r);
     });
-    var ins=S&&S.inst; if(ins&&typeof ins.due==="number"&&ins.due>0) kc.appendChild(el("div","note","Installments due this month: "+fmt(ins.due)+" (already counted in expenses)."));
+    var ins2=S&&S.inst; if(ins2&&typeof ins2.due==="number"&&ins2.due>0) kc.appendChild(el("div","note","Installments due this month: "+fmt(ins2.due)+" (already counted in expenses). Paying the card is not another expense."));
   }
   f.appendChild(kc);
 
@@ -884,7 +1186,7 @@ function renderHome(force){
   else {
     var sorted=accs.slice().sort(function(a,b){ return (b.balance||0)-(a.balance||0); });
     var vis=sorted.filter(function(a){ return showAllAcc || (a.balance||0)!==0; }), hid=sorted.length-sorted.filter(function(a){ return (a.balance||0)!==0; }).length;
-    vis.forEach(function(a,i){
+    vis.forEach(function(a){
       var r=el("div","row"), l=el("div","l"); l.appendChild(el("div","n",a.name)); l.appendChild(el("div","d",[a.type,a.assigned].filter(Boolean).join(" · ")));
       var rr=el("div","r"), b=el("b"); b.appendChild(numEl("ac"+a.name,a.balance||0)); rr.appendChild(b); r.appendChild(l); r.appendChild(rr); ac.appendChild(r);
     });
@@ -895,21 +1197,184 @@ function renderHome(force){
 
   /* recent transactions */
   f.appendChild(secHead("Recent transactions", linkBtn("View all",function(){ show("log"); })));
-  var rc=el("div","card"), rec=live().sort(function(a,b){ return a.date===b.date ? b.created-a.created : (a.date<b.date?1:-1); }).slice(0,5);
+  var rc=el("div","card"), rec=txs.slice().sort(function(a,b){ return a.date===b.date ? 0 : (a.date<b.date?1:-1); }).slice(0,6);
   if(!rec.length) rc.appendChild(el("div","empty","Nothing logged yet. Tap Expense or Income above."));
-  rec.forEach(function(e){
-    var d2=describe(e), r=el("div","row"); r.style.cursor="pointer";
-    var l=el("div","l"), n=el("div","n",d2.t);
-    if(e.err) n.appendChild(el("span","fix","FIX")); else if(!e.exported) n.appendChild(el("span","new",e.tracked?"EDIT":"NEW"));
-    l.appendChild(n); var p=e.date.split("-"); l.appendChild(el("div","d",new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString("en-PH",{month:"short",day:"numeric"})+" · "+d2.s));
-    var rr=el("div","r"), a=el("b","a "+e.kind,(e.kind==="income"?"+":(e.kind==="expense"?"−":""))+fmt(e.amount)); rr.appendChild(a);
-    r.appendChild(l); r.appendChild(rr); r.addEventListener("click",function(){ if(e.exported) show("log"); else startEdit(e.id); }); rc.appendChild(r);
+  rec.forEach(function(t){
+    var local=t.local?entries.filter(function(e){ return e.id===t.id; })[0]:null, d2=local?describe(local):null, r=el("div","row");
+    var l=el("div","l"), n=el("div","n",d2?d2.t:(t.desc||t.cat||(t.type==="cardpay"?"Card payment":(t.type==="transfer"?"Transfer":(t.goal||"Entry")))));
+    if(local){ if(local.err) n.appendChild(el("span","fix","FIX")); else if(!local.exported) n.appendChild(el("span","new",local.tracked?"EDIT":"NEW")); r.style.cursor="pointer"; r.addEventListener("click",function(){ if(local.exported&&!local.tracked) show("log"); else startEdit(local.id); }); }
+    l.appendChild(n); l.appendChild(el("div","d",niceDate(t.date)+" · "+(d2?d2.s:[t.type==="cardbuy"?"Card purchase":t.type==="cardpay"?"Card payment":"",t.acct,t.to?"→ "+t.to:""].filter(Boolean).join(" · "))));
+    var rr=el("div","r"), up=t.type==="income", dn=t.type==="expense"||t.type==="cardbuy"; rr.appendChild(el("b","a "+(up?"income":(dn?"expense":"move")),(up?"+":(dn?"−":""))+fmt(t.amt)));
+    r.appendChild(l); r.appendChild(rr); rc.appendChild(r);
   });
   f.appendChild(rc);
 
-  if(S && S.month && S.month!==monthKey()) f.appendChild(el("p","note","Your sheet is set to "+S.month+". Update the month on the Summary tab when a new month starts."));
-
+  if(S && S.month && S.month!==monthKey()) f.appendChild(el("p","note","Your sheet is set to "+S.month+". Change the reporting month in the Plan tab when a new month starts."));
   box.replaceChildren(f);
+}
+
+/* ---------- Financial plan: the Summary tab's editable cells ---------- */
+var PSEC = [
+  {id:"settings", title:"Month & settings", note:"Which month the Summary tab reports on, and how savings % are worked out.", single:1},
+  {id:"income", title:"Income plan", note:"Planned monthly income per source.", noun:"income source"},
+  {id:"expense", title:"Expense budget", note:"Planned monthly spending per category.", noun:"category"},
+  {id:"goals", title:"Savings goals", note:"Allocation % of income, opening balance and target.", noun:"goal"},
+  {id:"accounts", title:"Bank & wallet accounts", note:"Opening balances and the savings category each account belongs to.", noun:"account"},
+  {id:"cards", title:"Credit cards", note:"Limits, statement and due days, and the latest statement figures.", noun:"card"},
+  {id:"inst", title:"Installments", note:"Installment plans. The sheet works out the monthly schedule.", noun:"installment"},
+  {id:"notes", title:"Monthly review notes", note:"Your notes at the bottom of the Summary tab.", single:1}
+];
+var planMsg = "";
+function pcell(row,k){ return row.c[k] || {v:""}; }
+function pval(f,c){
+  var v=c.v; if(v===""||v===null||v===undefined) return "—";
+  if(f.t==="money") return fmt(+v);
+  if(f.t==="pct") return (Math.round(v*1000)/10)+"%";
+  if(f.t==="date"){ var q=String(v).split("-"); return q.length===3?new Date(+q[0],+q[1]-1,+q[2]).toLocaleDateString("en-PH",{month:"short",day:"numeric",year:"numeric"}):String(v); }
+  if(f.t==="day") return "day "+v;
+  return String(v);
+}
+function planFind(sec,name){ var s=(snap&&snap.s)||{}; var arr=sec==="goals"?s.goals:(sec==="accounts"?s.accounts:(sec==="cards"?s.cards:(sec==="expense"?s.budget:null))); return arr?arr.filter(function(x){ return x.name===name; })[0]:null; }
+function planRow(sec,row){
+  var P=planData.plan.sections[sec], F={}; P.fields.forEach(function(f){ F[f.k]=f; });
+  var name=row.c.name.v, c=function(k){ return pval(F[k],pcell(row,k)); }, sub=[], right="", lock=false, cal=planFind(sec,name);
+  if(sec==="expense"){ sub=[c("group")]; right=c("planned"); lock=!!row.c.planned.f; if(cal&&typeof cal.actual==="number") sub.push("Actual "+fmt(cal.actual)); }
+  else if(sec==="income"){ right=c("planned"); lock=!!row.c.planned.f; sub=["Planned per month"]; }
+  else if(sec==="goals"){ right=c("pct"); sub=["Target "+c("target"),"Opening "+c("opening")]; lock=!!row.c.pct.f; if(cal&&typeof cal.balance==="number") sub.push("Planned balance "+fmt(cal.balance)); }
+  else if(sec==="accounts"){ right=c("opening"); sub=[c("type"),c("assigned")]; lock=!!row.c.opening.f; if(cal&&typeof cal.balance==="number") sub.push("Balance "+fmt(cal.balance)); }
+  else if(sec==="cards"){ right=c("limit"); sub=[c("bank"),"closes day "+pcell(row,"close").v+" · due day "+pcell(row,"due").v]; if(cal&&typeof cal.outstanding==="number") sub.push("Owed "+fmt(cal.outstanding)); }
+  else if(sec==="inst"){ right=c("monthly"); sub=[c("card"),pcell(row,"terms").v+" months from "+c("first")]; lock=!!row.c.monthly.f; }
+  return {title:name,sub:sub.filter(function(x){ return x && x!=="—"; }).join(" · "),right:right,lock:lock};
+}
+function renderPlan(){
+  var box=$("planBody"); if(!box) return;
+  var f=document.createDocumentFragment(), top=el("div","card");
+  top.appendChild(el("h3","","Financial plan")); top.lastChild.style.margin="0 0 4px";
+  top.appendChild(el("p","hint","These are the input cells of your Summary tab. Rows with a pencil are inputs: edit them here and they are saved to your sheet. Grey figures under a row (actual, balance, owed) are calculated by the sheet and can’t be changed here."));
+  var st=el("p","hint"); st.style.marginTop="0";
+  if(!linked()) st.textContent="Not connected. Add your sheet link in Settings.";
+  else if(!planData) st.textContent=(snap&&(snap.v||2)<4)?"Your sheet script is older than this app. Paste the new Code.gs and redeploy it to edit the plan here.":"Not loaded yet. Tap Refresh from sheet.";
+  else st.textContent="Loaded "+ago(planData.at)+" from your sheet."+(syncing?" Syncing…":"");
+  top.appendChild(st);
+  if(planMsg){ var pm=el("div","warn",planMsg); pm.style.display="block"; top.appendChild(pm); }
+  var rb=el("button","btn sec","Refresh from sheet"); rb.type="button"; rb.style.marginTop="6px"; rb.disabled=!linked(); rb.addEventListener("click",function(){ planMsg=""; sync(true); }); top.appendChild(rb);
+  f.appendChild(top);
+  if(planData && planData.plan){
+    PSEC.forEach(function(d){
+      var card=el("div","card plan"), P=planData.plan, h=el("div","phead"); h.appendChild(el("h3","",d.title)); card.appendChild(h); card.appendChild(el("p","hint pn",d.note));
+      if(d.single){
+        var items=P[d.id]||[]; if(!items.length) card.appendChild(el("div","empty","Not found on your Summary tab."));
+        items.forEach(function(it){
+          var r=el("button","prow"); r.type="button"; var l=el("div","pl"); l.appendChild(el("div","pt",it.label));
+          if(d.id==="notes"){ l.appendChild(el("div","ps",it.v?String(it.v).slice(0,70):"Tap to write")); r.appendChild(l); }
+          else { r.appendChild(l); var rr=el("div","pr"); rr.textContent=pval({t:it.t},it); r.appendChild(rr); }
+          r.appendChild(el("i","pe",""));
+          r.addEventListener("click",function(){ openPlanEdit(d.id,null,it); }); card.appendChild(r);
+        });
+      } else {
+        var S=P.sections[d.id]; if(!S){ card.appendChild(el("div","empty","Not found on your Summary tab.")); f.appendChild(card); return; }
+        S.rows.forEach(function(row){
+          var v=planRow(d.id,row), r=el("button","prow"); r.type="button"; var l=el("div","pl"); l.appendChild(el("div","pt",v.title)); if(v.sub) l.appendChild(el("div","ps",v.sub)); r.appendChild(l);
+          var rr=el("div","pr",v.right); if(v.lock){ var lk=el("small","",""); lk.textContent=" formula"; rr.appendChild(lk); } r.appendChild(rr); r.appendChild(el("i","pe",""));
+          r.addEventListener("click",function(){ openPlanEdit(d.id,row,null); }); card.appendChild(r);
+        });
+        var add=el("button","padd","+ Add "+d.noun); add.type="button";
+        if(S.free>0){ add.textContent="+ Add "+d.noun+" ("+S.free+" free row"+(S.free===1?"":"s")+")"; add.addEventListener("click",function(){ openPlanEdit(d.id,null,null); }); }
+        else { add.disabled=true; add.textContent="No free rows in this table of your sheet"; }
+        card.appendChild(add);
+      }
+      f.appendChild(card);
+    });
+    f.appendChild(el("p","note","The sheet table sizes are fixed so its formulas never shift. To add more rows than shown, insert a row inside that table in Google Sheets first, then refresh here."));
+  }
+  box.replaceChildren(f);
+}
+
+function openPlanEdit(sec, row, single){
+  if(!planData){ toast("Load the plan from your sheet first"); return; }
+  var D=PSEC.filter(function(x){ return x.id===sec; })[0], isAdd=!row && !single, fields, cells, keyName;
+  if(single){ fields=[{k:"value",label:single.label,t:single.t,opts:single.opts}]; cells={value:single}; keyName=single.k; }
+  else { fields=planData.plan.sections[sec].fields; cells=row?row.c:{}; keyName=row?row.c.name.v:""; }
+  var ctl={}, unlock={}, fxChk={};
+  openModal(isAdd?"Add "+D.noun:(single?single.label:keyName), function(b){
+    fields.forEach(function(f,i){
+      var cell=cells[f.k]||{v:""}, w=el("div"), id="pf"+i, lb=el("label","",f.label+(f.req?"":" ")); lb.setAttribute("for",id); w.appendChild(lb);
+      var c, v=cell.v===null||cell.v===undefined?"":cell.v;
+      if(f.t==="list"||f.t==="day"){
+        c=document.createElement("select"); var opts=f.t==="day"?Array.apply(null,Array(28)).map(function(_,k){ return String(k+1); }):(f.opts||[]);
+        if(!f.req){ var o0=el("option","",""); o0.value=""; c.appendChild(o0); }
+        opts.forEach(function(o){ var oo=el("option","",String(o).trim()||o); oo.value=o; c.appendChild(oo); });
+        ensureOpt(c,String(v)); c.value=String(v);
+      } else if(f.t==="note"){ c=document.createElement("textarea"); c.maxLength=500; c.value=String(v); c.style.minHeight="110px"; }
+      else {
+        c=document.createElement("input");
+        if(f.t==="date"){ c.type="date"; c.value=String(v); }
+        else if(f.t==="money"||f.t==="pct"){ c.type="text"; c.inputMode="decimal"; c.value=v===""?"":String(f.t==="pct"?Math.round(v*10000)/100:v); }
+        else if(f.t==="int"){ c.type="text"; c.inputMode="numeric"; c.value=String(v); }
+        else { c.type="text"; c.maxLength=60; c.value=String(v); }
+      }
+      c.id=id; ctl[f.k]=c; w.appendChild(c);
+      if(f.t==="pct") w.appendChild(el("p","hint","Percent of income, for example 15 for 15%."));
+      if(cell.f && !isAdd){
+        c.disabled=true; var cl=el("label","fxrow"), ck=document.createElement("input"); ck.type="checkbox"; ck.style.cssText="width:22px;height:22px;min-height:0;flex:0 0 auto";
+        cl.appendChild(ck); cl.appendChild(document.createTextNode(" Calculated by a formula ("+cell.fx+"). Tick to replace it with a typed value.")); w.appendChild(cl);
+        ck.addEventListener("change",function(){ c.disabled=!ck.checked; if(ck.checked) c.focus(); }); fxChk[f.k]=ck;
+      }
+      b.appendChild(w);
+    });
+    var msg=el("p","hint",""); msg.id="peMsg"; msg.style.color="var(--bad)"; b.appendChild(msg);
+    var sv2=el("button","btn",isAdd?"Add to sheet":"Save to sheet"); sv2.type="button"; b.appendChild(sv2);
+    var cx=el("button","btn sec","Cancel"); cx.type="button"; cx.addEventListener("click",closeModal); b.appendChild(cx);
+    if(row && !row.prot && !single){ var dl=el("button","btn danger","Delete from sheet"); dl.type="button"; dl.addEventListener("click",function(){ if(!confirm("Clear “"+keyName+"” from your sheet? Its formulas stay in place.")) return; send([{sec:sec,op:"del",key:keyName}],sv2); }); b.appendChild(dl); }
+    function val(f){
+      var c=ctl[f.k], s=String(c.value).trim();
+      if(f.t==="pct"){ if(s==="") return ""; var n=parseFloat(s.replace(/[^0-9.\-]/g,"")); return isFinite(n)?String(Math.round(n*100)/10000):"x"; }
+      if(f.t==="money"){ if(s==="") return ""; var m=parseFloat(s.replace(/[^0-9.\-]/g,"")); return isFinite(m)?String(m):"x"; }
+      return s;
+    }
+    function same(f,a,b2){ if(f.t==="money"||f.t==="pct"||f.t==="int"||f.t==="day"){ if(a===""&&b2==="") return true; return a!==""&&b2!==""&&Math.abs(+a-+b2)<0.00005; } return String(a).trim()===String(b2).trim(); }
+    sv2.addEventListener("click",function(){
+      var m=$("peMsg"); m.textContent="";
+      if(!connected()){ if(isLocked()){ openUnlock(); return; } m.textContent="Connect your sheet in Settings first."; return; }
+      if(!navigator.onLine){ m.textContent="You’re offline. Plan changes are saved straight to your sheet, so they need a connection."; return; }
+      var changes=[];
+      if(isAdd){
+        var vals={};
+        for(var i=0;i<fields.length;i++){ var f=fields[i], v=val(f); if(v==="x"){ m.textContent=f.label+": enter a number."; return; } if(f.req&&!v){ m.textContent=f.label+" is required."; return; } if(v!=="") vals[f.k]=v; }
+        changes.push({sec:sec,op:"add",vals:vals});
+      } else {
+        for(var j=0;j<fields.length;j++){
+          var g=fields[j], nv=val(g), ov=cells[g.k]&&cells[g.k].v!==undefined?cells[g.k].v:"";
+          if(ctl[g.k].disabled) continue;
+          if(nv==="x"){ m.textContent=g.label+": enter a number."; return; }
+          if(same(g,nv,ov)) continue;
+          if(g.req&&!nv){ m.textContent=g.label+" is required."; return; }
+          var ch=single?{sec:sec,key:keyName,value:nv,base:ov}:{sec:sec,key:keyName,field:g.k,value:nv,base:ov};
+          if(cells[g.k]&&cells[g.k].f) ch.allow=true;
+          changes.push(ch);
+        }
+        if(!changes.length){ closeModal(); return; }
+        changes.sort(function(a,b3){ return (a.field==="name"?1:0)-(b3.field==="name"?1:0); });
+      }
+      send(changes,sv2);
+    });
+    function send(changes,btn){
+      var m=$("peMsg"); btn.disabled=true; m.style.color="var(--muted)"; m.textContent="Saving to your sheet…";
+      api({action:"plan_save",changes:changes}).then(function(r){
+        if(!r.ok) throw refused(r);
+        if(r.plan){ planData={at:Date.now(),v:r.version||4,plan:r.plan}; save(K_PLAN,planData); }
+        var msgs=[];
+        (r.conflicts||[]).forEach(function(c){ msgs.push("The sheet changed “"+c.field+"” in “"+c.key+"” (now "+(c.current===""?"empty":c.current)+"). Nothing was overwritten. Open it again to review."); });
+        (r.failed||[]).forEach(function(x){ msgs.push(x.error); });
+        planMsg=msgs.join(" ");
+        if(r.applied>0 || (r.conflicts&&r.conflicts.length)){ closeModal(); toast(r.applied>0?"Saved to your sheet":"Sheet changed. Review"); renderPlan(); sync(true); }
+        else { btn.disabled=false; m.style.color="var(--bad)"; m.textContent=planMsg||"Nothing changed."; planMsg=""; }
+      }).catch(function(e){
+        btn.disabled=false; m.style.color="var(--bad)";
+        m.textContent=e&&e.message==="Unknown action"?"Your sheet script is out of date. Paste the new Code.gs and redeploy it.":(e&&e.code==="auth"?"The key doesn’t match the script.":(e&&e.name==="AbortError"?"The sheet took too long. Try again.":(e&&e.message&&e.message!=="Failed to fetch"?e.message:"Couldn’t reach the sheet. Try again when online.")));
+      });
+    }
+  });
 }
 
 /* ---------- Transaction sheet ---------- */
@@ -1166,7 +1631,7 @@ function renderConn(){
     u.addEventListener("click",run); box.appendChild(u); $("lPw").addEventListener("keydown",function(ev){ if(ev.key==="Enter"){ ev.preventDefault(); run(); } });
     var f=el("button","btn danger","Forgot password: erase saved connection"); f.type="button";
     f.addEventListener("click",function(){ if(!confirm("Erase the saved connection and password? Your entries stay on this phone. You will enter your sheet address and key again.")) return;
-      try{ localStorage.removeItem(K_SEC); localStorage.removeItem(K_SYNC); localStorage.removeItem(K_SUM); localStorage.removeItem(K_FAIL); }catch(x){} sec=null; sessKey=null; conn={url:"",key:""}; snap=null; syncMsg=""; refresh(); renderConn(); toast("Connection erased"); });
+      try{ localStorage.removeItem(K_SEC); localStorage.removeItem(K_SYNC); localStorage.removeItem(K_SUM); localStorage.removeItem(K_PLAN); localStorage.removeItem(K_HIST); planData=null; hist=null; localStorage.removeItem(K_FAIL); }catch(x){} sec=null; sessKey=null; conn={url:"",key:""}; snap=null; syncMsg=""; refresh(); renderConn(); toast("Connection erased"); });
     box.appendChild(f); return;
   }
   /* state C: unlocked */
@@ -1186,7 +1651,7 @@ function renderConn(){
   });
   box.appendChild(sv1);
   var off=el("button","btn sec","Disconnect"); off.type="button";
-  off.addEventListener("click",function(){ if(!confirm("Disconnect from the sheet? Entries stay on this phone.")) return; conn={url:"",key:""}; persistConn().then(function(){ snap=null; try{ localStorage.removeItem(K_SUM); }catch(e){} syncMsg=""; refresh(); renderConn(); toast("Disconnected"); }); });
+  off.addEventListener("click",function(){ if(!confirm("Disconnect from the sheet? Entries stay on this phone.")) return; conn={url:"",key:""}; persistConn().then(function(){ snap=null; try{ localStorage.removeItem(K_SUM); localStorage.removeItem(K_PLAN); localStorage.removeItem(K_HIST); planData=null; hist=null; }catch(e){} syncMsg=""; refresh(); renderConn(); toast("Disconnected"); }); });
   box.appendChild(off);
   var lk=el("button","btn sec","Lock now"); lk.type="button"; lk.addEventListener("click",function(){ lockNow(); toast("Locked"); }); box.appendChild(lk);
   var la=el("label","","Auto-lock after leaving the app"); la.setAttribute("for","autoLock"); box.appendChild(la);
@@ -1222,7 +1687,7 @@ $("bkLoad").addEventListener("click",function(){ $("bkFile").click(); });
 $("bkFile").addEventListener("change",function(){ if(this.files[0]) backupLoad(this.files[0]); this.value=""; });
 $("saveLists").addEventListener("click",function(){ saveLists(); refresh(); });
 $("resetLists").addEventListener("click",function(){ if(confirm("Replace the lists with the generic starting lists?")){ lists=JSON.parse(JSON.stringify(DEFAULTS)); save(K_L,lists); fillSettings(); refillSheet(); toast("Lists reset"); } });
-$("wipe").addEventListener("click",function(){ if(confirm("Erase ALL entries and lists on this phone? This can’t be undone.") && confirm("Really erase everything? Save a backup first if unsure.")){ try{ localStorage.removeItem(K_E); localStorage.removeItem(K_L); localStorage.removeItem(K_LAST); localStorage.removeItem(K_SYNC); localStorage.removeItem(K_SUM); localStorage.removeItem(K_SEC); localStorage.removeItem(K_SECSET); localStorage.removeItem(K_FAIL); }catch(e){} sec=null; sessKey=null; conn={url:"",key:""}; snap=null; entries=[]; lists=JSON.parse(JSON.stringify(DEFAULTS)); last={}; fillSettings(); resetForm(); setMode("expense"); refresh(); toast("All data erased"); } });
+$("wipe").addEventListener("click",function(){ if(confirm("Erase ALL entries and lists on this phone? This can’t be undone.") && confirm("Really erase everything? Save a backup first if unsure.")){ try{ localStorage.removeItem(K_E); localStorage.removeItem(K_L); localStorage.removeItem(K_LAST); localStorage.removeItem(K_SYNC); localStorage.removeItem(K_SUM); localStorage.removeItem(K_PLAN); localStorage.removeItem(K_HIST); planData=null; hist=null; localStorage.removeItem(K_SEC); localStorage.removeItem(K_SECSET); localStorage.removeItem(K_FAIL); }catch(e){} sec=null; sessKey=null; conn={url:"",key:""}; snap=null; entries=[]; lists=JSON.parse(JSON.stringify(DEFAULTS)); last={}; fillSettings(); resetForm(); setMode("expense"); refresh(); toast("All data erased"); } });
 $("amount").addEventListener("input",function(){ var v=this.value.replace(/[^0-9.,]/g,""); if(v!==this.value) this.value=v; });
 
 $("syncNow").addEventListener("click",function(){ sync(true); });
