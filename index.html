@@ -89,7 +89,7 @@ nav .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-width:56
 nav button{border:0;background:transparent;color:var(--muted);padding:9px 2px 8px;font:600 11.5px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:60px;display:flex;flex-direction:column;align-items:center;gap:3px}
 nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 nav button.on{color:var(--orange)}
-#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#1d2733;color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:20;max-width:90vw;text-align:center}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:#1d2733;color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:60;max-width:90vw;text-align:center}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .ok{color:var(--ok)}
 .big{font-size:34px;font-weight:800;letter-spacing:.2px;line-height:1.15}
@@ -292,6 +292,9 @@ img,svg,canvas{max-width:100%}
 .padd:disabled{border-color:var(--line);color:var(--muted)}
 .plan .pn{margin:0 0 6px}.plan h3{margin:0}
 .fxrow{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--muted);margin:8px 0 0;font-weight:500}
+body.noscroll #toast{bottom:auto;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%) translateY(-12px)}
+body.noscroll #toast.on{transform:translateX(-50%) translateY(0)}
+.need{outline:2px solid var(--bad);outline-offset:3px;border-radius:12px}
 </style>
 </head>
 <body>
@@ -423,12 +426,17 @@ img,svg,canvas{max-width:100%}
 (function(){
   var vv=window.visualViewport, root=document.documentElement;
   function upd(){
-    var h=vv?vv.height:window.innerHeight, off=vv?vv.offsetTop:0, kb=Math.max(0,window.innerHeight-h-off);
+    var ae=document.activeElement, typing=!!(ae&&/^(INPUT|TEXTAREA)$/.test(ae.tagName)&&ae.type!=="checkbox"&&ae.type!=="radio");
+    var h=vv?vv.height:window.innerHeight, off=vv?vv.offsetTop:0, zoomed=!!(vv&&vv.scale>1.02);
+    var kb=Math.max(0,window.innerHeight-h-off);
+    /* only move the sheet while a text field is focused, the keyboard is clearly open and the page is not pinch-zoomed */
+    if(!typing||zoomed||kb<80){ root.style.setProperty("--kb","0px"); root.style.removeProperty("--vvh"); return; }
     root.style.setProperty("--vvh",h+"px"); root.style.setProperty("--kb",kb+"px");
   }
   if(vv){ vv.addEventListener("resize",upd); vv.addEventListener("scroll",upd); }
   window.addEventListener("orientationchange",function(){ setTimeout(upd,250); });
-  document.addEventListener("focusout",function(){ setTimeout(function(){ var a=document.activeElement; if(!a||!/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)){ window.scrollTo(0,0); upd(); } },120); });
+  document.addEventListener("focusin",function(){ setTimeout(upd,350); });
+  document.addEventListener("focusout",function(){ setTimeout(upd,60); setTimeout(function(){ var a=document.activeElement; if(!a||!/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)){ window.scrollTo(0,0); upd(); } },120); });
   document.addEventListener("focusin",function(e){ var t=e.target; if(t&&t.scrollIntoView&&t.closest&&t.closest(".sh-body")) setTimeout(function(){ try{ t.scrollIntoView({block:"center",behavior:"smooth"}); }catch(x){} },300); });
   upd();
 })();
@@ -1490,6 +1498,7 @@ function openAdd(t, preset, amt){
   openSheetUI();
 }
 function shake(id){ var n=$(id); n.classList.remove("shake"); void n.offsetWidth; n.classList.add("shake"); }
+function miss(id){ var n=$(id); if(!n) return; n.classList.add("need"); try{ n.scrollIntoView({block:"center",behavior:"smooth"}); }catch(e){} setTimeout(function(){ n.classList.remove("need"); },2200); }
 function onSave(ev){
   ev.preventDefault(); if(saving) return;
   var c=TYPES[ttype], raw=$("amount").value, amt=parseAmt(raw);
@@ -1500,8 +1509,8 @@ function onSave(ev){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(new Date(date+"T00:00:00"))){ toast("Pick a valid date"); return; }
   if(Math.abs((new Date(date+"T00:00:00")-new Date(todayStr()+"T00:00:00"))/864e5)>400){ toast("That date is more than a year away"); return; }
   var acct=$("acct").value, cat=c.catL?$("cat").value:"", to=c.toSrc?$("to").value:"", goal=c.goal==="none"?"":$("goal").value;
-  if(c.catL && !cat){ toast("Choose a "+(ttype==="income"?"source":"category")); return; }
-  if(!acct){ toast("Choose "+c.acctL.toLowerCase()); return; }
+  if(c.catL && !cat){ toast("Choose a "+(ttype==="income"?"source":"category")); miss("catChips"); return; }
+  if(!acct){ toast("Choose "+c.acctL.toLowerCase()); miss("acct"); return; }
   if(c.acctSrc==="cards" && !isCard(acct)){ toast("Choose one of your credit cards"); return; }
   if(c.acctSrc==="accounts" && isCard(acct)){ toast("Use a bank, wallet or cash account here"); return; }
   if(c.toSrc){
