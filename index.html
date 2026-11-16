@@ -295,6 +295,13 @@ img,svg,canvas{max-width:100%}
 body.noscroll #toast{bottom:auto;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%) translateY(-12px)}
 body.noscroll #toast.on{transform:translateX(-50%) translateY(0)}
 .need{outline:2px solid var(--bad);outline-offset:3px;border-radius:12px}
+
+.hact{display:flex;gap:8px}
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--field);border:1px solid var(--line);border-radius:14px;padding:4px;margin:8px 0 4px}
+.seg2 button{border:0;background:transparent;color:var(--muted);border-radius:10px;padding:9px 6px;min-height:52px;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px}
+.seg2 button b{font-size:14px;font-weight:800;color:inherit}.seg2 button small{font-size:11.5px;font-weight:600;opacity:.85}
+.seg2 button.on{background:var(--tc,var(--orange));color:#0b1220}
+#instFields{margin-top:4px}
 </style>
 </head>
 <body>
@@ -399,6 +406,21 @@ body.noscroll #toast.on{transform:translateX(-50%) translateY(0)}
       <div class="types" id="seg" role="tablist"></div>
       <div id="fCat"><label id="catL" for="cat">Category</label><select id="cat" hidden></select><div id="catChips" class="cchips"></div></div>
       <label for="acct" id="acctL">Paid with</label><select id="acct"></select>
+      <div id="instWrap" hidden>
+        <div class="seg2" id="instSeg" role="tablist" aria-label="How is this billed">
+          <button type="button" data-v="0" class="on" role="tab"><b>One-time</b><small>billed this cycle</small></button>
+          <button type="button" data-v="1" role="tab"><b>Installment</b><small>pay over months</small></button>
+        </div>
+        <p class="hint" id="cycleHint"></p>
+        <div id="instFields" hidden>
+          <div class="row2">
+            <div><label for="iTerms">Months to pay</label><select id="iTerms"></select></div>
+            <div><label for="iMonthly">Monthly amount</label><input id="iMonthly" inputmode="decimal" placeholder="0.00" aria-label="Monthly installment amount"></div>
+          </div>
+          <label for="iFirst">First billing date</label><input id="iFirst" type="date">
+          <p class="hint" id="instHint"></p>
+        </div>
+      </div>
       <div id="toWrap" hidden><label for="to" id="toL">To</label><select id="to"></select></div>
       <div id="goalReq"></div>
       <div class="row2">
@@ -449,7 +471,7 @@ var DEFAULTS = {
   income: ["Salary","Freelance","Business","Interest","Other income"],
   goals: ["Emergency Fund","Investments","Travel Fund","Future Upgrades","Savings"]
 };
-var K_E = "qe.entries.v1", K_L = "qe.lists.v1", K_LAST = "qe.last.v1", K_SYNC = "qe.sync.v1", K_SUM = "qe.sum.v1", K_PLAN = "qe.plan.v1", K_HIST = "qe.hist.v1", K_PER = "qe.per.v1";
+var K_E = "qe.entries.v1", K_L = "qe.lists.v1", K_LAST = "qe.last.v1", K_SYNC = "qe.sync.v1", K_SUM = "qe.sum.v1", K_PLAN = "qe.plan.v1", K_HIST = "qe.hist.v1", K_PER = "qe.per.v1", K_HIDE = "qe.hide.v1";
 
 /* ---------- storage ---------- */
 function load(k, d){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
@@ -464,7 +486,9 @@ var mode = "expense", editingId = null, filter = "all", curScreen = "home", prev
 function $(id){ return document.getElementById(id); }
 function pad(n){ return (n<10?"0":"")+n; }
 function todayStr(){ var d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
-function fmt(n){ try{ return new Intl.NumberFormat("en-PH",{style:"currency",currency:"PHP"}).format(n); }catch(e){ return "₱"+n.toFixed(2); } }
+var MASKTXT = "₱ ••••••", hideNums = false;
+function masked(){ return hideNums || (!!sec && !sessKey && !!sec.hasConn); }
+function fmt(n){ if(masked()) return MASKTXT; try{ return new Intl.NumberFormat("en-PH",{style:"currency",currency:"PHP"}).format(n); }catch(e){ return "₱"+n.toFixed(2); } }
 function parseAmt(s){ var v = parseFloat(String(s).replace(/[^0-9.]/g,"")); return isFinite(v) ? Math.round(v*100)/100 : NaN; }
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 function clean(s){ return String(s||"").replace(/[\t\r\n]+/g," ").trim(); }
@@ -610,6 +634,7 @@ function storeInfo(){
 
 
 /* ---------- Google Sheet sync ---------- */
+hideNums = load(K_HIDE, false) === true;
 var planData = load(K_PLAN, null), hist = load(K_HIST, null), per = {m:load(K_PER,"month"), a:todayStr()}, showAllBud = false;
 if(["week","month","year"].indexOf(per.m)<0) per.m="month";
 var snap = load(K_SUM, null), syncing = false, syncT = null, syncMsg = "", lastSyncAt = 0;
@@ -630,7 +655,7 @@ function signMsg(key, msg){
 }
 /* Requests are signed (HMAC-SHA256 over time + one-time code + body). The key itself is never sent. */
 function api(body){
-  var payload=JSON.stringify(body), ts=Date.now(), nonce=hex(crypto.getRandomValues(new Uint8Array(12)));
+  var payload=JSON.stringify(body).replace(/[\u007f-\uffff]/g,function(c){ return "\\u"+("0000"+c.charCodeAt(0).toString(16)).slice(-4); }), ts=Date.now(), nonce=hex(crypto.getRandomValues(new Uint8Array(12)));
   return signMsg(conn.key, ts+"\n"+nonce+"\n"+payload).then(function(sig){
     var ctl = new AbortController(), t = setTimeout(function(){ ctl.abort(); }, 25000);
     return fetch(conn.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({v:2,ts:ts,nonce:nonce,payload:payload,sig:sig}),redirect:"follow",credentials:"omit",signal:ctl.signal})
@@ -709,7 +734,7 @@ function sync(manual){
   }).catch(function(e){
     var m = e && e.name==="AbortError" ? "The sheet took too long. Will retry." :
             e && e.name==="SyntaxError" ? "Unexpected reply. Check the script is deployed for “Anyone”." :
-            e && e.code==="auth" ? "The key doesn’t match the script. Check Settings." :
+            e && e.code==="auth" ? "The sheet rejected the request. Check that your key is exactly the SECRET in your script, then try again." :
             e && e.code==="clock" ? "Your phone’s clock looks wrong. Turn on automatic Date & Time." :
             e && e.message==="Unknown action" ? "Your sheet script is out of date. Paste the new Code.gs and redeploy it." :
             e && e.message==="Wrong key" ? "Your sheet script is the old version. Paste the new Code.gs and redeploy it." :
@@ -727,6 +752,8 @@ var chartAnim = true;
 var PAL = ["#34d399","#22d3ee","#60a5fa","#a78bfa","#fb923c","#f472b6","#94a3b8"];
 var NS = "http://www.w3.org/2000/svg";
 var ICON = {
+  eye:'<svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  eyeoff:'<svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg>',
   refresh:'<svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>',
   exp:'<svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',
   inc:'<svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg>',
@@ -749,6 +776,7 @@ function animateNum(node, from, to, f){
 }
 function numEl(key, val, f, cls){
   var n=el("span",cls||""); f=f||fmt;
+  if(masked() && f===fmt){ n.textContent=MASKTXT; return n; }
   if(typeof val!=="number" || !isFinite(val)){ n.textContent="—"; return n; }
   var from=prevV[key]; prevV[key]=val; animateNum(n, from===undefined?0:from, val, f); return n;
 }
@@ -761,7 +789,7 @@ function bar(key, pct, color){
   if(!REDUCE) requestAnimationFrame(function(){ requestAnimationFrame(function(){ i.style.width=pct+"%"; }); });
   return t;
 }
-function compact(n){ n=Math.abs(n); return n>=1e6 ? "₱"+(n/1e6).toFixed(1)+"M" : (n>=1e3 ? "₱"+(n/1e3).toFixed(n>=1e4?0:1)+"k" : "₱"+Math.round(n)); }
+function compact(n){ if(masked()) return "••••"; n=Math.abs(n); return n>=1e6 ? "₱"+(n/1e6).toFixed(1)+"M" : (n>=1e3 ? "₱"+(n/1e3).toFixed(n>=1e4?0:1)+"k" : "₱"+Math.round(n)); }
 function monthKey(){ return todayStr().slice(0,7); }
 function greeting(){ var h=new Date().getHours(); return h<12?"Good morning":(h<18?"Good afternoon":"Good evening"); }
 function ago(ts){ var m=Math.round((Date.now()-ts)/60000); if(m<1) return "just now"; if(m<60) return m+" min ago"; var h=Math.round(m/60); if(h<24) return h+" h ago"; return new Date(ts).toLocaleDateString("en-PH",{month:"short",day:"numeric"}); }
@@ -1047,7 +1075,11 @@ function renderHome(force){
   hl.appendChild(el("small","",new Date().toLocaleDateString("en-PH",{month:"long",day:"numeric",year:"numeric"})+(on&&snap?" · Synced "+ago(snap.at):"")));
   hello.appendChild(hl);
   var rb=el("button","ibtn"+(syncing?" spin":"")); rb.type="button"; rb.innerHTML=ICON.refresh; rb.setAttribute("aria-label","Refresh from sheet"); rb.disabled=!on;
-  rb.addEventListener("click",function(){ sync(true); }); hello.appendChild(rb); f.appendChild(hello);
+  rb.addEventListener("click",function(){ sync(true); });
+  var lockedNow=!!(sec&&sec.hasConn&&!sessKey), eb=el("button","ibtn"); eb.type="button"; eb.innerHTML=masked()?ICON.eyeoff:ICON.eye;
+  eb.setAttribute("aria-label",lockedNow?"Unlock to show numbers":(hideNums?"Show numbers":"Hide numbers")); eb.setAttribute("aria-pressed",masked()?"true":"false");
+  eb.addEventListener("click",function(){ if(lockedNow){ openUnlock(); return; } hideNums=!hideNums; save(K_HIDE,hideNums); prevV={}; chartAnim=true; refresh(); renderHome(true); });
+  var act=el("div","hact"); act.appendChild(eb); act.appendChild(rb); hello.appendChild(act); f.appendChild(hello);
   if(on && navigator.onLine===false) f.appendChild(el("p","note","Offline. Showing figures from your last sync."));
 
   /* hero */
@@ -1056,7 +1088,7 @@ function renderHome(force){
   var cr=el("div","chipsrow");
   function chip(label,val,cls){ var c=el("span","chp"+(cls?" "+cls:"")); c.appendChild(document.createTextNode(label+" ")); c.appendChild(el("b","",val)); cr.appendChild(c); }
   if(S){
-    if(typeof S.safe==="number") chip("Safe to spend",(S.safe<0?"−":"")+fmt(Math.abs(S.safe)), S.safe<0?"warnc":"");
+    if(typeof S.safe==="number") chip("Safe to spend",(S.safe<0&&!masked()?"−":"")+fmt(Math.abs(S.safe)), S.safe<0?"warnc":"");
     if(typeof S.investments==="number" && S.investments>0) chip("Investments",fmt(S.investments));
   } else if(!on){ var cb=el("button","chp","Connect your sheet in Settings →"); cb.type="button"; cb.addEventListener("click",function(){ show("set"); }); cr.appendChild(cb); }
   else chip("Waiting for first sync","");
@@ -1132,7 +1164,7 @@ function renderHome(force){
   /* safe to spend */
   if(S && typeof S.safe==="number"){
     f.appendChild(secHead("Safe to spend", mutedSpan(S.month?"Sheet month "+S.month:"")));
-    var sf=el("div","card safe"), big=el("div","sbig"+(S.safe<0?" neg":"")); if(S.safe<0) big.appendChild(document.createTextNode("−")); big.appendChild(numEl("safe",Math.abs(S.safe))); sf.appendChild(big);
+    var sf=el("div","card safe"), big=el("div","sbig"+(S.safe<0?" neg":"")); if(S.safe<0&&!masked()) big.appendChild(document.createTextNode("−")); big.appendChild(numEl("safe",Math.abs(S.safe))); sf.appendChild(big);
     var cash=typeof S.cash==="number"?S.cash:0; sf.appendChild(bar("safebar",cash>0&&S.safe>0?S.safe/cash*100:0,S.safe<0?"var(--bad)":"linear-gradient(90deg,#2563eb,#22d3ee)"));
     var sub=[]; if(typeof S.daily==="number"&&S.daily>0) sub.push(fmt(S.daily)+" per day"); if(S.daysLeft) sub.push(S.daysLeft+" days left");
     sf.appendChild(el("div","gs",S.safe<0?"Obligations exceed spendable cash. Avoid discretionary spending.":(sub.join(" · ")||"After cards, bills and savings still to move.")));
@@ -1379,7 +1411,7 @@ function openPlanEdit(sec, row, single){
         else { btn.disabled=false; m.style.color="var(--bad)"; m.textContent=planMsg||"Nothing changed."; planMsg=""; }
       }).catch(function(e){
         btn.disabled=false; m.style.color="var(--bad)";
-        m.textContent=e&&e.message==="Unknown action"?"Your sheet script is out of date. Paste the new Code.gs and redeploy it.":(e&&e.code==="auth"?"The key doesn’t match the script.":(e&&e.name==="AbortError"?"The sheet took too long. Try again.":(e&&e.message&&e.message!=="Failed to fetch"?e.message:"Couldn’t reach the sheet. Try again when online.")));
+        m.textContent=e&&e.message==="Unknown action"?"Your sheet script is out of date. Paste the new Code.gs and redeploy it.":(e&&e.code==="auth"?"The sheet rejected the request. Check that your key is exactly the SECRET in your script, then try again.":(e&&e.name==="AbortError"?"The sheet took too long. Try again.":(e&&e.message&&e.message!=="Failed to fetch"?e.message:"Couldn’t reach the sheet. Try again when online.")));
       });
     }
   });
@@ -1434,6 +1466,7 @@ function acctOpts(src, t){
 }
 function setMode(t, keep){
   if(t==="move") t="transfer"; if(!TYPES[t]) t="expense";
+  if(t!==ttype) resetInst();
   ttype=t; mode=TYPES[t].kind; var c=TYPES[t], L=last[t]||{};
   $("sheet").style.setProperty("--tc",c.color);
   Array.prototype.forEach.call($("seg").children,function(b){ b.classList.toggle("on", b.dataset.k===t); b.setAttribute("aria-selected", b.dataset.k===t?"true":"false"); });
@@ -1470,8 +1503,10 @@ function updateHints(){
   var d=$("date").value; if(/^\d{4}-\d{2}-\d{2}$/.test(d)){ var dd=new Date(d+"T00:00:00"), diff=(dd-new Date(todayStr()+"T00:00:00"))/864e5; if(diff>7) w.push("This date is more than a week ahead."); }
   $("moveHint").textContent=h; $("moveHint").hidden=!h;
   var wb=$("warnBox"); wb.hidden=!w.length; wb.textContent=w.join(" ");
+  updateInst();
 }
 function resetForm(){
+  resetInst();
   $("amount").value=""; $("desc").value=""; $("date").value=todayStr(); editingId=null; saving=false;
   $("shTitle").textContent="New transaction"; $("del").hidden=true; $("editNote").hidden=true; $("save").disabled=false;
 }
@@ -1499,6 +1534,62 @@ function openAdd(t, preset, amt){
 }
 function shake(id){ var n=$(id); n.classList.remove("shake"); void n.offsetWidth; n.classList.add("shake"); }
 function miss(id){ var n=$(id); if(!n) return; n.classList.add("need"); try{ n.scrollIntoView({block:"center",behavior:"smooth"}); }catch(e){} setTimeout(function(){ n.classList.remove("need"); },2200); }
+
+/* ---------- card purchase: one-time (this cycle) or installment plan ---------- */
+var instOn=false, monthlyTouched=false, firstTouched=false;
+function cardCycle(name,dateStr){
+  var P=planData&&planData.plan&&planData.plan.sections&&planData.plan.sections.cards, rows=P?P.rows:[];
+  var r=rows.filter(function(x){ return x.c.name.v===name; })[0]; if(!r) return null;
+  var cd=+r.c.close.v, dd=+r.c.due.v; if(!(cd>=1&&cd<=28&&dd>=1&&dd<=28)) return null;
+  var d=pd(dateStr), y=d.getFullYear(), m=d.getMonth(), after=d.getDate()>cd; if(after) m++;
+  return {close:isoD(new Date(y,m,cd)), due:isoD(new Date(y,m+(dd>cd?0:1),dd)), cd:cd, after:after};
+}
+function resetInst(){ instOn=false; monthlyTouched=false; firstTouched=false; if($("iMonthly")){ $("iMonthly").value=""; $("iFirst").value=""; $("iTerms").value="12"; } }
+function updateInst(){
+  var show = ttype==="cardbuy" && !editingId; $("instWrap").hidden=!show;
+  if(!show){ instOn=false; if(TYPES[ttype].catL) $("fCat").hidden=false; return; }
+  Array.prototype.forEach.call($("instSeg").children,function(b){ var on=(b.dataset.v==="1")===instOn; b.classList.toggle("on",on); b.setAttribute("aria-selected",on?"true":"false"); });
+  $("instFields").hidden=!instOn; $("fCat").hidden=instOn;
+  var acct=$("acct").value, date=$("date").value, cyc=(acct&&/^\d{4}-\d{2}-\d{2}$/.test(date))?cardCycle(acct,date):null;
+  var h=!acct?"Choose the card to see which statement this lands on.":(cyc?"Billed this cycle: statement closes "+niceDate(cyc.close)+", due "+niceDate(cyc.due)+(cyc.after?". The purchase is after this month’s closing day ("+cyc.cd+"), so it goes on the next statement.":"."):"Billed on the statement cycle this date falls in.");
+  $("cycleHint").textContent=h; $("cycleHint").hidden=instOn;
+  if(instOn){
+    var amt=parseAmt($("amount").value), t=+$("iTerms").value;
+    if(!monthlyTouched && amt>0 && t>0) $("iMonthly").value=String(Math.round(amt/t*100)/100);
+    if(!firstTouched && cyc) $("iFirst").value=cyc.close;
+    $("instHint").textContent="Total "+fmt(amt||0)+" over "+t+" months. Each month’s amount counts as an expense when it is billed. The purchase itself is not logged as a separate expense, so nothing is counted twice. If the bank adds interest, type the monthly amount it charges."+(cyc?"":" Add this card’s closing and due days in the Plan tab to get a suggested first billing date.");
+    $("save").textContent="Save installment plan";
+  } else if(ttype==="cardbuy") $("save").textContent=TYPES.cardbuy.btn;
+}
+function friendlyErr(e){
+  var m=e&&e.message||"";
+  if(e&&e.code==="auth") return "The sheet rejected the request. Check that your key is exactly the SECRET in your script, then try again.";
+  if(e&&e.code==="locked") return m;
+  if(e&&e.code==="clock") return "Your phone’s clock is off by more than 5 minutes. Fix the time and try again.";
+  if(m==="Unknown action") return "Your sheet script is out of date. Paste the new Code.gs and redeploy it.";
+  if(e&&e.name==="AbortError") return "The sheet took too long. Try again.";
+  return m && m!=="Failed to fetch" ? m : "Couldn’t reach the sheet. Try again when online.";
+}
+function saveInstallment(amt){
+  var acct=$("acct").value, item=clean($("desc").value), terms=+$("iTerms").value, monthly=parseAmt($("iMonthly").value), first=$("iFirst").value;
+  if(!acct||!isCard(acct)){ toast("Choose one of your credit cards"); miss("acct"); return; }
+  if(!item){ toast("Type what you bought (item name)"); miss("desc"); return; }
+  if(!(monthly>0)||monthly>1e9){ toast("Enter the monthly amount"); miss("iMonthly"); return; }
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(first)){ toast("Pick the first billing date"); miss("iFirst"); return; }
+  if(!connected()){ if(isLocked()){ openUnlock(); toast("Unlock to save an installment plan"); } else toast("Installment plans save straight to your sheet. Connect it in Settings first."); return; }
+  if(navigator.onLine===false){ toast("You’re offline. Installment plans save straight to your sheet."); return; }
+  var P=planData&&planData.plan&&planData.plan.sections&&planData.plan.sections.inst;
+  if(!P){ toast("Plan not loaded yet. Tap refresh on Home, then try again."); return; }
+  if(P.free<1){ toast("No free installment rows left in your sheet"); return; }
+  saving=true; $("save").disabled=true; var wb=$("warnBox"); wb.hidden=false; wb.textContent="Saving to your sheet…";
+  api({action:"plan_save",changes:[{sec:"inst",op:"add",vals:{name:item,card:acct,total:String(amt),terms:String(terms),monthly:String(monthly),first:first}}]}).then(function(r){
+    if(!r.ok) throw refused(r);
+    if(r.plan){ planData={at:Date.now(),v:r.version||4,plan:r.plan}; save(K_PLAN,planData); }
+    if(r.failed&&r.failed.length) throw new Error(r.failed[0].error);
+    if(!r.applied) throw new Error("The sheet did not add the plan.");
+    toast("Installment plan added to your sheet"); closeSheet(); refresh(); sync(true);
+  }).catch(function(e){ saving=false; $("save").disabled=false; wb.hidden=false; wb.textContent=friendlyErr(e); });
+}
 function onSave(ev){
   ev.preventDefault(); if(saving) return;
   var c=TYPES[ttype], raw=$("amount").value, amt=parseAmt(raw);
@@ -1508,6 +1599,7 @@ function onSave(ev){
   var date=$("date").value;
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date) || isNaN(new Date(date+"T00:00:00"))){ toast("Pick a valid date"); return; }
   if(Math.abs((new Date(date+"T00:00:00")-new Date(todayStr()+"T00:00:00"))/864e5)>400){ toast("That date is more than a year away"); return; }
+  if(ttype==="cardbuy" && instOn && !editingId){ saveInstallment(amt); return; }
   var acct=$("acct").value, cat=c.catL?$("cat").value:"", to=c.toSrc?$("to").value:"", goal=c.goal==="none"?"":$("goal").value;
   if(c.catL && !cat){ toast("Choose a "+(ttype==="income"?"source":"category")); miss("catChips"); return; }
   if(!acct){ toast("Choose "+c.acctL.toLowerCase()); miss("acct"); return; }
@@ -1679,6 +1771,13 @@ $("seg").addEventListener("click",function(ev){ var b=ev.target.closest("button"
 $("form").addEventListener("submit",onSave);
 ["cat","acct","to","goal","date"].forEach(function(id){ $(id).addEventListener("change",updateHints); });
 $("amount").addEventListener("input",updateHints);
+(function(){
+  var ts=$("iTerms"); [3,6,9,12,18,24,36].forEach(function(n){ var o=document.createElement("option"); o.value=String(n); o.textContent=n+" months"; ts.appendChild(o); }); ts.value="12";
+  Array.prototype.forEach.call($("instSeg").children,function(b){ b.addEventListener("click",function(){ instOn=b.dataset.v==="1"; updateInst(); if(instOn) $("iMonthly").focus({preventScroll:true}); }); });
+  ts.addEventListener("change",function(){ monthlyTouched=false; updateInst(); });
+  $("iMonthly").addEventListener("input",function(){ monthlyTouched=$("iMonthly").value.trim()!==""; updateInst(); });
+  $("iFirst").addEventListener("input",function(){ firstTouched=!!$("iFirst").value; updateInst(); });
+})();
 $("fab").addEventListener("click",function(){ openAdd("expense"); });
 $("shClose").addEventListener("click",closeSheet); $("sheetBg").addEventListener("click",closeSheet); $("modalBg").addEventListener("click",closeModal);
 document.addEventListener("keydown",function(ev){ if(ev.key==="Escape"){ if(!$("modal").hidden) closeModal(); else if(sheetOpen) closeSheet(); } });
