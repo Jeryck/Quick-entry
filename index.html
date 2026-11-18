@@ -363,6 +363,11 @@ header .hl .ibtn{width:36px;height:36px;border-radius:12px}
 .trv{text-align:right;display:flex;flex-direction:column}.trv small{font-size:12px;font-weight:700}.trv .pos{color:var(--ok)}.trv .neg{color:var(--bad)}
 .recrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.recrow .pl{flex:1;min-width:0}
 .reccard{border-color:#fbbf24}
+
+.paym{display:flex;justify-content:space-between;align-items:center;gap:10px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.45);border-radius:14px;padding:10px 14px;margin:0 0 12px;font-size:14px}
+.paym b{font-variant-numeric:tabular-nums}
+.cclose{position:absolute;top:4px;left:5px;width:6px;height:6px;border-radius:50%;background:var(--cy)}
+.duerow .pl{flex:1;min-width:0}.duerow b{font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -639,13 +644,22 @@ function renderCal(){
   var y=+calM.slice(0,4), mo=+calM.slice(5,7), dim=new Date(y,mo,0).getDate(), lead=(new Date(y,mo-1,1).getDay()+6)%7;
   var by={}, inc=0, exp=0;
   txs.forEach(function(t){ if(t.date.slice(0,7)!==calM) return; var d=by[t.date]||(by[t.date]={inc:0,exp:0,items:[]}); d.items.push(t); if(t.type==="income"){ d.inc+=t.amt; inc+=t.amt; } else if(t.type==="expense"||t.type==="cardbuy"){ d.exp+=t.amt; exp+=t.amt; } });
-  var dues={}; ((S&&S.cards)||[]).forEach(function(k){ if(k.due&&k.due.slice(0,7)===calM){ (dues[k.due]=dues[k.due]||[]).push(k); } });
+  var dues={}, closes={}, payMonth=0;
+  function addDue(iso,o){ if(iso&&iso.slice(0,7)===calM){ (dues[iso]=dues[iso]||[]).push(o); if(o.amount>0) payMonth+=o.amount; } }
+  ((S&&S.cards)||[]).forEach(function(k){ var c=k.cycle;
+    if(!c){ if(k.due&&(k.remaining||0)>0) addDue(k.due,{k:k,amount:k.remaining||0}); return; }
+    if(c.unpaid>0) addDue(c.due,{k:k,amount:c.unpaid,stmt:c.statement,paid:c.paid,min:c.min});
+    if(c.next.amount>0) addDue(c.next.due,{k:k,amount:c.next.amount,est:true,nx:c.next});
+    if(c.close&&c.close.slice(0,7)===calM) (closes[c.close]=closes[c.close]||[]).push({k:k,amount:c.statement,past:true});
+    if(c.next.close.slice(0,7)===calM) (closes[c.next.close]=closes[c.next.close]||[]).push({k:k,amount:c.next.buys+c.next.inst,nx:c.next});
+  });
   f.appendChild(monthNav(new Date(y,mo-1,1).toLocaleDateString("en-PH",{month:"long",year:"numeric"}),
     function(){ var d=new Date(y,mo-2,1); calM=isoD(d).slice(0,7); calSel=""; renderCal(); },
     function(){ var d=new Date(y,mo,1); calM=isoD(d).slice(0,7); calSel=""; renderCal(); },
     calM>=todayStr().slice(0,7)&&false, function(){ calM=todayStr().slice(0,7); calSel=todayStr(); renderCal(); }));
   var sm=el("div","calt"); [["Income",inc,"i"],["Expense",exp,"e"],["Balance",inc-exp,inc-exp<0?"e":"b"]].forEach(function(q){ var d=el("div"); d.appendChild(el("small","",q[0])); d.appendChild(el("b",q[2],(q[0]==="Balance"&&q[1]<0&&!masked()?"−":"")+fmt(Math.abs(q[1])))); sm.appendChild(d); });
   f.appendChild(sm);
+  if(payMonth>0){ var pm=el("div","paym"); pm.appendChild(el("span","","Card payments this month")); pm.appendChild(el("b","",fmt(payMonth))); f.appendChild(pm); }
   var g=el("div","calg"); ["M","T","W","T","F","S","S"].forEach(function(n){ g.appendChild(el("div","cwd",n)); });
   for(var i=0;i<lead;i++) g.appendChild(el("div","cc blank"));
   for(var d=1;d<=dim;d++){ (function(d){
@@ -654,15 +668,19 @@ function renderCal(){
     if(c&&c.inc) b.appendChild(el("span","cv i","+"+compact(c.inc)));
     if(c&&c.exp) b.appendChild(el("span","cv e","−"+compact(c.exp)));
     if(dues[iso]) b.appendChild(el("span","cdue"));
+    if(closes[iso]) b.appendChild(el("span","cclose"));
     b.addEventListener("click",function(){ calSel=iso; renderCal(); }); g.appendChild(b); })(d); }
   f.appendChild(g);
   if(calSel&&calSel.slice(0,7)===calM){
     var ds=by[calSel], p=pd(calSel), card=el("div","card daycard"), h=el("div","dayh");
     h.appendChild(el("b","",p.toLocaleDateString("en-PH",{weekday:"long",month:"short",day:"numeric"})+(calSel===todayStr()?" · Today":"")));
     var net=ds?ds.inc-ds.exp:0; if(ds) h.appendChild(el("span","dnet "+(net<0?"e":"i"),(net<0?"−":"+")+fmt(Math.abs(net)))); card.appendChild(h);
-    (dues[calSel]||[]).forEach(function(k){ var r=el("div","duerow"); r.appendChild(el("span","pill soon","Card due")); r.appendChild(el("span","",k.name+(typeof k.remaining==="number"&&k.remaining>0?" · "+fmt(k.remaining)+" to pay":""))); card.appendChild(r); });
+    (dues[calSel]||[]).forEach(function(o){ var r=el("div","duerow"), m=el("div","pl"); r.appendChild(el("span","pill soon",o.est?"Due (so far)":"Due"));
+      m.appendChild(el("div","pt","Pay "+o.k.name)); var det=o.est?("Purchases "+fmt(o.nx.buys)+" · installments "+fmt(o.nx.inst)+(o.nx.carry>0?" · unpaid carried "+fmt(o.nx.carry):"")):("Statement "+fmt(o.stmt||o.amount)+(o.paid>0?" · paid "+fmt(o.paid):"")+(o.min?" · minimum "+fmt(o.min):""));
+      m.appendChild(el("div","ps",det)); r.appendChild(m); r.appendChild(el("b","",fmt(o.amount))); card.appendChild(r); });
+    (closes[calSel]||[]).forEach(function(o){ var r=el("div","duerow"); r.appendChild(el("span","pill good","Closes")); var m=el("div","pl"); m.appendChild(el("div","pt",o.k.name+" statement closes")); m.appendChild(el("div","ps",o.past?"Statement balance "+fmt(o.amount):("Billed this cycle so far: purchases "+fmt(o.nx.buys)+" + installments "+fmt(o.nx.inst)))); r.appendChild(m); r.appendChild(el("b","",fmt(o.amount))); card.appendChild(r); });
     if(ds) ds.items.forEach(function(t){ card.appendChild(dayItem(t)); });
-    else if(!dues[calSel]) card.appendChild(el("div","empty","Nothing recorded on this day."));
+    else if(!dues[calSel]&&!closes[calSel]) card.appendChild(el("div","empty","Nothing recorded on this day."));
     var ab=el("button","padd","+ Add entry on this day"); ab.type="button"; ab.addEventListener("click",function(){ openAdd("expense"); setTimeout(function(){ if($("date")) $("date").value=calSel; },0); }); card.appendChild(ab);
     f.appendChild(card);
   } else f.appendChild(el("p","hint","Tap a day to see its entries."));
@@ -1830,7 +1848,7 @@ function renderAcc(){
   cards.forEach(function(k){
     var pr=planRowByName("cards",k.name), lim=pr&&pr.c.limit?+pr.c.limit.v:0, r=el("button","prow cardrow"); r.type="button";
     var lft=el("div","pl"); lft.appendChild(el("div","pt",k.name));
-    var sub=[]; if(k.due) sub.push("Due "+niceDate(k.due)+(typeof k.days==="number"?" ("+(k.days<0?Math.abs(k.days)+(k.days===-1?" day late":" days late"):(k.days===0?"today":"in "+k.days+(k.days===1?" day":" days")))+")":"")); if(lim) sub.push("Limit "+fmt(lim));
+    var sub=[]; if(k.cycle&&k.cycle.next) sub.push("Next statement "+niceDate(k.cycle.next.close)+": "+fmt(k.cycle.next.amount)+" so far"); if(k.due) sub.push("Due "+niceDate(k.due)+(typeof k.days==="number"?" ("+(k.days<0?Math.abs(k.days)+(k.days===-1?" day late":" days late"):(k.days===0?"today":"in "+k.days+(k.days===1?" day":" days")))+")":"")); if(lim) sub.push("Limit "+fmt(lim));
     lft.appendChild(el("div","ps",sub.join(" · ")));
     if(typeof k.util==="number"&&k.util>0){ var b=el("div","ubar"), i=el("i"); i.style.width=Math.min(100,Math.round(k.util*100))+"%"; if(k.util>.7) i.className="hi"; b.appendChild(i); lft.appendChild(b); }
     r.appendChild(lft); var rr=el("div","pr"); rr.appendChild(el("div","",fmt(k.outstanding||0)));
